@@ -1,0 +1,45 @@
+<div class="product-card">
+    <div class="product-card-img-wrap">
+        <span class="roast-pill">Tueste {{ product.tasting_profile.roast_level if product.tasting_profile else 'Especial' }}</span>
+        <a href="{{ url_for('catalog.product_detail', slug=product.slug) }}">
+            <img src="{{ product.image_url }}" alt="{{ product.name }}" class="product-card-img">
+        </a>
+    </div>
+
+    <div>
+        <div style="font-size: 0.8rem; color: var(--color-accent-gold); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.25rem;">
+            {{ product.origin.country if product.origin else 'Origen Único' }} • {{ product.origin.region if product.origin else '' }}
+        </div>
+        <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">
+            <a href="{{ url_for('catalog.product_detail', slug=product.slug) }}">{{ product.name }}</a>
+        </h3>
+        <p style="font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+            {{ product.tagline }}
+        </p>
+
+        <div class="notes-tags">
+            {% if product.tasting_profile %}
+                {% for note in product.tasting_profile.notes_list()[:3] %}
+                    <span class="tag-note">{{ note }}</span>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="product-card-footer">
+        <div>
+            <span style="font-size: 0.75rem; color: var(--color-text-muted); display: block;">340g / Bolsa</span>
+            <span class="product-price">{{ product.to_dict().formatted_price }}</span>
+        </div>
+        <button 
+            class="btn btn-glass js-add-to-cart" 
+            data-id="{{ product.id }}"
+            data-name="{{ product.name }}"
+            data-price="{{ product.price }}"
+            data-image="{{ product.image_url }}"
+            style="padding: 0.6rem 1.1rem; font-size: 0.85rem;"
+            aria-label="Añadir {{ product.name }} al carrito">
+            + Añadir
+        </button>
+    </div>
+</div>

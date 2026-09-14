@@ -1,0 +1,100 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}{{ product.name }} | Ficha Técnica Atelier Café{% endblock %}
+{% block meta_description %}{{ product.tagline }} - Cultivado a {{ product.origin.altitude_meters }} msnm.{% endblock %}
+
+{% block content %}
+<section style="padding-top: 8.5rem; padding-bottom: 6rem;">
+    <div class="container">
+        <!-- Breadcrumb sutil -->
+        <div style="font-size: 0.85rem; color: var(--color-text-muted); margin-bottom: 2rem;">
+            <a href="{{ url_for('main.home') }}" style="color: var(--color-text-muted);">Inicio</a> / 
+            <a href="{{ url_for('catalog.catalog') }}" style="color: var(--color-text-muted);">Catálogo</a> / 
+            <span class="text-gold">{{ product.name }}</span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 4.5rem; align-items: start;">
+            <!-- Escaparate Visual del Producto -->
+            <div style="position: sticky; top: 7rem; background: var(--glass-bg-card); border: 1px solid var(--glass-border); border-radius: var(--radius-lg); padding: 3rem; text-align: center; box-shadow: var(--shadow-elevated);">
+                <span class="roast-pill" style="position: static; display: inline-block; margin-bottom: 1.5rem;">
+                    Tueste {{ product.tasting_profile.roast_level if product.tasting_profile else 'Especial' }}
+                </span>
+                <img 
+                    src="{{ product.image_url }}" 
+                    alt="{{ product.name }}" 
+                    style="max-width: 320px; width: 100%; height: auto; filter: drop-shadow(0 20px 30px rgba(0,0,0,0.85));"
+                    class="animate-float">
+                <div style="margin-top: 2rem; color: var(--color-text-muted); font-size: 0.85rem;">
+                    📦 Presentación: Bolsa de 340g con cierre hermético y válvula de desgasificación.
+                </div>
+            </div>
+
+            <!-- Ficha Técnica Editorial -->
+            <div>
+                <span style="color: var(--color-accent-gold); text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.85rem; font-weight: 700; display: block; margin-bottom: 0.5rem;">
+                    {{ product.origin.country }} • {{ product.origin.region }}
+                </span>
+                <h1 style="font-size: 2.8rem; margin-bottom: 1rem;">{{ product.name }}</h1>
+                <p style="font-size: 1.2rem; color: var(--color-text-secondary); margin-bottom: 1.75rem; font-style: italic;">
+                    "{{ product.tagline }}"
+                </p>
+
+                <!-- Precio y Botón de Compra -->
+                <div style="display: flex; align-items: center; gap: 2rem; margin-bottom: 2.5rem; padding: 1.5rem; background: var(--color-bg-surface); border-radius: var(--radius-md); border: 1px solid var(--glass-border);">
+                    <div>
+                        <small style="color: var(--color-text-muted); display: block; font-size: 0.8rem;">PRECIO DE VENTA</small>
+                        <span class="text-gold" style="font-size: 2rem; font-weight: 700;">{{ product.to_dict().formatted_price }}</span>
+                    </div>
+                    <button 
+                        class="btn btn-primary js-add-to-cart"
+                        data-id="{{ product.id }}"
+                        data-name="{{ product.name }}"
+                        data-price="{{ product.price }}"
+                        data-image="{{ product.image_url }}"
+                        style="flex: 1; padding: 1rem 1.75rem;">
+                        + Agregar al Carrito
+                    </button>
+                </div>
+
+                <!-- Descripción Sensorial -->
+                <h3 style="font-size: 1.3rem; margin-bottom: 0.75rem;">Historia del Terroir</h3>
+                <p style="margin-bottom: 2rem; line-height: 1.8;">{{ product.description }}</p>
+
+                <!-- Especificaciones Técnicas del Grano (Bento Table) -->
+                <h3 style="font-size: 1.3rem; margin-bottom: 1rem;">Especificaciones Agrícolas</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2.5rem;">
+                    <div style="background: var(--color-bg-surface-elevated); padding: 1rem 1.25rem; border-radius: var(--radius-sm);">
+                        <small style="color: var(--color-text-muted); display: block; font-size: 0.75rem;">FINCA / PRODUCTOR</small>
+                        <strong style="color: var(--color-text-primary);">{{ product.origin.farm }}</strong>
+                    </div>
+                    <div style="background: var(--color-bg-surface-elevated); padding: 1rem 1.25rem; border-radius: var(--radius-sm);">
+                        <small style="color: var(--color-text-muted); display: block; font-size: 0.75rem;">ALTITUD DE CULTIVO</small>
+                        <strong style="color: var(--color-text-primary);">{{ product.origin.altitude_meters }} msnm</strong>
+                    </div>
+                    <div style="background: var(--color-bg-surface-elevated); padding: 1rem 1.25rem; border-radius: var(--radius-sm);">
+                        <small style="color: var(--color-text-muted); display: block; font-size: 0.75rem;">VARIETAL BOTÁNICO</small>
+                        <strong style="color: var(--color-text-primary);">{{ product.origin.variety }}</strong>
+                    </div>
+                    <div style="background: var(--color-bg-surface-elevated); padding: 1rem 1.25rem; border-radius: var(--radius-sm);">
+                        <small style="color: var(--color-text-muted); display: block; font-size: 0.75rem;">MÉTODO DE BENEFICIO</small>
+                        <strong style="color: var(--color-text-primary);">{{ product.origin.process }}</strong>
+                    </div>
+                </div>
+
+                <!-- Receta Sugerida del Barista -->
+                <div style="background: linear-gradient(135deg, rgba(212,154,61,0.1) 0%, rgba(23,19,16,0.8) 100%); border: 1px solid rgba(212,154,61,0.25); border-radius: var(--radius-md); padding: 1.75rem;">
+                    <h4 style="color: var(--color-accent-gold-light); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                        ☕ Receta Sugerida de Extracción (V60)
+                    </h4>
+                    <div style="display: flex; gap: 2rem; flex-wrap: wrap; font-size: 0.9rem;">
+                        <div><strong>Dosis:</strong> 20g café molido medio</div>
+                        <div><strong>Agua:</strong> 320g a 92°C</div>
+                        <div><strong>Ratio:</strong> 1:16</div>
+                        <div><strong>Tiempo:</strong> 3:15 min</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

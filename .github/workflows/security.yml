@@ -1,0 +1,75 @@
+name: Security analysis
+
+on:
+  push:
+    branches: [main, feature/creacionfront]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  snyk:
+    name: Snyk Open Source
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-python@v7.0.0
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install Python dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Install Snyk CLI
+        run: npm install --global snyk
+      - name: Scan requirements.txt
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        shell: bash
+        run: |
+          status=0
+          snyk test --file=requirements.txt --package-manager=pip --command=python || status=$?
+          # Exit 1 means vulnerabilities; other failures must remain visible.
+          if [ "$status" -eq 1 ]; then
+            echo "::warning::Snyk encontró vulnerabilidades. Revisa los resultados en este paso."
+          else
+            exit "$status"
+          fi
+
+  sonar:
+    name: SonarQube / SonarCloud
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v7.0.0
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install Python dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Generate coverage and test reports
+        run: >-
+          python -m pytest tests/ --cov=app --cov-report=term-missing
+          --cov-report=xml:coverage.xml --junitxml=test-report.xml
+      - uses: actions/setup-node@v7.0.0
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Install frontend test tools
+        run: npm ci
+      - name: Test frontend with coverage
+        run: npm run test:coverage
+      - name: Sonar scan
+        uses: SonarSource/sonarqube-scan-action@v8.2.1
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          # For SonarQube Server, set this repository variable to a reachable URL.
+          SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL || 'https://sonarcloud.io' }}
+        with:
+          # Read sonar-project.properties from the repository root.
+          projectBaseDir: .
+          # Set SONAR_ORGANIZATION for SonarCloud; leave unset for Server.
+          args: ${{ vars.SONAR_ORGANIZATION && format('-Dsonar.organization={0}', vars.SONAR_ORGANIZATION) || '' }}

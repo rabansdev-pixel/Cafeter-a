@@ -1,0 +1,36 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Catálogo de Cafés de Especialidad | Atelier Café{% endblock %}
+
+{% block content %}
+<section style="padding-top: 8rem; padding-bottom: 6rem;">
+    <div class="container">
+        <!-- Encabezado Editorial -->
+        <div style="text-align: center; max-width: 700px; margin: 0 auto 3.5rem auto;">
+            <span style="color: var(--color-accent-gold); text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.85rem; font-weight: 700; display: block; margin-bottom: 0.75rem;">Microlotes Disponibles</span>
+            <h1 style="margin-bottom: 1rem;">Nuestra Cava de Café</h1>
+            <p>Granos arábica seleccionados de los mejores terroirs volcánicos del mundo. Tostados semanalmente bajo demanda para garantizar máxima frescura.</p>
+        </div>
+
+        <!-- Filtros de Tueste y Origen -->
+        <div style="display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 3.5rem;">
+            <a href="{{ url_for('catalog.catalog') }}" class="radar-tab-btn {% if not request.args.get('roast') %}active{% endif %}">Todos los Tuestes</a>
+            <a href="{{ url_for('catalog.catalog', roast='Claro') }}" class="radar-tab-btn {% if request.args.get('roast') == 'Claro' %}active{% endif %}">Tueste Claro (Florales / Cítricos)</a>
+            <a href="{{ url_for('catalog.catalog', roast='Medio') }}" class="radar-tab-btn {% if request.args.get('roast') == 'Medio' %}active{% endif %}">Tueste Medio (Chocolate / Frutos Rojos)</a>
+        </div>
+
+        <!-- Grilla de Productos -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 2rem;">
+            {% for product in products %}
+                {% include 'components/product_card.html' %}
+            {% else %}
+                <div style="grid-column: 1 / -1; text-align: center; padding: 4rem 1rem; color: var(--color-text-muted);">
+                    <p style="font-size: 2.5rem; margin-bottom: 1rem;">☕</p>
+                    <h3>No se encontraron cafés con ese filtro</h3>
+                    <p style="margin-top: 0.5rem;"><a href="{{ url_for('catalog.catalog') }}" class="text-gold">Ver todos los cafés disponibles</a></p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Terroirs & Orígenes del Café | Atelier Café{% endblock %}
+
+{% block content %}
+<section style="padding-top: 8.5rem; padding-bottom: 6rem;">
+    <div class="container">
+        <div style="text-align: center; max-width: 750px; margin: 0 auto 4.5rem auto;">
+            <span style="color: var(--color-accent-gold); text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.85rem; font-weight: 700; display: block; margin-bottom: 0.75rem;">Geografía del Café</span>
+            <h1 style="margin-bottom: 1rem;">Tierras Altas, Volcanes y Niebla</h1>
+            <p>El café no nace por azar; es el reflejo de la composición mineral del suelo, el diferencial térmico entre el día y la noche, y el cuidado obsesivo de quienes cultivan la tierra.</p>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 4rem;">
+            <!-- Origen 1: Huila, Colombia -->
+            <div class="bento-card" style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 3rem; align-items: center;">
+                <div>
+                    <span style="color: var(--color-accent-gold); font-size: 0.85rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;">1.950 MSNM • Huila, Colombia</span>
+                    <h2 style="margin: 0.5rem 0 1rem 0;">San Agustín & Faldas Volcánicas</h2>
+                    <p style="margin-bottom: 1.25rem;">
+                        El Macizo Colombiano es el punto donde se dividen las cordilleras de los Andes. Aquí, los vientos cálidos del valle del río Magdalena ascienden por las montañas al anochecer, permitiendo una maduración lenta de la cereza que concentra azúcares complejos y una acidez málica incomparable.
+                    </p>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <span class="tag-note">Variedad Geisha</span>
+                        <span class="tag-note">Fermentación Anaeróbica</span>
+                        <span class="tag-note">Suelo de Ceniza Volcánica</span>
+                    </div>
+                </div>
+                <div style="text-align: center;">
+                    <img src="{{ url_for('static', filename='img/products/geisha-huila.svg') }}" alt="Geisha Huila" style="max-height: 260px; filter: drop-shadow(0 15px 25px rgba(0,0,0,0.7));">
+                </div>
+            </div>
+
+            <!-- Origen 2: Yirgacheffe, Etiopía -->
+            <div class="bento-card" style="display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 3rem; align-items: center;">
+                <div style="text-align: center;">
+                    <img src="{{ url_for('static', filename='img/products/yirgacheffe.svg') }}" alt="Yirgacheffe Etiopía" style="max-height: 260px; filter: drop-shadow(0 15px 25px rgba(0,0,0,0.7));">
+                </div>
+                <div>
+                    <span style="color: var(--color-accent-gold); font-size: 0.85rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;">2.100 MSNM • Gedeo, Etiopía</span>
+                    <h2 style="margin: 0.5rem 0 1rem 0;">Yirgacheffe & Bosques Nativos</h2>
+                    <p style="margin-bottom: 1.25rem;">
+                        La cuna biológica del Coffea Arabica. En los bosques nubosos de Yirgacheffe, el café crece de manera silvestre o semicultivado bajo la sombra de acacias milenarias. Las variedades ancestrales (Heirloom) brindan una taza translúcida semejante al té de jazmín con una finura cítrica de bergamota.
+                    </p>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <span class="tag-note">Variedad Heirloom</span>
+                        <span class="tag-note">Lavado Clásico</span>
+                        <span class="tag-note">Cultivo Bajo Sombra</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

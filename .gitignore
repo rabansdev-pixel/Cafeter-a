@@ -216,3 +216,16 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Local Environment & Database
+.env
+*.db
+*.sqlite3
+
+# SonarQube & Security scanners
+.scannerwork/
+.sonar/
+.snyk-cache/
+node_modules/
+coverage-js/
+test-report.xml

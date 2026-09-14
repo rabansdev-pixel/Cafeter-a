@@ -1,0 +1,10 @@
+# Snyk (https://snyk.io) policy file
+version: v1.25.0
+ignore: {}
+patch: {}
+# Configuración para escanear dependencias y contenerización
+exclude:
+  global:
+    - tests/**
+    - venv/**
+    - .venv/**

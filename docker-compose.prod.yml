@@ -1,0 +1,33 @@
+services:
+  app:
+    build:
+      target: production
+    container_name: cafe_app_prod
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+      - APP_ENV=production
+      - SECRET_KEY=${SECRET_KEY}
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-cafe_admin}:${POSTGRES_PASSWORD:-secure_cafe_pass}@db:5432/${POSTGRES_DB:-cafe_db}
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:16-alpine
+    container_name: cafe_postgres_prod
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-cafe_admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-secure_cafe_pass}
+      POSTGRES_DB: ${POSTGRES_DB:-cafe_db}
+    volumes:
+      - cafe_db_data:/var/lib/postgresql/data
+    networks:
+      - cafe_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-cafe_admin} -d ${POSTGRES_DB:-cafe_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5

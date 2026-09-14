@@ -1,0 +1,14 @@
+services:
+  app:
+    build:
+      target: development
+    container_name: cafe_app_dev
+    ports:
+      - "${PORT:-5000}:5000"
+    volumes:
+      - .:/app
+      - /app/__pycache__
+    environment:
+      - APP_ENV=development
+      - FLASK_DEBUG=1
+    command: python run.py
