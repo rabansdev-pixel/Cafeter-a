@@ -53,14 +53,13 @@ def create_app(env_name=None):
     @app.errorhandler(CSRFError)
     def csrf_error(error):
         if request.path.startswith("/api/"):
-            return (
-                jsonify(
-                    status="error",
-                    message="Sesión inválida. Recarga la página.",
-                ),
-                400,
+            response = jsonify(
+                status="error",
+                message="Sesión inválida. Recarga la página.",
             )
-        return error.get_response()
+        else:
+            response = error.get_response()
+        return response, 400
 
     @app.errorhandler(404)
     def not_found_error(error):
