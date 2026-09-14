@@ -6,7 +6,13 @@ from dotenv import load_dotenv
 from app.core.config import config_by_name
 from app.core.extensions import csrf, db, ma
 from app.core.security import setup_security_headers
-from app.controllers import main_bp, catalog_bp, products_api_bp, cart_api_bp, health_bp
+from app.controllers import (
+    main_bp,
+    catalog_bp,
+    products_api_bp,
+    cart_api_bp,
+    health_bp,
+)
 
 load_dotenv()
 
@@ -50,7 +56,7 @@ def create_app(env_name=None):
             return (
                 jsonify(
                     status="error",
-                    message="Sesión de formulario inválida. Recarga la página.",
+                    message="Sesión inválida. Recarga la página.",
                 ),
                 400,
             )
@@ -68,7 +74,7 @@ def create_app(env_name=None):
     # Inicialización de tablas y datos semilla
     with app.app_context():
         db.create_all()
-        # Sembrar datos de cafés de especialidad si es desarrollo o producción inicial
+        # Sembrar cafés en desarrollo o en la primera ejecución de producción.
         if env_name != "testing":
             from app.services.product_service import ProductService
 

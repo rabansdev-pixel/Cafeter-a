@@ -48,9 +48,13 @@ def test_api_get_radar_metrics_not_found(client):
 def test_api_calculate_cart_totals(client, csrf_headers):
     """Verifica el cálculo del carrito a través del API REST."""
     payload = {
-        "items": [{"id": 1, "name": "Geisha Huila", "price": 68000.0, "quantity": 1}]
+        "items": [
+            {"id": 1, "name": "Geisha Huila", "price": 68000.0, "quantity": 1}
+        ]
     }
-    response = client.post("/api/cart/calculate", json=payload, headers=csrf_headers)
+    response = client.post(
+        "/api/cart/calculate", json=payload, headers=csrf_headers
+    )
     assert response.status_code == 200
     data = response.get_json()
     assert data["status"] == "success"
@@ -61,7 +65,9 @@ def test_api_calculate_cart_totals(client, csrf_headers):
 def test_api_calculate_cart_invalid_payload(client, csrf_headers):
     """Verifica manejo de errores ante datos malformados."""
     payload = {"items": "no-es-una-lista"}
-    response = client.post("/api/cart/calculate", json=payload, headers=csrf_headers)
+    response = client.post(
+        "/api/cart/calculate", json=payload, headers=csrf_headers
+    )
     assert response.status_code == 400
     assert response.get_json()["message"] == "Formato de ítems inválido"
 
@@ -85,17 +91,21 @@ def test_api_get_product_by_slug_invalid(client):
 
 def test_country_filter_sanitizes_html_and_escapes_wildcards(client):
     response = client.get(
-        "/api/products", query_string={"country": " <b>Colombia</b> ", "roast": "Claro"}
+        "/api/products",
+        query_string={"country": " <b>Colombia</b> ", "roast": "Claro"},
     )
     # nh3 conserva etiquetas permitidas; no deben ampliar la consulta SQL.
     assert response.get_json()["count"] == 0
     response = client.get(
-        "/api/products", query_string={"country": " Colombia ", "roast": "Claro"}
+        "/api/products",
+        query_string={"country": " Colombia ", "roast": "Claro"},
     )
     products = response.get_json()["data"]
     assert products
     assert all(p["origin"]["country"] == "Colombia" for p in products)
     for country in ["%", "_", "' OR 1=1 --"]:
-        response = client.get("/api/products", query_string={"country": country})
+        response = client.get(
+            "/api/products", query_string={"country": country}
+        )
         assert response.status_code == 200
         assert response.get_json()["count"] == 0

@@ -18,17 +18,25 @@ def test_cart_rejects_missing_or_invalid_csrf(client, token):
 def test_csrf_token_is_bound_to_client_session(app, client, csrf_headers):
     other_client = app.test_client()
     other_client.get("/")
-    response = other_client.post("/api/cart/calculate", json={}, headers=csrf_headers)
+    response = other_client.post(
+        "/api/cart/calculate", json={}, headers=csrf_headers
+    )
     assert response.status_code == 400
     assert (
-        client.post("/api/cart/calculate", json={}, headers=csrf_headers).status_code
+        client.post(
+            "/api/cart/calculate", json={}, headers=csrf_headers
+        ).status_code
         == 200
     )
 
 
-def test_expired_csrf_token_is_rejected(app, client, csrf_headers, monkeypatch):
+def test_expired_csrf_token_is_rejected(
+    app, client, csrf_headers, monkeypatch
+):
     monkeypatch.setitem(app.config, "WTF_CSRF_TIME_LIMIT", -1)
-    response = client.post("/api/cart/calculate", json={}, headers=csrf_headers)
+    response = client.post(
+        "/api/cart/calculate", json={}, headers=csrf_headers
+    )
     assert response.status_code == 400
 
 

@@ -8,7 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 def _resolve_secret_key() -> str:
     """
     Retorna la clave secreta desde el entorno o genera un token criptográfico
-    aleatorio en tiempo de ejecución para evitar secretos hardcodeados (Snyk CWE-798).
+    aleatorio en tiempo de ejecución para evitar secretos en código (CWE-798).
     """
     secret = os.getenv("SECRET_KEY")
     if not secret:
@@ -26,7 +26,9 @@ class BaseConfig:
     JSON_AS_ASCII = False
 
     # Parámetros de negocio de la cafetería
-    FREE_SHIPPING_THRESHOLD = float(os.getenv("FREE_SHIPPING_THRESHOLD", 50000.0))
+    FREE_SHIPPING_THRESHOLD = float(
+        os.getenv("FREE_SHIPPING_THRESHOLD", 50000.0)
+    )
     CURRENCY_SYMBOL = os.getenv("CURRENCY_SYMBOL", "$")
 
     def __init__(self):
@@ -46,7 +48,7 @@ class DevelopmentConfig(BaseConfig):
 
 
 class TestingConfig(BaseConfig):
-    """Configuración para el entorno de pruebas automatizadas (SonarQube & Pytest)."""
+    """Configuración para pruebas automatizadas (SonarQube y Pytest)."""
 
     DEBUG = False
     TESTING = True
@@ -67,7 +69,7 @@ class ProductionConfig(BaseConfig):
         # En producción se exige que SECRET_KEY esté explícita en el entorno
         if not os.getenv("SECRET_KEY"):
             raise ValueError(
-                "CRÍTICO: Debes configurar la variable SECRET_KEY en producción."
+                "CRÍTICO: Configura la variable SECRET_KEY en producción."
             )
 
 
