@@ -28,7 +28,14 @@ function setupCart(t, items = []) {
     });
     localStorage.setItem('artisan_cafe_cart', JSON.stringify(items));
     const timers = [];
-    t.mock.method(globalThis, 'setTimeout', callback => { timers.push(callback); return timers.length; });
+    const nativeTimeout = globalThis.setTimeout;
+    t.mock.method(globalThis, 'setTimeout', (callback, delay, ...args) => {
+        if (delay === 3000 || delay === 300) {
+            timers.push(callback);
+            return timers.length;
+        }
+        return nativeTimeout(callback, delay, ...args);
+    });
     const requests = [];
     t.mock.method(globalThis, 'fetch', async (url, options) => {
         requests.push({ url, options });
@@ -185,4 +192,98 @@ test('main initializes modules on pages without hero or radar', async t => {
     assert.match(doc.querySelector('#cart-items-container').textContent, /vacío/);
     doc.querySelector('.js-open-cart').click();
     assert.ok(doc.querySelector('#cart-drawer').classList.contains('active'));
+});
+
+test('cart traps keyboard focus, closes with Escape and restores the trigger', async t => {
+    const { doc } = setupCart(t, [product]);
+    initCartDrawer();
+    const trigger = doc.querySelector('.js-open-cart');
+    trigger.focus();
+    trigger.click();
+    const drawer = doc.querySelector('#cart-drawer');
+    const close = doc.querySelector('#cart-close-btn');
+    const checkout = doc.querySelector('#cart-checkout-btn');
+    assert.equal(doc.activeElement, close);
+    assert.equal(drawer.getAttribute('aria-hidden'), 'false');
+    const increment = doc.querySelector('[data-action="inc"]');
+    increment.focus();
+    increment.click();
+    assert.equal(doc.activeElement, doc.querySelector('[data-action="inc"]'));
+    const remove = doc.querySelector('.cart-del-btn');
+    remove.focus();
+    remove.click();
+    assert.equal(doc.activeElement, close);
+    close.dispatchEvent(new window.KeyboardEvent('keydown', { key: 'Tab', shiftKey: true, bubbles: true, cancelable: true }));
+    assert.equal(doc.activeElement, checkout);
+    checkout.dispatchEvent(new window.KeyboardEvent('keydown', { key: 'Tab', bubbles: true, cancelable: true }));
+    assert.equal(doc.activeElement, close);
+    close.dispatchEvent(new window.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    assert.equal(doc.activeElement, trigger);
+    assert.equal(drawer.getAttribute('aria-hidden'), 'true');
+    assert.ok(drawer.hasAttribute('inert'));
+    await setImmediate();
+});
+
+test('mobile menu exposes expanded state, closes on Escape and link navigation', async t => {
+    const { initNavigation } = await import('../../app/static/js/modules/navigation.js');
+    const doc = setup(t, '<header class="site-header"><button class="menu-toggle" aria-expanded="false">Menú</button><a href="/">Inicio</a></header>');
+    initNavigation();
+    const toggle = doc.querySelector('button');
+    toggle.click();
+    assert.equal(toggle.getAttribute('aria-expanded'), 'true');
+    toggle.dispatchEvent(new window.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    assert.equal(toggle.getAttribute('aria-expanded'), 'false');
+    assert.equal(doc.activeElement, toggle);
+    toggle.click();
+    doc.querySelector('a').click();
+    assert.equal(toggle.getAttribute('aria-expanded'), 'false');
+    toggle.click();
+    toggle.dispatchEvent(new window.FocusEvent('focusout', { relatedTarget: doc.body, bubbles: true }));
+    assert.equal(toggle.getAttribute('aria-expanded'), 'false');
+});
+
+test('scroll story changes chapters and reduced motion restores every chapter', async t => {
+    const { initHomeAnimations } = await import('../../app/static/js/modules/home_animations.js');
+    const doc = setup(t, '<div class="opening"><h1 class="opening-word">Atelier</h1><div class="opening-product"></div></div><section class="coffee-story"><div class="story-chapter">Variedad</div><div class="story-chapter">Altura</div><div class="story-chapter">Proceso</div></section><h2 data-reveal>Origen</h2>');
+    const media = {};
+    window.matchMedia = query => media[query] = { matches: query.includes('min-width'), addEventListener(name, callback) { this.change = callback; }, removeEventListener() {} };
+    let pending;
+    window.requestAnimationFrame = callback => { pending = callback; return 1; };
+    window.cancelAnimationFrame = () => {};
+    let intersection;
+    let disconnected = 0;
+    window.IntersectionObserver = class {
+        constructor(callback) { intersection = callback; }
+        observe() {}
+        unobserve() {}
+        disconnect() { disconnected++; }
+    };
+    const story = doc.querySelector('.coffee-story');
+    let top = 100;
+    story.getBoundingClientRect = () => ({ top, height: window.innerHeight * 3 });
+    doc.querySelector('.opening').getBoundingClientRect = () => ({ top: -100 });
+    const cleanup = initHomeAnimations();
+    pending();
+    const chapters = [...doc.querySelectorAll('.story-chapter')];
+    assert.ok(story.classList.contains('is-pinned'));
+    assert.equal(chapters[0].getAttribute('aria-hidden'), 'false');
+    top = -window.innerHeight;
+    window.dispatchEvent(new window.Event('scroll'));
+    pending();
+    assert.equal(chapters[1].getAttribute('aria-hidden'), 'false');
+    top = -window.innerHeight * 2;
+    window.dispatchEvent(new window.Event('scroll'));
+    pending();
+    assert.equal(chapters[2].getAttribute('aria-hidden'), 'false');
+    intersection([{ isIntersecting: true, target: doc.querySelector('[data-reveal]').parentElement }]);
+    assert.ok(doc.querySelector('[data-reveal]').classList.contains('is-revealed'));
+    const reduced = media['(prefers-reduced-motion: reduce)'];
+    reduced.matches = true;
+    reduced.change();
+    assert.ok(!story.classList.contains('is-pinned'));
+    assert.ok(chapters.every(chapter => !chapter.hasAttribute('aria-hidden')));
+    assert.equal(doc.querySelector('.opening-word').style.translate, '');
+    assert.ok(!doc.querySelector('[data-reveal]').classList.contains('reveal-ready'));
+    cleanup();
+    assert.ok(disconnected > 0);
 });

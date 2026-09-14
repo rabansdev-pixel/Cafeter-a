@@ -1,0 +1,39 @@
+<svg id="sensory-radar-svg" class="radar-svg" viewBox="0 0 380 380" role="img" aria-label="Intensidad de acidez, dulzura, aroma, cuerpo y tueste">
+                    <defs>
+                        <radialGradient id="radarFill" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" stop-color="rgba(212, 154, 61, 0.45)"/>
+                            <stop offset="100%" stop-color="rgba(212, 154, 61, 0.1)"/>
+                        </radialGradient>
+                    </defs>
+
+                    <!-- Anillos concéntricos de escala (2, 4, 6, 8, 10) -->
+                    <circle cx="190" cy="190" r="26" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+                    <circle cx="190" cy="190" r="52" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+                    <circle cx="190" cy="190" r="78" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                    <circle cx="190" cy="190" r="104" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+                    <circle cx="190" cy="190" r="130" fill="none" stroke="rgba(212, 154, 61, 0.25)" stroke-width="1.5"/>
+
+                    <!-- Radios hacia los 5 ejes -->
+                    <line x1="190" y1="190" x2="190" y2="60" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+                    <line x1="190" y1="190" x2="313" y2="150" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+                    <line x1="190" y1="190" x2="266" y2="295" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+                    <line x1="190" y1="190" x2="113" y2="295" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+                    <line x1="190" y1="190" x2="66" y2="150" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+
+                    <!-- Etiquetas de Ejes -->
+                    <text x="190" y="45" font-family="'Plus Jakarta Sans', sans-serif" font-size="11" font-weight="700" fill="#fcf9f2" text-anchor="middle">ACIDEZ</text>
+                    <text x="330" y="152" font-family="'Plus Jakarta Sans', sans-serif" font-size="11" font-weight="700" fill="#fcf9f2" text-anchor="start">DULZURA</text>
+                    <text x="280" y="315" font-family="'Plus Jakarta Sans', sans-serif" font-size="11" font-weight="700" fill="#fcf9f2" text-anchor="start">AROMA</text>
+                    <text x="100" y="315" font-family="'Plus Jakarta Sans', sans-serif" font-size="11" font-weight="700" fill="#fcf9f2" text-anchor="end">CUERPO</text>
+                    <text x="50" y="152" font-family="'Plus Jakarta Sans', sans-serif" font-size="11" font-weight="700" fill="#fcf9f2" text-anchor="end">TUESTE</text>
+
+                    <!-- Polígono Dinámico del Perfil -->
+                    <polygon id="radar-polygon" points="190,70 290,150 250,270 130,270 90,150" fill="url(#radarFill)" stroke="#d49a3d" stroke-width="2.5" style="transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);"/>
+
+                    <!-- Vértices del polígono -->
+                    <circle id="radar-dot-acidity" cx="190" cy="70" r="4" fill="#fcf9f2" stroke="#d49a3d" stroke-width="2" style="transition: all 0.5s ease;"/>
+                    <circle id="radar-dot-sweetness" cx="290" cy="150" r="4" fill="#fcf9f2" stroke="#d49a3d" stroke-width="2" style="transition: all 0.5s ease;"/>
+                    <circle id="radar-dot-aroma" cx="250" cy="270" r="4" fill="#fcf9f2" stroke="#d49a3d" stroke-width="2" style="transition: all 0.5s ease;"/>
+                    <circle id="radar-dot-body" cx="130" cy="270" r="4" fill="#fcf9f2" stroke="#d49a3d" stroke-width="2" style="transition: all 0.5s ease;"/>
+                    <circle id="radar-dot-roast" cx="90" cy="150" r="4" fill="#fcf9f2" stroke="#d49a3d" stroke-width="2" style="transition: all 0.5s ease;"/>
+                </svg>

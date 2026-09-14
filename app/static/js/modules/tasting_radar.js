@@ -89,8 +89,12 @@ export function initTastingRadar() {
     // Attach listeners to tabs
     tabs.forEach(tab => {
         tab.addEventListener('click', async () => {
-            tabs.forEach(t => t.classList.remove('active'));
+            tabs.forEach(t => {
+                t.classList.remove('active');
+                t.setAttribute('aria-pressed', 'false');
+            });
             tab.classList.add('active');
+            tab.setAttribute('aria-pressed', 'true');
 
             const productId = tab.dataset.productId;
             const altitude = tab.dataset.altitude;

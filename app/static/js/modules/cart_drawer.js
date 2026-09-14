@@ -78,6 +78,7 @@ function createCartItemNode(item) {
     decBtn.style.borderRadius = '4px';
     decBtn.style.cursor = 'pointer';
     decBtn.textContent = '-';
+    decBtn.setAttribute('aria-label', `Reducir cantidad de ${item.name}`);
 
     const qtySpan = document.createElement('span');
     qtySpan.style.fontWeight = '700';
@@ -96,6 +97,7 @@ function createCartItemNode(item) {
     incBtn.style.borderRadius = '4px';
     incBtn.style.cursor = 'pointer';
     incBtn.textContent = '+';
+    incBtn.setAttribute('aria-label', `Aumentar cantidad de ${item.name}`);
 
     const delBtn = document.createElement('button');
     delBtn.className = 'cart-del-btn';
@@ -106,6 +108,7 @@ function createCartItemNode(item) {
     delBtn.style.cursor = 'pointer';
     delBtn.style.marginLeft = '0.35rem';
     delBtn.textContent = '✕';
+    delBtn.setAttribute('aria-label', `Eliminar ${item.name} del carrito`);
 
     rightDiv.appendChild(decBtn);
     rightDiv.appendChild(qtySpan);
@@ -131,6 +134,7 @@ export function initCartDrawer() {
     const shippingStatusText = document.getElementById('shipping-status-text');
 
     let cart = JSON.parse(localStorage.getItem('artisan_cafe_cart') || '[]');
+    let returnFocus;
 
     function saveCart() {
         localStorage.setItem('artisan_cafe_cart', JSON.stringify(cart));
@@ -138,8 +142,12 @@ export function initCartDrawer() {
 
     function openDrawer() {
         if (drawer && overlay) {
+            if (!drawer.classList.contains('active')) returnFocus = document.activeElement;
+            drawer.removeAttribute('inert');
+            drawer.setAttribute('aria-hidden', 'false');
             drawer.classList.add('active');
             overlay.classList.add('active');
+            closeBtn?.focus();
         }
     }
 
@@ -147,6 +155,23 @@ export function initCartDrawer() {
         if (drawer && overlay) {
             drawer.classList.remove('active');
             overlay.classList.remove('active');
+            if (drawer.contains(document.activeElement)) returnFocus?.focus();
+            drawer.setAttribute('aria-hidden', 'true');
+            drawer.setAttribute('inert', '');
+        }
+    }
+
+    function replaceCartItems(...nodes) {
+        const active = document.activeElement;
+        const restoreFocus = itemsList.contains(active);
+        itemsList.replaceChildren(...nodes);
+        if (restoreFocus) {
+            const replacement = [...itemsList.querySelectorAll('button')].find(button =>
+                button.dataset.id === active.dataset.id &&
+                button.dataset.action === active.dataset.action &&
+                button.className === active.className
+            );
+            (replacement || closeBtn)?.focus();
         }
     }
 
@@ -161,7 +186,7 @@ export function initCartDrawer() {
 
         if (cart.length === 0) {
             if (itemsList) {
-                itemsList.replaceChildren(createEmptyCartNode());
+                replaceCartItems(createEmptyCartNode());
             }
             if (subtotalEl) subtotalEl.textContent = '$0';
             if (shippingEl) shippingEl.textContent = '$0';
@@ -176,7 +201,7 @@ export function initCartDrawer() {
         // Renderizar items de forma segura con nodos DOM (Cero innerHTML)
         if (itemsList) {
             const itemNodes = cart.map(createCartItemNode);
-            itemsList.replaceChildren(...itemNodes);
+            replaceCartItems(...itemNodes);
         }
 
         // Llamar API de Flask para cálculo seguro de totales
@@ -232,6 +257,20 @@ export function initCartDrawer() {
     openBtns.forEach(btn => btn.addEventListener('click', openDrawer));
     if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
     if (overlay) overlay.addEventListener('click', closeDrawer);
+    drawer?.addEventListener('keydown', event => {
+        if (event.key === 'Escape') closeDrawer();
+        if (event.key !== 'Tab') return;
+        const controls = [...drawer.querySelectorAll('button, a[href]')].filter(control => !control.disabled);
+        const first = controls[0];
+        const last = controls.at(-1);
+        if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault();
+            last?.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault();
+            first?.focus();
+        }
+    });
 
     // Quantity / delete delegation
     if (itemsList) {
@@ -281,6 +320,8 @@ export function initCartDrawer() {
         const toastContainer = document.querySelector('.toast-container') || (() => {
             const el = document.createElement('div');
             el.className = 'toast-container';
+            el.setAttribute('role', 'status');
+            el.setAttribute('aria-live', 'polite');
             document.body.appendChild(el);
             return el;
         })();

@@ -8,6 +8,7 @@ export function initHeroProduct() {
     const backdrop = document.querySelector('.hero-visual-backdrop');
 
     if (!stage || !coffeeBag) return;
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
 
     let bounds = stage.getBoundingClientRect();
 
