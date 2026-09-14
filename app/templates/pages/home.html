@@ -1,0 +1,312 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Atelier Café | Granos de Especialidad & Microlotes Exclusivos{% endblock %}
+
+{% block content %}
+<!-- ==============================================================================
+     HERO SECTION: EL PRODUCTO COMO PROTAGONISTA ABSOLUTO
+     ============================================================================== -->
+<section class="hero-section">
+    <div class="container">
+        <div class="hero-grid">
+            <!-- Columna de Texto & Metadatos del Café -->
+            <div>
+                <div class="hero-badge">
+                    <span style="display: inline-block; width: 8px; height: 8px; background: var(--color-accent-gold); border-radius: 50%;"></span>
+                    Cosecha Exclusiva 2026 • Microlote Privado
+                </div>
+                
+                <h1 class="hero-title">
+                    El café no se bebe,<br>
+                    <span class="text-gradient">se descubre.</span>
+                </h1>
+
+                <p class="hero-subtitle">
+                    {{ hero_product.tagline if hero_product else 'Microlotes de altura recolectados en el punto exacto de maduración con fermentaciones experimentales únicas.' }}
+                </p>
+
+                <!-- Ficha Rápida del Café Insignia -->
+                {% if hero_product and hero_product.origin %}
+                <div class="hero-meta-row">
+                    <div class="hero-meta-item">
+                        <small>Terroir & Origen</small>
+                        <strong>{{ hero_product.origin.country }}</strong>
+                    </div>
+                    <div class="hero-meta-item">
+                        <small>Altitud</small>
+                        <strong>{{ hero_product.origin.altitude_meters }} msnm</strong>
+                    </div>
+                    <div class="hero-meta-item">
+                        <small>Proceso</small>
+                        <strong>{{ hero_product.origin.process }}</strong>
+                    </div>
+                    <div class="hero-meta-item">
+                        <small>Puntaje SCA</small>
+                        <strong class="text-gold">92.5 pts</strong>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Llamados a la Acción -->
+                <div class="hero-cta-group">
+                    {% if hero_product %}
+                    <button 
+                        class="btn btn-primary js-add-to-cart"
+                        data-id="{{ hero_product.id }}"
+                        data-name="{{ hero_product.name }}"
+                        data-price="{{ hero_product.price }}"
+                        data-image="{{ hero_product.image_url }}">
+                        <span>Ordenar Lote • {{ hero_product.to_dict().formatted_price }}</span>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </button>
+                    <a href="{{ url_for('catalog.product_detail', slug=hero_product.slug) }}" class="btn btn-glass">
+                        Ver Ficha Sensorial
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Columna Visual: Producto Flotante con Inclinación 3D -->
+            <div class="hero-visual-wrapper">
+                <div class="hero-visual-backdrop"></div>
+                
+                <div class="hero-product-stage">
+                    <div class="steam-effect"></div>
+                    {% if hero_product %}
+                    <img 
+                        src="{{ hero_product.image_url }}" 
+                        alt="{{ hero_product.name }}" 
+                        class="hero-coffee-bag animate-float"
+                        id="hero-coffee-bag">
+                    {% endif %}
+                </div>
+
+                <!-- Chips Flotantes de Atributos -->
+                <div class="floating-chip floating-chip-1">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="font-size: 1.2rem;">🌸</span>
+                        <div>
+                            <div style="font-size: 0.75rem; color: var(--color-text-muted); text-transform: uppercase;">Notas Principales</div>
+                            <strong style="font-size: 0.88rem; color: var(--color-accent-gold-light);">Jazmín & Bergamota</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="floating-chip floating-chip-2">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="font-size: 1.2rem;">⛰️</span>
+                        <div>
+                            <div style="font-size: 0.75rem; color: var(--color-text-muted); text-transform: uppercase;">San Agustín, Huila</div>
+                            <strong style="font-size: 0.88rem;">1.950 Metros</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==============================================================================
+     BENTO GRID: LA EXPERIENCIA DEL CAFÉ DE ESPECIALIDAD
+     ============================================================================== -->
+<section class="bento-section">
+    <div class="container">
+        <div class="section-header">
+            <span class="tag">Curaduría Artesanal</span>
+            <h2>El Estándar de la Alta Cafetería</h2>
+            <p>Cada grano es seleccionado rigurosamente bajo los estándares de la Specialty Coffee Association (SCA).</p>
+        </div>
+
+        <div class="bento-grid">
+            <!-- Tarjeta Grande: Geisha & Fermentación -->
+            <div class="bento-card bento-col-8" style="background: linear-gradient(135deg, rgba(23, 19, 16, 0.9) 0%, rgba(42, 33, 27, 0.6) 100%);">
+                <div style="max-width: 520px; z-index: 2;">
+                    <span style="font-size: 0.8rem; color: var(--color-accent-gold); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; display: block; margin-bottom: 0.5rem;">Microlotes Excepcionales</span>
+                    <h3 style="font-size: 2rem; margin-bottom: 1rem;">Fermentaciones Controladas de 48 Horas</h3>
+                    <p style="color: var(--color-text-secondary); margin-bottom: 1.5rem; font-size: 0.95rem;">
+                        Nuestros caficultores aliados emplean maceración carbónica y procesos anaeróbicos en cereza entera. El resultado: una complejidad de taza con acidez cítrica luminosa y notas florales que desafían lo convencional.
+                    </p>
+                    <a href="{{ url_for('main.origins') }}" class="btn btn-glass" style="font-size: 0.85rem; padding: 0.6rem 1.25rem;">Conocer los Terroirs →</a>
+                </div>
+                <div style="position: absolute; right: -20px; bottom: -20px; opacity: 0.15; font-family: var(--font-heading); font-size: 11rem; line-height: 1; pointer-events: none; color: var(--color-accent-gold);">
+                    92+
+                </div>
+            </div>
+
+            <!-- Tarjeta Mediana: Tueste a Medida -->
+            <div class="bento-card bento-col-4">
+                <div>
+                    <span style="font-size: 0.8rem; color: var(--color-accent-gold); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; display: block; margin-bottom: 0.5rem;">Tostado Nórdico</span>
+                    <h3 style="margin-bottom: 0.75rem;">Curva de Tueste Claro</h3>
+                    <p style="font-size: 0.9rem; color: var(--color-text-muted);">
+                        Preservamos los ácidos clorogénicos y azúcares intrínsecos de la cereza sin sobrecalentar el grano. Cero notas a quemado, 100% fruta viva.
+                    </p>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 1.5rem; font-size: 0.85rem; color: var(--color-accent-gold-light);">
+                    <span>🔥 Tostado semanal</span>
+                    <span>•</span>
+                    <span>Fecha impresa en bolsa</span>
+                </div>
+            </div>
+
+            <!-- Tarjeta 3: Métodos de Filtrado -->
+            <div class="bento-card bento-col-4">
+                <div>
+                    <span style="font-size: 0.8rem; color: var(--color-accent-gold); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; display: block; margin-bottom: 0.5rem;">En Barra o en Casa</span>
+                    <h3 style="margin-bottom: 0.75rem;">Optimizado para V60 y Chemex</h3>
+                    <p style="font-size: 0.9rem; color: var(--color-text-muted);">
+                        Molienda sugerida y recetas de ratio de extracción (1:16) para que logres una taza limpia y brillante en cada preparación.
+                    </p>
+                </div>
+                <a href="{{ url_for('main.methods') }}" style="color: var(--color-accent-gold); font-weight: 600; font-size: 0.85rem; margin-top: 1.25rem; display: inline-block;">
+                    Ver Guía de Ratios →
+                </a>
+            </div>
+
+            <!-- Tarjeta 4: Comercio Directo -->
+            <div class="bento-card bento-col-8" style="background: linear-gradient(135deg, rgba(34, 28, 23, 0.7) 0%, rgba(23, 19, 16, 0.9) 100%);">
+                <div>
+                    <span style="font-size: 0.8rem; color: var(--color-accent-gold); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; display: block; margin-bottom: 0.5rem;">Impacto Sostenible</span>
+                    <h3 style="margin-bottom: 0.75rem;">Pagos 300% Por Encima del Precio de Bolsa</h3>
+                    <p style="font-size: 0.92rem; color: var(--color-text-secondary); max-width: 620px;">
+                        Trabajamos directamente con las familias campesinas de Huila, Quindío y las cooperativas de Yirgacheffe, reconociendo el verdadero valor del café especial y fomentando la biodiversidad agrícola en las fincas.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==============================================================================
+     RADAR SENSORIAL INTERACTIVO (EL PRODUCTO EN DETALLE)
+     ============================================================================== -->
+<section class="radar-section">
+    <div class="container">
+        <div class="section-header">
+            <span class="tag">Análisis Sensorial en Tiempo Real</span>
+            <h2>Perfil de Cata de Nuestros Granos</h2>
+            <p>Selecciona un café para explorar su huella sensorial interactiva calibrada por baristas certificados.</p>
+        </div>
+
+        <div class="radar-container">
+            <!-- Visualizador Gráfico SVG -->
+            <div class="radar-visual-box">
+                <svg id="sensory-radar-svg" class="radar-svg" viewBox="0 0 380 380">
+                    <defs>
+                        <radialGradient id="radarFill" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" stop-color="rgba(212, 154, 61, 0.45)"/>
+                            <stop offset="100%" stop-color="rgba(212, 154, 61, 0.1)"/>
+                        </radialGradient>
+                    </defs>
+
+                    <!-- Anillos concéntricos de escala (2, 4, 6, 8, 10) -->
+                    <circle cx="190" cy="190" r="26" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+                    <circle cx="190" cy="190" r="52" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+                    <circle cx="190" cy="190" r="78" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                    <circle cx="190" cy="190" r="104" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+                    <circle cx="190" cy="190" r="130" fill="none" stroke="rgba(212, 154, 61, 0.25)" stroke-width="1.5"/>
+
+                    <!-- Radios hacia los 5 ejes -->
+                    <line x1="190" y1="190" x2="190" y2="60" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+                    <line x1="190" y1="190" x2="313" y2="150" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+                    <line x1="190" y1="190" x2="266" y2="295" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+                    <line x1="190" y1="190" x2="113" y2="295" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+                    <line x1="190" y1="190" x2="66" y2="150" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+
+                    <!-- Etiquetas de Ejes -->
+                    <text x="190" y="45" font-family="'Plus Jakarta Sans', sans-serif" font-size="11" font-weight="700" fill="#fcf9f2" text-anchor="middle">ACIDEZ</text>
+                    <text x="330" y="152" font-family="'Plus Jakarta Sans', sans-serif" font-size="11" font-weight="700" fill="#fcf9f2" text-anchor="start">DULZURA</text>
+                    <text x="280" y="315" font-family="'Plus Jakarta Sans', sans-serif" font-size="11" font-weight="700" fill="#fcf9f2" text-anchor="start">AROMA</text>
+                    <text x="100" y="315" font-family="'Plus Jakarta Sans', sans-serif" font-size="11" font-weight="700" fill="#fcf9f2" text-anchor="end">CUERPO</text>
+                    <text x="50" y="152" font-family="'Plus Jakarta Sans', sans-serif" font-size="11" font-weight="700" fill="#fcf9f2" text-anchor="end">TUESTE</text>
+
+                    <!-- Polígono Dinámico del Perfil -->
+                    <polygon id="radar-polygon" points="190,70 290,150 250,270 130,270 90,150" fill="url(#radarFill)" stroke="#d49a3d" stroke-width="2.5" style="transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);"/>
+
+                    <!-- Vértices del polígono -->
+                    <circle id="radar-dot-acidity" cx="190" cy="70" r="4" fill="#fcf9f2" stroke="#d49a3d" stroke-width="2" style="transition: all 0.5s ease;"/>
+                    <circle id="radar-dot-sweetness" cx="290" cy="150" r="4" fill="#fcf9f2" stroke="#d49a3d" stroke-width="2" style="transition: all 0.5s ease;"/>
+                    <circle id="radar-dot-aroma" cx="250" cy="270" r="4" fill="#fcf9f2" stroke="#d49a3d" stroke-width="2" style="transition: all 0.5s ease;"/>
+                    <circle id="radar-dot-body" cx="130" cy="270" r="4" fill="#fcf9f2" stroke="#d49a3d" stroke-width="2" style="transition: all 0.5s ease;"/>
+                    <circle id="radar-dot-roast" cx="90" cy="150" r="4" fill="#fcf9f2" stroke="#d49a3d" stroke-width="2" style="transition: all 0.5s ease;"/>
+                </svg>
+            </div>
+
+            <!-- Panel de Control y Selector de Cafés -->
+            <div>
+                <h3 style="margin-bottom: 1rem;">Selecciona el Café a Degustar</h3>
+                
+                <div class="radar-nav-tabs">
+                    {% for p in all_products %}
+                    <button 
+                        class="radar-tab-btn {% if loop.first %}active{% endif %}"
+                        data-product-id="{{ p.id }}"
+                        data-altitude="{{ p.origin.altitude_meters }} msnm"
+                        data-process="{{ p.origin.process }}">
+                        {{ p.name.split(' ')[0] }}
+                    </button>
+                    {% endfor %}
+                </div>
+
+                <div style="background: var(--color-bg-surface-elevated); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.06); margin-bottom: 1.75rem;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem;">
+                        <div>
+                            <small style="color: var(--color-text-muted); display: block; font-size: 0.8rem;">NIVEL DE TUESTE</small>
+                            <strong id="radar-roast-val" style="font-size: 1.1rem; color: var(--color-accent-gold-light);">Claro</strong>
+                        </div>
+                        <div>
+                            <small style="color: var(--color-text-muted); display: block; font-size: 0.8rem;">ALTITUD DE FINCA</small>
+                            <strong id="radar-altitude-val" style="font-size: 1.1rem;">1.950 msnm</strong>
+                        </div>
+                        <div>
+                            <small style="color: var(--color-text-muted); display: block; font-size: 0.8rem;">MÉTODO DE BENEFICIO</small>
+                            <strong id="radar-process-val" style="font-size: 1.1rem;">Anaeróbico Natural</strong>
+                        </div>
+                        <div>
+                            <small style="color: var(--color-text-muted); display: block; font-size: 0.8rem;">RECOMENDADO PARA</small>
+                            <strong style="font-size: 1.1rem;">V60 / Kalita / Aeropress</strong>
+                        </div>
+                    </div>
+
+                    <div>
+                        <small style="color: var(--color-text-muted); display: block; font-size: 0.8rem; margin-bottom: 0.5rem;">NOTAS SENSORIALES DECLARADAS</small>
+                        <div id="radar-notes-list" style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                            <!-- Dinámico -->
+                        </div>
+                    </div>
+                </div>
+
+                <p style="font-size: 0.85rem; color: var(--color-text-muted);">
+                    💡 El radar compara la intensidad percibida en una cata a ciegas estandarizada bajo protocolo internacional SCA.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==============================================================================
+     COLECCIÓN COMPLETA DE MICROLOTES
+     ============================================================================== -->
+<section style="padding: 6rem 0;">
+    <div class="container">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem; flex-wrap: wrap; gap: 1.5rem;">
+            <div>
+                <span class="tag" style="color: var(--color-accent-gold); text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.85rem; font-weight: 700; display: block; margin-bottom: 0.5rem;">Ediciones Numeradas</span>
+                <h2>Colección Disponible en Grano</h2>
+            </div>
+            <a href="{{ url_for('catalog.catalog') }}" class="btn btn-glass" style="font-size: 0.9rem;">
+                Ver Todos los Granos →
+            </a>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem;">
+            {% for product in all_products %}
+                {% include 'components/product_card.html' %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

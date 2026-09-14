@@ -1,0 +1,24 @@
+# Exclusiones de Docker Context
+.git
+.gitignore
+.env
+.venv
+venv/
+ENV/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+.scannerwork/
+.sonar/
+dist/
+build/
+*.egg-info/
+docker-compose*.yml
+README.md
+LICENSE
+tests/
