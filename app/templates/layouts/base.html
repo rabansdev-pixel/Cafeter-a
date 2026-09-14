@@ -19,57 +19,23 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/animations.css') }}">
 
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/site.css') }}">
     {% block extra_head %}{% endblock %}
 </head>
-<body>
+<body class="{% block body_class %}{% endblock %}">
+    <a class="skip-link" href="#main-content">Saltar al contenido</a>
     <!-- Navbar Flotante -->
     {% include 'components/navbar.html' %}
 
     <!-- Contenido Principal -->
-    <main>
+    <main id="main-content" tabindex="-1">
         {% block content %}{% endblock %}
     </main>
 
     <!-- Drawer Lateral de Carrito -->
     {% include 'components/cart_drawer.html' %}
 
-    <!-- Footer Editorial -->
-    <footer style="border-top: 1px solid var(--glass-border); padding: 5rem 0 3rem 0; margin-top: 6rem; background: var(--color-bg-surface);">
-        <div class="container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 3rem; margin-bottom: 3.5rem;">
-            <div>
-                <div class="nav-brand" style="margin-bottom: 1.25rem;">
-                    ATELIER <span>CAFÉ</span>
-                </div>
-                <p style="font-size: 0.95rem; color: var(--color-text-muted);">
-                    Curaduría rigurosa de microlotes cultivados por encima de los 1.800 metros. Tostado artesanal en pequeños baches para preservar la expresión pura del terroir.
-                </p>
-            </div>
-            <div>
-                <h4 style="font-family: var(--font-body); font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-accent-gold); margin-bottom: 1.25rem;">Navegación</h4>
-                <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.65rem;">
-                    <li><a href="{{ url_for('main.home') }}" style="color: var(--color-text-secondary); font-size: 0.9rem;">Inicio</a></li>
-                    <li><a href="{{ url_for('catalog.catalog') }}" style="color: var(--color-text-secondary); font-size: 0.9rem;">Colección de Café</a></li>
-                    <li><a href="{{ url_for('main.origins') }}" style="color: var(--color-text-secondary); font-size: 0.9rem;">Terroirs & Orígenes</a></li>
-                    <li><a href="{{ url_for('main.methods') }}" style="color: var(--color-text-secondary); font-size: 0.9rem;">Guía de Extracción</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 style="font-family: var(--font-body); font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-accent-gold); margin-bottom: 1.25rem;">Compromiso</h4>
-                <p style="font-size: 0.9rem; color: var(--color-text-muted); margin-bottom: 0.5rem;">Comercio directo y transparente con caficultores locales.</p>
-                <p style="font-size: 0.9rem; color: var(--color-text-muted);">100% Granos Arábica de Especialidad (Puntaje SCA +86).</p>
-            </div>
-        </div>
-        <div class="container" style="border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; font-size: 0.85rem; color: var(--color-text-muted);">
-            <div>© 2026 Atelier Café de Especialidad. Calidad certificada.</div>
-            <div style="display: flex; gap: 1.5rem;">
-                <span class="text-gold">Flask Core Architecture</span>
-                <span>•</span>
-                <span>Docker Ready</span>
-                <span>•</span>
-                <span>SonarQube & Snyk Monitored</span>
-            </div>
-        </div>
-    </footer>
+    {% include 'components/footer.html' %}
 
     <!-- Scripts Modulares ES -->
     <script type="module" src="{{ url_for('static', filename='js/main.js') }}"></script>

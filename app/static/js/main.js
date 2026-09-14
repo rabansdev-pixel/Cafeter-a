@@ -1,6 +1,8 @@
 import { initHeroProduct } from './modules/hero_product.js';
 import { initTastingRadar } from './modules/tasting_radar.js';
 import { initCartDrawer } from './modules/cart_drawer.js';
+import { initHomeAnimations } from './modules/home_animations.js';
+import { initNavigation } from './modules/navigation.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log('☕ Cafetería de Especialidad Atelier iniciada');
@@ -9,4 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initHeroProduct();
     initTastingRadar();
     initCartDrawer();
+    initNavigation();
+    initHomeAnimations();
 });
