@@ -226,3 +226,6 @@ __marimo__/
 .scannerwork/
 .sonar/
 .snyk-cache/
+node_modules/
+coverage-js/
+test-report.xml

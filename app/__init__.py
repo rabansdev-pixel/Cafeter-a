@@ -1,9 +1,10 @@
 import os
-from flask import Flask, render_template
+from flask import Flask, jsonify, render_template, request
+from flask_wtf.csrf import CSRFError
 from dotenv import load_dotenv
 
 from app.core.config import config_by_name
-from app.core.extensions import db, ma
+from app.core.extensions import csrf, db, ma
 from app.core.security import setup_security_headers
 from app.controllers import main_bp, catalog_bp, products_api_bp, cart_api_bp, health_bp
 
@@ -25,11 +26,12 @@ def create_app(env_name=None):
         static_folder=config_class.STATIC_FOLDER,
         template_folder=config_class.TEMPLATES_FOLDER,
     )
-    app.config.from_object(config_class)
+    app.config.from_object(config_class())
 
     # Inicializar extensiones
     db.init_app(app)
     ma.init_app(app)
+    csrf.init_app(app)
 
     # Configurar cabeceras de seguridad (SonarQube & Snyk)
     setup_security_headers(app)
@@ -42,6 +44,18 @@ def create_app(env_name=None):
     app.register_blueprint(health_bp)
 
     # Manejadores de errores personalizados
+    @app.errorhandler(CSRFError)
+    def csrf_error(error):
+        if request.path.startswith("/api/"):
+            return (
+                jsonify(
+                    status="error",
+                    message="Sesión de formulario inválida. Recarga la página.",
+                ),
+                400,
+            )
+        return error.get_response()
+
     @app.errorhandler(404)
     def not_found_error(error):
         return render_template("pages/404.html"), 404

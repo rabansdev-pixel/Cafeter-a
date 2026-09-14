@@ -183,10 +183,17 @@ export function initCartDrawer() {
         try {
             const res = await fetch('/api/cart/calculate', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').content
+                },
                 body: JSON.stringify({ items: cart })
             });
             const result = await res.json();
+            if (!res.ok) {
+                showToast(result.message || 'No se pudo calcular el carrito. Inténtalo de nuevo.');
+                return;
+            }
             if (result.status === 'success') {
                 const data = result.data;
                 if (subtotalEl) subtotalEl.textContent = String(data.formatted_subtotal);
@@ -230,7 +237,7 @@ export function initCartDrawer() {
     if (itemsList) {
         itemsList.addEventListener('click', (e) => {
             const target = e.target;
-            const itemId = parseInt(target.dataset.id, 10);
+            const itemId = Number.parseInt(target.dataset.id, 10);
             if (!itemId) return;
 
             if (target.classList.contains('cart-qty-btn')) {
@@ -252,9 +259,9 @@ export function initCartDrawer() {
         const btn = e.target.closest('.js-add-to-cart');
         if (!btn) return;
 
-        const id = parseInt(btn.dataset.id, 10);
+        const id = Number.parseInt(btn.dataset.id, 10);
         const name = btn.dataset.name;
-        const price = parseFloat(btn.dataset.price);
+        const price = Number.parseFloat(btn.dataset.price);
         const image_url = btn.dataset.image;
 
         const existing = cart.find(i => i.id === id);

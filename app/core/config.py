@@ -29,6 +29,10 @@ class BaseConfig:
     FREE_SHIPPING_THRESHOLD = float(os.getenv("FREE_SHIPPING_THRESHOLD", 50000.0))
     CURRENCY_SYMBOL = os.getenv("CURRENCY_SYMBOL", "$")
 
+    def __init__(self):
+        # Leer después de .env; los workers comparten la clave configurada.
+        self.SECRET_KEY = _resolve_secret_key()
+
 
 class DevelopmentConfig(BaseConfig):
     """Configuración para el entorno de desarrollo."""
@@ -48,7 +52,6 @@ class TestingConfig(BaseConfig):
     TESTING = True
     ENV = "testing"
     SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
-    WTF_CSRF_ENABLED = False
 
 
 class ProductionConfig(BaseConfig):

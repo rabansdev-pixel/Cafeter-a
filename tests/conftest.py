@@ -1,3 +1,5 @@
+import re
+
 import pytest
 from app import create_app
 from app.core.extensions import db
@@ -13,7 +15,8 @@ def app():
         db.create_all()
         # Sembrar datos iniciales de prueba
         ProductService().seed_initial_data()
-        yield test_app
+    yield test_app
+    with test_app.app_context():
         db.drop_all()
 
 
@@ -21,6 +24,13 @@ def app():
 def client(app):
     """Cliente HTTP para pruebas de endpoints y vistas."""
     return app.test_client()
+
+
+@pytest.fixture
+def csrf_headers(client):
+    page = client.get("/").get_data(as_text=True)
+    token = re.search(r'name="csrf-token" content="([^"]+)"', page).group(1)
+    return {"X-CSRFToken": token}
 
 
 @pytest.fixture(scope="function")

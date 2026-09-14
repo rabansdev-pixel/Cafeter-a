@@ -54,6 +54,14 @@ jobs:
         run: >-
           python -m pytest tests/ --cov=app --cov-report=term-missing
           --cov-report=xml:coverage.xml --junitxml=test-report.xml
+      - uses: actions/setup-node@v7.0.0
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Install frontend test tools
+        run: npm ci
+      - name: Test frontend with coverage
+        run: npm run test:coverage
       - name: Sonar scan
         uses: SonarSource/sonarqube-scan-action@v8.2.1
         env:
