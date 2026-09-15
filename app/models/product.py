@@ -29,6 +29,15 @@ class Product(db.Model):
         db.Integer, db.ForeignKey("tasting_profiles.id"), nullable=False
     )
 
+    @property
+    def display_image_url(self):
+        """Resolve legacy illustration URLs without changing stored records."""
+        known = ('geisha-huila', 'yirgacheffe', 'borbon-rosado', 'kenia-nyeri')
+        for name in known:
+            if self.image_url == f"/static/img/products/{name}.svg":
+                return f"/static/img/products/{name}.webp"
+        return self.image_url
+
     def to_dict(self):
         return {
             "id": self.id,
@@ -40,7 +49,7 @@ class Product(db.Model):
             "formatted_price": f"${self.price:,.0f}".replace(",", "."),
             "stock": self.stock,
             "weight_grams": self.weight_grams,
-            "image_url": self.image_url,
+            "image_url": self.display_image_url,
             "is_featured": self.is_featured,
             "origin": self.origin.to_dict() if self.origin else None,
             "tasting": (

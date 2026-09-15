@@ -314,3 +314,11 @@ test('opening holds the product while brand gives way to one fact at a time', as
     assert.ok(!opening.classList.contains('is-pinned'));
     stop();
 });
+
+test('persisted cart upgrades legacy product illustrations to model renders', t => {
+    const old = { ...product, image_url: '/static/img/products/geisha-huila.svg' };
+    const { doc } = setupCart(t, [old]);
+    initCartDrawer();
+    assert.equal(doc.querySelector('.cart-item img').getAttribute('src'), '/static/img/products/geisha-huila.webp');
+    assert.match(doc.querySelector('.cart-item').textContent, /25\.000,5/);
+});

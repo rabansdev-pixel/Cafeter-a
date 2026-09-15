@@ -38,7 +38,9 @@ function createCartItemNode(item) {
     leftDiv.style.alignItems = 'center';
 
     const img = document.createElement('img');
-    img.src = String(item.image_url || '');
+    img.src = String(item.image_url || '').replace(
+        /^(\/static\/img\/products\/(?:geisha-huila|yirgacheffe|borbon-rosado|kenia-nyeri))\.svg$/, '$1.webp'
+    );
     img.alt = String(item.name || '');
     img.style.width = '48px';
     img.style.height = '48px';

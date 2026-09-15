@@ -1,4 +1,6 @@
 {% extends 'layouts/base.html' %}
+{% from 'components/model_scene.html' import product_scene %}
+{% block body_class %}product-detail-page{% endblock %}
 
 {% block title %}{{ product.name }} | Ficha Técnica ZERO-DAY COFFEE{% endblock %}
 {% block meta_description %}{{ product.tagline }} - Cultivado a {{ product.origin.altitude_meters }} msnm.{% endblock %}
@@ -19,11 +21,7 @@
                 <span class="roast-pill" style="position: static; display: inline-block; margin-bottom: 1.5rem;">
                     Tueste {{ product.tasting_profile.roast_level if product.tasting_profile else 'Especial' }}
                 </span>
-                <img 
-                    src="{{ product.image_url }}" 
-                    alt="{{ product.name }}" 
-                    style="max-width: 320px; width: 100%; height: auto; filter: drop-shadow(0 20px 30px rgba(0,0,0,0.85));"
-                    class="animate-float">
+                {{ product_scene(product, 'detail-model', true) }}
                 <div style="margin-top: 2rem; color: var(--color-text-muted); font-size: 0.85rem;">
                     📦 Presentación: Bolsa de 340g con cierre hermético y válvula de desgasificación.
                 </div>
@@ -50,7 +48,7 @@
                         data-id="{{ product.id }}"
                         data-name="{{ product.name }}"
                         data-price="{{ product.price }}"
-                        data-image="{{ product.image_url }}"
+                        data-image="{{ product.display_image_url }}"
                         style="flex: 1; padding: 1rem 1.75rem;">
                         + Agregar al Carrito
                     </button>

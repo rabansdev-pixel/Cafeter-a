@@ -1,0 +1,13 @@
+{% macro scene(asset, alt, class_name='', brand=false, variety='', origin='', critical=false) -%}
+<div class="model-scene {{ class_name }}" data-model="{{ url_for('static', filename='models/' ~ asset ~ '.glb') }}" data-asset="{{ asset }}" data-brand="{{ 'true' if brand else 'false' }}" data-variety="{{ variety }}" data-origin="{{ origin }}">
+    <img src="{{ url_for('static', filename='img/products/' ~ asset ~ '.webp') }}" alt="{{ alt }}" width="800" height="{{ 308 if asset == 'cups' else 1000 if brand else 667 }}" {{ 'fetchpriority=high' if critical else 'loading=lazy' }} decoding="async">
+</div>
+{%- endmacro %}
+{% macro product_scene(product, class_name='', critical=false) -%}
+{% set asset = product.display_image_url.rsplit('/', 1)[-1].split('.')[0] %}
+{% if asset in ['geisha-huila', 'yirgacheffe', 'borbon-rosado', 'kenia-nyeri'] %}
+{{ scene(asset, product.name, class_name, true, product.origin.variety if product.origin else product.name, product.origin.region ~ ' · ' ~ product.origin.country if product.origin else '', critical) }}
+{% else %}
+<div class="model-scene {{ class_name }}"><img src="{{ product.display_image_url }}" alt="{{ product.name }}" width="800" height="1000" loading="lazy"></div>
+{% endif %}
+{%- endmacro %}
