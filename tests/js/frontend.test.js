@@ -287,3 +287,30 @@ test('scroll story changes chapters and reduced motion restores every chapter', 
     cleanup();
     assert.ok(disconnected > 0);
 });
+
+test('opening holds the product while brand gives way to one fact at a time', async t => {
+    const { initHomeAnimations } = await import('../../app/static/js/modules/home_animations.js');
+    const doc = setup(t, '<section class="opening coffee-story"><h1 class="opening-word">ZERO-DAY</h1><div class="opening-product"></div><div class="story-chapter">Geisha</div><div class="story-chapter">Huila</div><div class="story-chapter">1.950</div><div class="story-chapter">Anaeróbico</div></section>');
+    const media = {};
+    window.matchMedia = q => media[q] = { matches: q.includes('min-width'), addEventListener(_, fn) { this.change = fn; }, removeEventListener() {} };
+    let frame;
+    window.requestAnimationFrame = fn => { frame = fn; return 1; };
+    window.cancelAnimationFrame = () => {};
+    const opening = doc.querySelector('.opening');
+    let progress = 0;
+    opening.getBoundingClientRect = () => ({ top: -progress * window.innerHeight * 2, height: window.innerHeight * 3 });
+    const stop = initHomeAnimations();
+    frame();
+    assert.equal(doc.querySelectorAll('[aria-hidden="false"]').length, 0);
+    assert.equal(opening.style.getPropertyValue('--brand-opacity'), '1');
+    for (const [index, position] of [.25, .45, .65, .85].entries()) {
+        progress = position; window.dispatchEvent(new window.Event('scroll')); frame();
+        assert.equal(doc.querySelectorAll('[aria-hidden="false"]').length, 1);
+        assert.equal([...doc.querySelectorAll('.story-chapter')].indexOf(doc.querySelector('[aria-hidden="false"]')), index);
+        assert.ok(opening.classList.contains('has-story'));
+    }
+    const reduced = media['(prefers-reduced-motion: reduce)']; reduced.matches = true; reduced.change();
+    assert.equal(doc.querySelectorAll('[aria-hidden]').length, 0);
+    assert.ok(!opening.classList.contains('is-pinned'));
+    stop();
+});

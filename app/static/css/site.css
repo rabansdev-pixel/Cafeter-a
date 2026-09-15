@@ -52,3 +52,8 @@ button { font-family: inherit; }
     html { scroll-behavior: auto; }
     *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
 }
+
+/* Shared visual attribution. */
+.asset-credits { font-size: .6rem; color: var(--editorial-muted); margin-top: 1rem; }
+.asset-credits summary { cursor: pointer; }
+.asset-credits p { margin-top: .6rem; font-size: inherit; }
