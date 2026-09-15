@@ -1,8 +1,9 @@
+{% from 'components/model_scene.html' import product_scene %}
 <div class="product-card">
     <div class="product-card-img-wrap">
         <span class="roast-pill">Tueste {{ product.tasting_profile.roast_level if product.tasting_profile else 'Especial' }}</span>
         <a href="{{ url_for('catalog.product_detail', slug=product.slug) }}">
-            <img src="{{ product.image_url }}" alt="{{ product.name }}" class="product-card-img">
+            {{ product_scene(product) }}
         </a>
     </div>
 
@@ -36,7 +37,7 @@
             data-id="{{ product.id }}"
             data-name="{{ product.name }}"
             data-price="{{ product.price }}"
-            data-image="{{ product.image_url }}"
+            data-image="{{ product.display_image_url }}"
             style="padding: 0.6rem 1.1rem; font-size: 0.85rem;"
             aria-label="Añadir {{ product.name }} al carrito">
             + Añadir

@@ -4,10 +4,10 @@ import { setImmediate } from 'node:timers/promises';
 import { JSDOM } from 'jsdom';
 import { initProductScene } from '../../app/static/js/modules/product_scene.js';
 
-function fixture(t) {
+function fixture(t, extra = '') {
     let stop;
     t.after(() => stop?.());
-    const dom = new JSDOM('<section class="opening"><div class="opening-product" data-model="/bag.glb"><img alt="Coffee"></div></section>');
+    const dom = new JSDOM('<section class="opening"><div class="opening-product" data-model="/bag.glb"><img alt="Coffee"></div></section>' + extra, { url: 'https://cafe.example' });
     for (const name of ['window', 'document']) {
         const old = Object.getOwnPropertyDescriptor(globalThis, name);
         Object.defineProperty(globalThis, name, { configurable: true, value: dom.window[name] });
@@ -34,7 +34,8 @@ function fixture(t) {
     t.after(() => dom.window.close());
     return { host, media, renders, scene, loader,
         start(load = loader) { stop = initProductScene(load); return stop; },
-        visible(value) { callback([{ isIntersecting: value }]); },
+        visible(value) { callback([{ target: host, isIntersecting: value, intersectionRatio: value ? 1 : 0 }]); },
+        entries(values) { callback(values); },
         render() { const fn = frame; frame = undefined; fn?.(); },
         get loads() { return loads; }, get disposals() { return disposals; }
     };
@@ -57,19 +58,18 @@ test('3D loads once on intersection, renders on demand and pauses offscreen', as
     const lost = new window.Event('webglcontextlost', { cancelable: true });
     f.host.dispatchEvent(lost);
     assert.ok(lost.defaultPrevented);
-    assert.equal(f.disposals, 1);
+    assert.equal(f.disposals, 2);
     assert.ok(!f.host.classList.contains('model-ready'));
 });
 
-test('reduced motion and mobile keep fallback and do not download Three', async t => {
+test('reduced motion keeps fallback, capable mobile still loads the scene', async t => {
     const f = fixture(t); f.start();
     const reduced = f.media['(prefers-reduced-motion: reduce)'];
     reduced.matches = true; f.visible(true); await setImmediate();
     assert.equal(f.loads, 0);
     reduced.matches = false;
-    const desktop = f.media['(min-width: 1024px)']; desktop.matches = false;
-    desktop.change(); await setImmediate(); assert.equal(f.loads, 0);
-    desktop.matches = true; desktop.change(); await setImmediate();
+    Object.defineProperty(window, 'innerWidth', { value: 375 });
+    reduced.change(); await setImmediate();
     assert.equal(f.loads, 1);
     reduced.matches = true; reduced.change();
     assert.equal(f.disposals, 1);
@@ -108,12 +108,12 @@ test('real GLB parses without textures; renderer frames, resizes and releases th
     const f = fixture(t);
     const { readFile } = await import('node:fs/promises');
     const { createProductScene } = await import('../../app/static/js/modules/product_scene_renderer.js');
-    const bytes = await readFile(new URL('../../app/static/img/products/zero-day-bag.glb', import.meta.url));
+    const bytes = await readFile(new URL('../../app/static/models/borbon-rosado.glb', import.meta.url));
     const text = [];
     t.mock.method(window.HTMLCanvasElement.prototype, 'getContext', () => ({
         fillRect() {}, fillText(value) { text.push(value); }
     }));
-    Object.assign(f.host.dataset, { variety: 'Geisha', origin: 'Huila · Colombia' });
+    Object.assign(f.host.dataset, { variety: 'Geisha', origin: 'Huila · Colombia', brand: 'true', asset: 'geisha-huila' });
     Object.defineProperty(f.host, 'clientWidth', { value: 400 });
     Object.defineProperty(f.host, 'clientHeight', { value: 550 });
     Object.defineProperty(window, 'devicePixelRatio', { value: 3 });
@@ -122,6 +122,7 @@ test('real GLB parses without textures; renderer frames, resizes and releases th
     class Renderer {
         setPixelRatio(dpr) { assert.equal(dpr, 2); }
         setSize(w, h) { assert.deepEqual([w, h], [400, 550]); }
+        setViewport(x, y, w, h) { assert.ok(w <= 400 && h <= 550); }
         render(scene, camera) { calls.push({ scene, camera }); }
         dispose() { disposed = true; }
     }
@@ -134,16 +135,32 @@ test('real GLB parses without textures; renderer frames, resizes and releases th
     assert.deepEqual(text.slice(0, 2), ['ZERO-DAY', 'C O F F E E']);
     assert.ok(text.includes('GEISHA'));
     assert.equal(calls.length, 2);
-    assert.equal(calls[0].camera.aspect, 400 / 550);
+    assert.equal(calls[0].camera.aspect, .8);
     assert.equal(f.host.querySelectorAll('canvas').length, 1);
     let meshes = 0;
     calls[0].scene.traverse(object => { if (object.isMesh) { meshes++; assert.equal(object.material.metalness, 0); } });
-    assert.equal(meshes, 2);
+    assert.equal(meshes, 1);
+    calls[0].scene.traverse(object => { if (object.isMesh) assert.ok(object.geometry.attributes.uv2); });
     scene.dispose();
     assert.ok(disposed);
     assert.equal(f.host.querySelectorAll('canvas').length, 0);
     disposed = false;
+    f.host.dataset.model = '/missing.glb';
     t.mock.method(globalThis, 'fetch', async () => ({ ok: false }));
     await assert.rejects(createProductScene(f.host, new AbortController().signal, Renderer), /unavailable/);
-    assert.ok(disposed);
+    assert.equal(disposed, false); // No renderer allocated for a failed fetch.
+});
+
+test('visible scenes hand off rendering and release the previous model', async t => {
+    const f = fixture(t, '<div id="second" data-model="/second.glb"></div>');
+    f.start(); f.visible(true); await setImmediate();
+    const second = document.querySelector('#second');
+    second.getBoundingClientRect = () => ({ top: 20, height: 600 });
+    f.entries([{ target: f.host, isIntersecting: false, intersectionRatio: 0 },
+        { target: second, isIntersecting: true, intersectionRatio: 1 }]);
+    await setImmediate();
+    assert.equal(f.disposals, 1);
+    assert.ok(!f.host.classList.contains('model-ready'));
+    assert.ok(second.classList.contains('model-ready'));
+    assert.equal(f.loads, 1); // Shared module, no duplicate renderer library.
 });

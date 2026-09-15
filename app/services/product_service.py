@@ -68,7 +68,7 @@ class ProductService:
                 "price": 68000.0,
                 "weight_grams": 340,
                 "stock": 18,
-                "image_url": "/static/img/products/geisha-huila.svg",
+                "image_url": "/static/img/products/geisha-huila.webp",
                 "is_featured": True,
                 "origin": {
                     "country": "Colombia",
@@ -105,7 +105,7 @@ class ProductService:
                 "price": 62000.0,
                 "weight_grams": 340,
                 "stock": 24,
-                "image_url": "/static/img/products/yirgacheffe.svg",
+                "image_url": "/static/img/products/yirgacheffe.webp",
                 "is_featured": True,
                 "origin": {
                     "country": "Etiopía",
@@ -141,7 +141,7 @@ class ProductService:
                 "price": 58000.0,
                 "weight_grams": 340,
                 "stock": 30,
-                "image_url": "/static/img/products/borbon-rosado.svg",
+                "image_url": "/static/img/products/borbon-rosado.webp",
                 "is_featured": True,
                 "origin": {
                     "country": "Colombia",
@@ -178,7 +178,7 @@ class ProductService:
                 "price": 65000.0,
                 "weight_grams": 340,
                 "stock": 15,
-                "image_url": "/static/img/products/kenia-nyeri.svg",
+                "image_url": "/static/img/products/kenia-nyeri.webp",
                 "is_featured": False,
                 "origin": {
                     "country": "Kenia",

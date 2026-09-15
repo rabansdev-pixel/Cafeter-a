@@ -35,7 +35,7 @@ class ProductSchema(Schema):
     formatted_price = fields.Method("get_formatted_price")
     stock = fields.Int()
     weight_grams = fields.Int()
-    image_url = fields.Str()
+    image_url = fields.Str(attribute="display_image_url")
     is_featured = fields.Bool()
     origin = fields.Nested(OriginSchema)
     tasting_profile = fields.Nested(TastingProfileSchema)

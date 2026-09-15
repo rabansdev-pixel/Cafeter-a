@@ -1,0 +1,142 @@
+[
+  {
+    "key": "geisha-huila",
+    "original": "coffee_paper_bag_3d_scan.glb",
+    "bytes": 3159832,
+    "optimized": 378440,
+    "credit": {
+      "author": "grafi (https://sketchfab.com/zdenkoroman)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/coffee-paper-bag-3d-scan-4873908248a04f7b9af32a58a1918a28",
+      "title": "Coffee Paper Bag 3D Scan",
+      "adaptation": "ZERO-DAY: external optimized textures; original geometry preserved; brand maps replaced where applicable."
+    },
+    "texture_bytes": 29696
+  },
+  {
+    "key": "yirgacheffe",
+    "original": "costa_coffee_bag.glb",
+    "bytes": 3116416,
+    "optimized": 244252,
+    "credit": {
+      "author": "Alisha (https://sketchfab.com/AlishaBegum)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/costa-coffee-bag-add6a0f04c9345e180c45b0fddc4a429",
+      "title": "Costa coffee bag",
+      "adaptation": "ZERO-DAY: external optimized textures; original geometry preserved; brand maps replaced where applicable."
+    },
+    "texture_bytes": 83056
+  },
+  {
+    "key": "borbon-rosado",
+    "original": "coffee_packaging.glb",
+    "bytes": 832144,
+    "optimized": 25304,
+    "credit": {
+      "author": "walteraraujo (https://sketchfab.com/walteraraujo)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/coffee-packaging-62e5f2ddf6f1437db4da89791a3200eb",
+      "title": "Coffee Packaging",
+      "adaptation": "ZERO-DAY: external optimized textures; original geometry preserved; brand maps replaced where applicable."
+    },
+    "texture_bytes": 0
+  },
+  {
+    "key": "kenia-nyeri",
+    "original": "dunkin_donuts_coffee.glb",
+    "bytes": 10365168,
+    "optimized": 1350380,
+    "credit": {
+      "author": "RYOkEkEN (https://sketchfab.com/RYOkEkEN)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/dunkin-donuts-coffee-a5a540d094204349873338f49708a03b",
+      "title": "Dunkin Donuts coffee",
+      "adaptation": "ZERO-DAY: external optimized textures; original geometry preserved; brand maps replaced where applicable."
+    },
+    "texture_bytes": 0
+  },
+  {
+    "key": "espresso",
+    "original": "espresso_coffee_machine.glb",
+    "bytes": 7778916,
+    "optimized": 133556,
+    "credit": {
+      "author": "Vreyden (https://sketchfab.com/vreyden)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/espresso-coffee-machine-0868d20ca47c4c1284c70ab66b998eb0",
+      "title": "Espresso Coffee Machine",
+      "adaptation": "ZERO-DAY: external optimized textures; original geometry preserved; brand maps replaced where applicable."
+    },
+    "texture_bytes": 141598
+  },
+  {
+    "key": "beans",
+    "original": "coffee_beans-_autodesk_memento.glb",
+    "bytes": 9777212,
+    "optimized": 774588,
+    "credit": {
+      "author": "John Fino (tauricity) (https://sketchfab.com/tauricity)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/coffee-beans-autodesk-memento-031fd22dc6b943c09906b0a9f65fd199",
+      "title": "Coffee Beans- Autodesk Memento",
+      "adaptation": "ZERO-DAY: external optimized textures; original geometry preserved; brand maps replaced where applicable."
+    },
+    "texture_bytes": 75588
+  },
+  {
+    "key": "ceramic",
+    "original": "capuchino_in_a_cup.glb",
+    "bytes": 1893668,
+    "optimized": 223944,
+    "credit": {
+      "author": "Rakshaan (https://sketchfab.com/rakshaan)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/capuchino-in-a-cup-7731af440e614f8eaf62644b056b9b32",
+      "title": "Capuchino in a cup",
+      "adaptation": "ZERO-DAY: external optimized textures; original geometry preserved; brand maps replaced where applicable."
+    },
+    "texture_bytes": 114764
+  },
+  {
+    "key": "cappuccino",
+    "original": "cup_of_cappuccino.glb",
+    "bytes": 15601656,
+    "optimized": 391260,
+    "credit": {
+      "author": "Elen (https://sketchfab.com/Kitty999)",
+      "license": "CC-BY-SA-4.0 (http://creativecommons.org/licenses/by-sa/4.0/)",
+      "source": "https://sketchfab.com/3d-models/cup-of-cappuccino-04f2c34a3df94e58be97c2830e7e462a",
+      "title": "Cup of cappuccino",
+      "adaptation": "ZERO-DAY: external optimized textures; original geometry preserved; brand maps replaced where applicable."
+    },
+    "texture_bytes": 519750
+  },
+  {
+    "key": "takeaway",
+    "original": "coffee_paper-cup.glb",
+    "bytes": 11219788,
+    "optimized": 1165660,
+    "credit": {
+      "author": "DenPennicus (https://sketchfab.com/DenPennicus)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/coffee-paper-cup-70d51490fb8e4de0a132d9f543859a35",
+      "title": "Coffee Paper-cup",
+      "adaptation": "ZERO-DAY: external optimized textures; original geometry preserved; brand maps replaced where applicable."
+    },
+    "texture_bytes": 4168
+  },
+  {
+    "key": "cups",
+    "original": "cc0ffee_cups.glb",
+    "bytes": 518252,
+    "optimized": 228296,
+    "credit": {
+      "author": "m3org (https://sketchfab.com/m3org)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/cc0ffee-cups-f3227068f3734aa8999df3a44b6a85dc",
+      "title": "CC0ffee Cups",
+      "adaptation": "ZERO-DAY: external optimized textures; original geometry preserved; brand maps replaced where applicable."
+    },
+    "texture_bytes": 0
+  }
+]
