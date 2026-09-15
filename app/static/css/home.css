@@ -1,4 +1,4 @@
-/* Atelier: warm ink, quiet space and editorial scale. Home styles stay scoped. */
+/* ZERO-DAY: warm ink, quiet space and editorial scale. Home styles stay scoped. */
 .editorial-home { background: #0e0c0a; color: var(--editorial-cream); }
 .editorial-home::before { display: none; }
 .editorial-home h1, .editorial-home h2, .editorial-home h3 { font-weight: 400; color: inherit; }
@@ -164,3 +164,81 @@
     [data-reveal].reveal-ready { clip-path: none; transform: none; }
     .opening-product, .opening-word, .landscape img { translate: none !important; }
 }
+
+/* Phase two: one product, five quiet moments. Static layout is the default. */
+.opening { height: auto; padding: 0; overflow: visible; background: var(--color-bg-primary); }
+.opening-frame { min-height: max(780px, 100svh); position: relative; isolation: isolate; padding: 135px var(--editorial-space) 3rem; overflow: clip; background: radial-gradient(ellipse at 50% 25%, #2b241c, #16120f 35%, var(--color-bg-primary) 75%); }
+.opening-word { font-size: clamp(3rem, 17vw, 24rem); top: 195px; letter-spacing: -.065em; }
+.opening-product { top: 205px; aspect-ratio: 320 / 440; }
+.opening-product img { transition: opacity .7s ease; }
+.opening-product canvas { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transition: opacity .7s ease; pointer-events: none; }
+.opening-product.model-ready canvas { opacity: 1; }
+.opening-product.model-ready img { opacity: 0; }
+.opening-caption { top: 500px; }
+.opening-bottom { top: 670px; bottom: auto; }
+.opening-story { margin-top: 660px; padding-top: 3rem; }
+.opening-story .story-chapters { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-bottom: 3rem; }
+.opening-story .story-chapter h3 { font-size: clamp(2.4rem, 5vw, 5.5rem); }
+.opening.coffee-story.is-pinned { height: 270svh; }
+.opening.is-pinned .opening-frame { position: sticky; top: 0; height: 100svh; min-height: 650px; background: radial-gradient(ellipse at 50% 53%, #2b241c, #16120f 38%, var(--color-bg-primary) 73%); }
+.opening.is-pinned .opening-word { top: 21%; opacity: var(--brand-opacity, 1); }
+.opening.is-pinned .opening-product { top: 24%; width: clamp(255px, 31vw, 490px); }
+.opening.is-pinned .opening-caption { top: 62%; opacity: var(--brand-opacity, 1); }
+.opening.is-pinned .opening-bottom { top: auto; bottom: 2.8rem; opacity: var(--brand-opacity, 1); }
+.opening.is-pinned .opening-story { position: absolute; inset: 0; margin: 0; padding: 0; pointer-events: none; }
+.opening.is-pinned .story-chapters { position: absolute; inset: 30% var(--editorial-space) auto; grid-template-columns: 1fr; margin: 0; }
+.opening.is-pinned .story-chapter { max-width: 30%; }
+.opening.is-pinned .story-chapter h3 { font-size: clamp(2.5rem, 4.5vw, 5rem); }
+.opening.is-pinned .story-chapter p { max-width: 240px; }
+.opening.is-pinned .story-purchase { position: absolute; bottom: 2.8rem; left: var(--editorial-space); right: var(--editorial-space); opacity: var(--details-opacity, 0); visibility: hidden; }
+.opening.is-pinned.has-story .story-purchase { visibility: visible; pointer-events: auto; }
+.opening.is-pinned.has-story .opening-caption, .opening.is-pinned.has-story .opening-bottom { visibility: hidden; }
+.manifesto em { color: inherit; font-style: normal; }
+.process { position: relative; overflow: clip; padding-top: 4rem; }
+.process h2 { max-width: 65%; }
+.process h2 em { color: inherit; font-style: normal; }
+.process-cherries { position: absolute; right: -4%; top: -3rem; width: min(40vw, 540px); height: auto; filter: saturate(.65) brightness(.85); transform: rotate(-12deg); pointer-events: none; }
+.process-steps { position: relative; margin-top: 7rem; }
+.sensory { overflow: clip; }
+.sensory h2 em { color: var(--editorial-muted); }
+.sensory-visual { position: relative; padding-top: 9rem; }
+.sensory-bergamot { position: absolute; width: min(80%, 390px); height: auto; top: -2rem; right: -12%; transform: rotate(-17deg); filter: saturate(.55) brightness(.87); }
+.sensory-visual .radar-svg text { fill: var(--editorial-muted); font-size: 9px; letter-spacing: .08em; }
+.sensory-visual .radar-svg { max-width: 370px; }
+.edition-image { background: radial-gradient(ellipse at 50% 60%, #30261c, #1c1813 75%); }
+.edition-image img { filter: saturate(.72); }
+.edition-image:hover img, .edition-image:focus-visible img { transform: translateY(-6px) rotate(-2deg) scale(1.035); }
+.ritual { display: grid; grid-template-columns: 1.4fr 1fr; align-items: center; gap: clamp(2rem, 7vw, 8rem); }
+.ritual figure { aspect-ratio: 1.15; overflow: hidden; background: var(--color-bg-soft); }
+.ritual img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.48) brightness(.7); }
+.ritual h2 { font-size: clamp(2.8rem, 5vw, 5.6rem); margin: 1.5rem 0; }
+.ritual p:not(.eyebrow) { font-size: .85rem; margin-bottom: 2rem; }
+.philosophy { background: var(--color-light-section); }
+@media (max-width: 1023px) {
+    .opening-word { top: 185px; }
+    .opening-product { top: 205px; }
+    .process-cherries { top: 0; }
+}
+@media (max-width: 767px) {
+    .opening-frame { padding-top: 120px; }
+    .opening-word { top: 175px; font-size: 17vw; }
+    .opening-product { top: 195px; }
+    .opening-caption { top: 550px; bottom: auto; }
+    .opening-bottom { top: 660px; bottom: auto; }
+    .opening-story { margin-top: 640px; }
+    .opening-story .story-chapters { grid-template-columns: 1fr; gap: 1.5rem; }
+    .process h2 { max-width: 100%; }
+    .process-cherries { position: relative; top: auto; right: auto; width: 75%; display: block; margin: -3rem -20% .5rem auto; }
+    .process-steps { margin-top: 3rem; }
+    .sensory-visual { padding-top: 7rem; }
+    .sensory-bergamot { top: -1rem; width: 65%; right: -10%; }
+    .ritual { grid-template-columns: 1fr; }
+    .ritual figure { aspect-ratio: 1.25; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .opening-product canvas { display: none; }
+    .opening-product.model-ready img { opacity: 1; }
+    .edition-image:hover img { transform: none; }
+}
+.opening-product.model-ready img { animation: none; opacity: 0; }
+@media (prefers-reduced-motion: reduce) { .opening-product.model-ready img { opacity: 1; } }

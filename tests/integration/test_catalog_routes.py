@@ -2,7 +2,7 @@ def test_home_page_renders_successfully(client):
     """Verifica que la página principal cargue con status 200 y contenga la marca."""
     response = client.get("/")
     assert response.status_code == 200
-    assert b"ATELIER" in response.data
+    assert b"ZERO-DAY" in response.data
     assert b"Geisha" in response.data
     assert b"radar" in response.data.lower()
 

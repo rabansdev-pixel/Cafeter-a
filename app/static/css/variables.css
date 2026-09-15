@@ -1,6 +1,6 @@
 /* ==============================================================================
    DESIGN TOKENS & SYSTEM VARIABLES
-   Estética: Dark Roast & Warm Cream / Specialty Coffee Atelier
+   Estética: Dark Roast & Warm Cream / ZERO-DAY COFFEE
    ============================================================================== */
 
 :root {
@@ -10,14 +10,17 @@
     --color-bg-surface-elevated: #221c17;
     --color-bg-surface-hover: #2b231d;
     
-    --color-accent-gold: #d49a3d;
-    --color-accent-gold-light: #f3be6a;
-    --color-accent-gold-dark: #a87224;
+    --color-accent-gold: #bd965e;
+    --color-accent-gold-light: #dfbf8b;
+    --color-accent-gold-dark: #967344;
     --color-accent-bronze: #8f5424;
 
     --color-text-primary: #fcf9f2;
     --color-text-secondary: #c9bfaf;
     --color-text-muted: #827768;
+
+    --color-bg-soft: #191510;
+    --color-light-section: #e9e1d3;
 
     /* Glassmorphism & Bordes */
     --glass-bg: rgba(23, 19, 16, 0.72);

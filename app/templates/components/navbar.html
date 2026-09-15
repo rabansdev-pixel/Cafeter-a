@@ -1,6 +1,6 @@
 <header class="site-header">
     <nav class="site-nav" aria-label="Navegación principal">
-        <a href="{{ url_for('main.home') }}" class="site-brand" aria-label="Atelier Café, inicio">ATELIER<span>CAFÉ DE ESPECIALIDAD</span></a>
+        <a href="{{ url_for('main.home') }}" class="site-brand" aria-label="ZERO-DAY COFFEE, inicio">ZERO-DAY<span>CAFÉ DE ESPECIALIDAD</span></a>
         <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-menu">Menú <span aria-hidden="true">+</span></button>
         <ul class="site-menu" id="site-menu">
             {% for endpoint, label in [('main.home', 'Inicio'), ('catalog.catalog', 'Cafés'), ('main.origins', 'Origen'), ('main.methods', 'Métodos')] %}
