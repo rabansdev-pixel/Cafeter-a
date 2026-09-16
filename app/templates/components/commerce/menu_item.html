@@ -1,0 +1,7 @@
+<article class="menu-entry {{ 'menu-entry-featured' if item.featured else '' }}">
+    {% if item.image %}<a class="menu-entry-image" href="{{ url_for('cafe.product', slug=item.slug) }}" tabindex="-1" aria-hidden="true"><img src="{{ item.image }}" alt="" width="900" height="1000" loading="lazy" decoding="async"></a>{% endif %}
+    <div class="menu-entry-copy"><span class="entry-index" aria-hidden="true">{{ '%02d'|format(entry_number) }}</span><h3><a href="{{ url_for('cafe.product', slug=item.slug) }}">{{ item.name }}</a></h3><p>{{ item.short_description }}</p>
+        <div class="menu-entry-action"><span>{{ item.formatted_price or 'Consulta en el café' }}</span>
+        {% if item.orderable and not item.customizable %}<button type="button" class="quiet-add" data-quick-add="{{ item.id }}" aria-label="Añadir {{ item.name }}">Añadir <span aria-hidden="true">+</span></button>{% else %}<a class="cafe-link" href="{{ url_for('cafe.product', slug=item.slug) }}">{{ 'Elegir' if item.orderable else 'Ver detalle' }} ↗</a>{% endif %}</div>
+    </div>
+</article>

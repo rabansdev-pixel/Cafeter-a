@@ -1,0 +1,4 @@
+{% extends 'layouts/base.html' %}
+{% block body_class %}cafe-home interior-page {% block page_class %}{% endblock %}{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/interior.css') }}">{% endblock %}
+{% block content %}{% block interior_content %}{% endblock %}{% endblock %}

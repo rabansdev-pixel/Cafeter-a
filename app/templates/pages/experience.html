@@ -1,0 +1,10 @@
+{% extends 'layouts/interior.html' %}
+{% from 'components/model_scene.html' import scene %}
+{% block title %}La experiencia | ZERO DAY{% endblock %}
+{% block page_class %}experience-page{% endblock %}
+{% block interior_content %}
+<header class="interior-heading"><p class="eyebrow">ZERO DAY / LA EXPERIENCIA</p><div class="heading-grid"><h1>El café es<br><em>el comienzo.</em></h1><p>El momento lo pones tú.</p></div></header>
+{% if cafe.experiences %}{% for experience in cafe.experiences %}<section class="experience-chapter"><div><span class="eyebrow">{{ '%02d'|format(loop.index) }} / ZERO DAY</span><h2>{{ experience.title }}</h2><p>{{ experience.description }}</p></div>{% if experience.image %}<img src="{{ url_for('static', filename=experience.image) }}" alt="{{ experience.alt }}" width="1200" height="1000" loading="lazy">{% endif %}</section>{% endfor %}
+{% else %}<section class="experience-chapter espresso-chapter"><div><p class="eyebrow">EL RITUAL / PREPARAR</p><h2>Cada detalle.<br><em>En su punto.</em></h2><p>Una molienda. Una extracción.<br>Una manera de descubrir el café.</p><a class="cafe-link" href="{{ url_for('main.methods') }}">Una mirada a los métodos ↗</a></div>{{ scene('espresso', 'Modelo editorial de una máquina espresso') }}</section>{% endif %}
+<section class="experience-pause paper"><span class="eyebrow">EL PLACER / ESTAR</span><h2>No vienes<br>solo <em>por café.</em></h2><div><p>Una taza puede ser una manera de volver a ti. Quédate un rato.</p><a class="cafe-link" href="{{ url_for('cafe.space') }}">Descubre el espacio ↗</a><a class="cafe-link" href="{{ url_for('cafe.menu') }}">Explora la carta ↗</a></div></section>
+{% endblock %}

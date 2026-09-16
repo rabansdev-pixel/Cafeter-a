@@ -43,6 +43,9 @@ def create_app(env_name=None):
     setup_security_headers(app)
 
     # Registrar Blueprints
+    from app.controllers.web.cafe_controller import cafe_bp
+
+    app.register_blueprint(cafe_bp)
     app.register_blueprint(main_bp)
     app.register_blueprint(catalog_bp)
     app.register_blueprint(products_api_bp)
