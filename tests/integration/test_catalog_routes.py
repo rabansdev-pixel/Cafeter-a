@@ -3,15 +3,24 @@ def test_home_page_renders_successfully(client):
     response = client.get("/")
     assert response.status_code == 200
     assert b"ZERO-DAY" in response.data
-    assert b"Geisha" in response.data
-    assert b"radar" in response.data.lower()
+    assert b'Ayacucho y 8va Norte' in response.data
+    assert b'8:00 a. m.' in response.data
+    assert response.data.count(b'class="object-slide"') == 10
+    assert b'Costa Coffee' in response.data
+    assert b'js-add-to-cart' not in response.data
+    assert b'cart-drawer' not in response.data
+    for anchor in ['cafe', 'espacio', 'menu', 'experiencia', 'visitanos']:
+        assert f'id="{anchor}"'.encode() in response.data
 
 
 def test_catalog_page_renders_successfully(client):
     """Verifica la carga del catálogo y la presencia de productos."""
     response = client.get("/catalogo")
     assert response.status_code == 200
-    assert b"Nuestra Cava de Caf" in response.data
+    assert b"Cappuccino" in response.data
+    assert b"Cold brew" in response.data
+    assert b"js-add-to-cart" not in response.data
+    assert b"data-price" not in response.data
 
 
 def test_origins_page_renders(client):

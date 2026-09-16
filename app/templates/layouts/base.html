@@ -5,7 +5,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0e0c0a">
-    <meta name="description" content="{% block meta_description %}ZERO-DAY COFFEE. Café de especialidad de origen único, microlotes seleccionados a mano con perfiles de cata extraordinarios.{% endblock %}">
+    <meta name="description" content="{% block meta_description %}ZERO DAY. Una cafetería. Un lugar para quedarse. El arte de tomarse un momento.{% endblock %}">
     <title>{% block title %}ZERO-DAY COFFEE | Granos de Especialidad & Origen Único{% endblock %}</title>
 
     <!-- Tipografía Editorial Google Fonts -->
@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/animations.css') }}">
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/site.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cafe.css') }}">
     {% block extra_head %}{% endblock %}
 </head>
 <body class="{% block body_class %}{% endblock %}">
@@ -32,8 +33,6 @@
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Drawer Lateral de Carrito -->
-    {% include 'components/cart_drawer.html' %}
 
     {% include 'components/footer.html' %}
 

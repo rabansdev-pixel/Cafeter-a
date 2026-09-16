@@ -189,9 +189,9 @@ test('main initializes modules on pages without hero or radar', async t => {
     t.mock.method(console, 'log', () => {});
     await import('../../app/static/js/main.js');
     doc.dispatchEvent(new window.Event('DOMContentLoaded'));
-    assert.match(doc.querySelector('#cart-items-container').textContent, /vacío/);
+    // Public pages no longer initialize the retired shopping interface.
     doc.querySelector('.js-open-cart').click();
-    assert.ok(doc.querySelector('#cart-drawer').classList.contains('active'));
+    assert.ok(!doc.querySelector('#cart-drawer').classList.contains('active'));
 });
 
 test('cart traps keyboard focus, closes with Escape and restores the trigger', async t => {

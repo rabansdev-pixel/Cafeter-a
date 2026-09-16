@@ -1,5 +1,5 @@
 {% macro scene(asset, alt, class_name='', brand=false, variety='', origin='', critical=false) -%}
-<div class="model-scene {{ class_name }}" data-model="{{ url_for('static', filename='models/' ~ asset ~ '.glb') }}" data-asset="{{ asset }}" data-brand="{{ 'true' if brand else 'false' }}" data-variety="{{ variety }}" data-origin="{{ origin }}">
+<div class="model-scene {{ class_name }}" data-model="{{ url_for('static', filename='models/' ~ asset ~ '.glb') }}" data-asset="{{ asset }}" data-brand="false" data-variety="{{ variety }}" data-origin="{{ origin }}">
     <img src="{{ url_for('static', filename='img/products/' ~ asset ~ '.webp') }}" alt="{{ alt }}" width="800" height="{{ 308 if asset == 'cups' else 1000 if brand else 667 }}" {{ 'fetchpriority=high' if critical else 'loading=lazy' }} decoding="async">
 </div>
 {%- endmacro %}

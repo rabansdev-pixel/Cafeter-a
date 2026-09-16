@@ -1,12 +1,11 @@
 <header class="site-header">
     <nav class="site-nav" aria-label="Navegación principal">
-        <a href="{{ url_for('main.home') }}" class="site-brand" aria-label="ZERO-DAY COFFEE, inicio">ZERO-DAY<span>CAFÉ DE ESPECIALIDAD</span></a>
+        <a href="{{ url_for('main.home') }}" class="site-brand" aria-label="ZERO-DAY, inicio">ZERO DAY<span>EL ARTE DE TOMARSE UN MOMENTO</span></a>
         <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-menu">Menú <span aria-hidden="true">+</span></button>
         <ul class="site-menu" id="site-menu">
-            {% for endpoint, label in [('main.home', 'Inicio'), ('catalog.catalog', 'Cafés'), ('main.origins', 'Origen'), ('main.methods', 'Métodos')] %}
-            <li><a href="{{ url_for(endpoint) }}" {% if request.endpoint == endpoint %}aria-current="page"{% endif %}>{{ label }}</a></li>
+            {% for anchor, label in [('cafe', 'Café'), ('espacio', 'Espacio'), ('menu', 'Menú'), ('experiencia', 'Experiencia'), ('visitanos', 'Visítanos')] %}
+            <li><a href="{{ url_for('main.home') }}#{{ anchor }}">{{ label }}</a></li>
             {% endfor %}
         </ul>
-        <button class="site-cart js-open-cart" type="button" aria-label="Abrir carrito de compras" aria-controls="cart-drawer">Carrito <span class="cart-badge">0</span></button>
     </nav>
 </header>
