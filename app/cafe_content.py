@@ -6,11 +6,11 @@ Experiences: [{"title": "...", "description": "...", "image": "...", "alt": "...
 """
 CAFE = {
     'address': 'Ayacucho y 8va Norte', 'hours': ['8:00 a. m. — 8:00 p. m.'],
-    'maps_url': None, 'instagram_url': 'https://www.instagram.com/',
+    'maps_url': None, 'instagram_url': None,
     'social_is_example': True, 'menu_is_example': True,
-    'email': None, 'phone': None, 'menu_url': '/catalogo',
-    'space_image': None, 'space_alt': '', 'hero_video': None,
-    'hero_poster': 'img/editorial/ritual-plantacion.webp',
+    'email': None, 'phone': None, 'menu_url': '/menu', 'currency': None,
+    'space_gallery': [], 'policies': [], 'space_image': None, 'space_alt': '', 'hero_video': 'img/products/hero.mp4',
+    'hero_poster': 'img/editorial/hero-poster.webp',
     'experiences': [],
     # Starter menu requested by the owner. General categories inspired by:
     # https://www.starbucks.com/menu/coffee-espresso/hot-coffee-espresso

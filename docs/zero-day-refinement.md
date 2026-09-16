@@ -1,3 +1,5 @@
+> Phase 2 supersedes the menu/routing instructions below. See [zero-day-phase2.md](zero-day-phase2.md).
+
 # ZERO DAY — editable café website
 
 The application is Flask/Jinja with local Three.js, not React/Vite. The redesign keeps this stack, the Playfair Display / Plus Jakarta Sans typography, original assets and existing routes. Native scroll and intersection animations replace the former 270svh pinned sales story. No additional frontend runtime is required.

@@ -8,5 +8,5 @@
     </article>{% endfor %}
     </div>
     <div class="exhibition-controls" hidden><button class="object-prev" type="button" aria-label="Objeto anterior">←</button><div class="object-progress" aria-label="Elegir objeto">{% for object in objects %}<button type="button" data-object-index="{{ loop.index0 }}" aria-label="Ver {{ object.name }}" aria-pressed="{{ 'true' if loop.first else 'false' }}">{{ '%02d'|format(loop.index) }}</button>{% endfor %}</div><button class="object-next" type="button" aria-label="Objeto siguiente">→</button></div>
-    <p class="exhibition-note">Una mirada editorial al café y su diseño. <a href="{{ url_for('static', filename='models/credits.html') }}">Conoce a los autores ↗</a></p>
+    <p class="exhibition-note">{% if request.endpoint == 'main.home' %}<a href="{{ url_for('catalog.catalog') }}">Explorar la selección ↗</a>{% else %}Una mirada editorial al café y su diseño.{% endif %} <a href="{{ url_for('static', filename='models/credits.html') }}">Conoce a los autores ↗</a></p>
 </section>

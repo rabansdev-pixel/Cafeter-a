@@ -1,3 +1,4 @@
+import { initAtmosphereVideo } from './atmosphere_video.js';
 /** Native scrolling, readable defaults and a keyboard-operable exhibition. */
 export function initCafe() {
     const slides = [...document.querySelectorAll('.object-slide')];
@@ -24,18 +25,7 @@ export function initCafe() {
     }
     if (!window.matchMedia) return;
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const video = document.querySelector('[data-video-src]');
-    const videoButton = document.querySelector('.media-toggle');
-    if (video && videoButton) {
-        const update = () => { videoButton.textContent = video.paused ? 'Reproducir vídeo' : 'Pausar vídeo'; videoButton.setAttribute('aria-pressed', String(!video.paused)); };
-        videoButton.addEventListener('click', async () => {
-            if (!video.paused) video.pause();
-            else { video.src ||= video.dataset.videoSrc; try { await video.play(); } catch { /* Poster remains visible. */ } }
-            update();
-        });
-        document.addEventListener('visibilitychange', () => { if (document.hidden) video.pause(); update(); });
-        reduced.addEventListener('change', () => { if (reduced.matches) video.pause(); update(); });
-    }
+    initAtmosphereVideo();
     if (!window.IntersectionObserver) return;
     const heading = document.querySelector('[data-words]');
     const words = [];

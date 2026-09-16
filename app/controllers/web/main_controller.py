@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template
 from app.services.product_service import ProductService
-from app.cafe_content import CAFE, OBJECTS
+from app.cafe_content import OBJECTS
 
 main_bp = Blueprint("main", __name__)
 product_service = ProductService()
@@ -9,7 +9,7 @@ product_service = ProductService()
 @main_bp.route("/")
 def home():
     """Physical café: editorial content, original objects and verified visit details."""
-    return render_template("pages/home.html", cafe=CAFE, objects=OBJECTS)
+    return render_template("pages/home.html", objects=OBJECTS)
 
 
 

@@ -1,0 +1,15 @@
+{% extends 'layouts/interior.html' %}
+{% block title %}Menú | ZERO DAY{% endblock %}
+{% block page_class %}digital-menu{% endblock %}
+{% block interior_content %}
+<header class="interior-heading menu-heading"><p class="eyebrow">ZERO DAY / LA CARTA</p><div class="heading-grid"><h1>¿Qué te apetece<br><em>hoy?</em></h1><p>Un café. Algo para acompañar.<br>Tu momento.</p></div></header>
+{% if categories %}
+<nav class="menu-category-nav" aria-label="Categorías del menú"><div>{% for category in categories %}<a href="#{{ category.anchor }}">{{ category.name }}</a>{% endfor %}</div><a class="menu-cart-link" href="{{ url_for('cafe.cart') }}">Carrito <span data-cart-count>0</span></a></nav>
+<div class="menu-chapters paper">{% for category in categories %}<section class="menu-chapter" id="{{ category.anchor }}" aria-labelledby="title-{{ category.anchor }}"><div class="menu-chapter-title"><span class="eyebrow">{{ '%02d'|format(loop.index) }} / LA CARTA</span><h2 id="title-{{ category.anchor }}">{{ category.name }}</h2></div><div class="menu-entries">{% for item in category['items'] %}{% set entry_number = loop.index %}{% include 'components/commerce/menu_item.html' %}{% endfor %}</div></section>{% endfor %}</div>
+{% else %}
+<section class="menu-unpublished paper"><span class="eyebrow">LA CARTA DE ZERO DAY</span><div class="menu-empty-type" aria-hidden="true">A tu<br><em>gusto.</em></div><div><h2>Elige tu momento.</h2><p>Consulta la selección disponible en el café.</p><a class="cafe-link" href="{{ url_for('cafe.visit') }}">Ven a vernos ↗</a></div></section>
+{% endif %}
+<div class="commerce-feedback" role="status" aria-live="polite" data-commerce-feedback></div>
+<noscript><p class="no-script-note">Puedes consultar la carta sin JavaScript. Actívalo para guardar tu selección.</p></noscript>
+{% endblock %}
+{% block extra_scripts %}<script type="module" src="{{ url_for('static', filename='js/commerce.js') }}"></script>{% endblock %}

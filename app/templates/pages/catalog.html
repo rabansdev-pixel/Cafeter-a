@@ -1,10 +1,9 @@
-{% extends 'layouts/base.html' %}
-{% block body_class %}cafe-home{% endblock %}
-{% block title %}El menú | ZERO-DAY{% endblock %}
-{% block content %}
-<section class="menu-page-intro cafe-section"><p class="eyebrow">ZERO DAY / EL MENÚ</p><h1>¿Qué te apetece<br><em>hoy?</em></h1><p>Un café. Algo para acompañar. Tu momento.</p></section>
-<section class="cafe-section paper full-menu" aria-label="Carta de Zero Day">
-{% if cafe.menu_is_example %}<p class="sample-label">Menú de ejemplo · selección por confirmar</p>{% endif %}
-<div class="full-menu-grid">{% for category in cafe.menu %}<section class="menu-category"><h2>{{ category.name }}</h2>{% for item in category['items'] %}<div class="menu-item"><h3>{{ item.name }}</h3><p>{{ item.description }}</p></div>{% endfor %}</section>{% else %}<p>Estamos preparando nuestra carta.</p>{% endfor %}</div><a class="cafe-link" href="{{ url_for('main.home') }}#visitanos">Ven a vernos ↗</a>
-</section>
+{% extends 'layouts/interior.html' %}
+{% from 'components/model_scene.html' import scene %}
+{% block title %}Nuestra selección | ZERO DAY{% endblock %}
+{% block page_class %}objects-page{% endblock %}
+{% block interior_content %}
+<header class="interior-heading"><p class="eyebrow">ZERO DAY / OBJETOS, MATERIALES, IDENTIDADES</p><div class="heading-grid"><h1>Elegir también<br>es <em>una forma de ser.</em></h1><p>Una mirada al universo del café.<br>El detalle merece su momento.</p></div></header>
+{% include 'components/home/showcase.html' %}
+<section class="catalog-closing"><span class="eyebrow">LA FORMA / EL RITUAL</span><h2>Lo cotidiano,<br><em>mirado de cerca.</em></h2><p>La cerámica, el papel, una máquina. Objetos con identidad propia que dan forma a nuestra mirada sobre el café.</p><a class="cafe-link" href="{{ url_for('cafe.experience') }}">Conoce la experiencia ↗</a></section>
 {% endblock %}

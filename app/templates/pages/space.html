@@ -1,0 +1,10 @@
+{% extends 'layouts/interior.html' %}
+{% from 'components/model_scene.html' import scene %}
+{% block title %}El espacio | ZERO DAY{% endblock %}
+{% block page_class %}space-page{% endblock %}
+{% block interior_content %}
+<header class="interior-heading"><p class="eyebrow">ZERO DAY / EL ESPACIO</p><div class="heading-grid"><h1>Entrar.<br><em>Bajar el ritmo.</em></h1><p>Una mesa. Una conversación.<br>Ninguna prisa.</p></div></header>
+{% if cafe.space_image %}<figure class="space-full-media"><img src="{{ url_for('static', filename=cafe.space_image) }}" alt="{{ cafe.space_alt }}" width="1600" height="1000" fetchpriority="high"><figcaption>EL ESPACIO ZERO DAY</figcaption></figure>{% else %}<section class="spatial-composition" aria-label="El tiempo de una taza"><div class="spatial-type"><span class="eyebrow">EL ARTE DE TOMARSE UN MOMENTO</span><h2>Aquí,<br><em>ahora.</em></h2></div>{{ scene('ceramic', 'Estudio editorial de una taza de cerámica, no fotografía del local') }}<p>Un café.<br>Un poco de tiempo para ti.</p></section>{% endif %}
+{% for photo in cafe.space_gallery %}<figure class="space-gallery-figure"><img src="{{ url_for('static', filename=photo.image) }}" alt="{{ photo.alt }}" width="1400" height="1000" loading="lazy">{% if photo.caption %}<figcaption>{{ photo.caption }}</figcaption>{% endif %}</figure>{% endfor %}
+<section class="space-closing paper"><p class="eyebrow">ESTAR AQUÍ</p><h2>Un lugar<br>para <em>quedarse.</em></h2><div><p>Entre una cosa y la siguiente,<br>un momento que es tuyo.</p><a class="cafe-link" href="{{ url_for('cafe.visit') }}">Prepara tu visita ↗</a></div></section>
+{% endblock %}

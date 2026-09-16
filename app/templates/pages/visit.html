@@ -1,0 +1,7 @@
+{% extends 'layouts/interior.html' %}
+{% block title %}Visítanos | ZERO DAY{% endblock %}
+{% block page_class %}visit-page{% endblock %}
+{% block interior_content %}
+<header class="interior-heading"><p class="eyebrow">ZERO DAY / VISÍTANOS</p><div class="heading-grid"><h1>Nos vemos<br><em>aquí.</em></h1><p>El siguiente momento<br>empieza al llegar.</p></div></header>
+<section class="visit-practical paper"><div class="visit-location-type"><span class="eyebrow">CAFÉ · ESPACIO · TIEMPO</span><p>Una pausa<br><em>en tu día.</em></p><a class="cafe-link" href="{{ url_for('cafe.menu') }}">Mira la carta ↗</a></div><div class="visit-facts">{% include 'components/visit_details.html' %}</div></section>
+{% endblock %}
