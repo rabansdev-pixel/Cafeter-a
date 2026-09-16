@@ -108,7 +108,7 @@ test('real GLB parses without textures; renderer frames, resizes and releases th
     const f = fixture(t);
     const { readFile } = await import('node:fs/promises');
     const { createProductScene } = await import('../../app/static/js/modules/product_scene_renderer.js');
-    const bytes = await readFile(new URL('../../app/static/models/borbon-rosado.glb', import.meta.url));
+    const bytes = await readFile(new URL('../../app/static/img/products/zero-day-bag.glb', import.meta.url));
     const text = [];
     t.mock.method(window.HTMLCanvasElement.prototype, 'getContext', () => ({
         fillRect() {}, fillText(value) { text.push(value); }
@@ -132,15 +132,14 @@ test('real GLB parses without textures; renderer frames, resizes and releases th
     const scene = await createProductScene(f.host, new AbortController().signal, Renderer);
     scene.render(0); scene.render(1);
     assert.equal(request.mock.calls.length, 1);
-    assert.deepEqual(text.slice(0, 2), ['ZERO-DAY', 'C O F F E E']);
-    assert.ok(text.includes('GEISHA'));
+    assert.deepEqual(text, []); // Never paint ZERO DAY over supplied materials.
     assert.equal(calls.length, 2);
     assert.equal(calls[0].camera.aspect, .8);
     assert.equal(f.host.querySelectorAll('canvas').length, 1);
     let meshes = 0;
     calls[0].scene.traverse(object => { if (object.isMesh) { meshes++; assert.equal(object.material.metalness, 0); } });
     assert.equal(meshes, 1);
-    calls[0].scene.traverse(object => { if (object.isMesh) assert.ok(object.geometry.attributes.uv2); });
+    calls[0].scene.traverse(object => { if (object.isMesh) assert.ok(!object.geometry.attributes.uv2); });
     scene.dispose();
     assert.ok(disposed);
     assert.equal(f.host.querySelectorAll('canvas').length, 0);

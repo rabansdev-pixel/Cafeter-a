@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, abort
 from app.services.product_service import ProductService
+from app.cafe_content import CAFE
 
 catalog_bp = Blueprint("catalog", __name__)
 product_service = ProductService()
@@ -7,9 +8,8 @@ product_service = ProductService()
 
 @catalog_bp.route("/catalogo")
 def catalog():
-    """Catálogo completo de microlotes y granos de especialidad."""
-    products = product_service.get_catalog()
-    return render_template("pages/catalog.html", products=products)
+    """Café menu; retain the existing URL for incoming links."""
+    return render_template("pages/catalog.html", cafe=CAFE)
 
 
 @catalog_bp.route("/cafe/<slug>")

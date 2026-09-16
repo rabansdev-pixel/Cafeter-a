@@ -1,0 +1,16 @@
+<section class="cafe-section space-section" id="espacio" aria-labelledby="space-title">
+    <div class="section-heading"><p class="eyebrow">02 / EL ESPACIO</p><span>Quédate un rato.</span></div>
+    <div class="space-layout">
+        <div class="space-copy"><h2 id="space-title">Un lugar<br>para <em>quedarse.</em></h2><p>Una mesa.<br>Una conversación.<br>Ninguna prisa.</p><a class="cafe-link" href="#visitanos">Nos vemos aquí <span aria-hidden="true">↗</span></a></div>
+        {% if cafe.space_image %}<figure class="space-media"><img src="{{ url_for('static', filename=cafe.space_image) }}" alt="{{ cafe.space_alt }}" loading="lazy" width="1200" height="1400"><figcaption>ZERO DAY / EL ESPACIO</figcaption></figure>
+        {% else %}<div class="space-study"><span class="eyebrow">EL TIEMPO DE UNA TAZA</span>{{ scene('ceramic', 'Taza de café en cerámica, composición editorial') }}<span class="space-caption">Café. Espacio. Personas.</span></div>{% endif %}
+    </div>
+</section>
+<section class="cafe-section experience-section paper" id="experiencia" aria-labelledby="experience-title">
+    <div class="section-heading"><div><p class="eyebrow">03 / LA EXPERIENCIA</p><h2 id="experience-title">A tu <em>ritmo.</em></h2></div><p>El café es el comienzo.<br>El momento lo pones tú.</p></div>
+    <div class="experience-grid">
+        {% if cafe.experiences %}{% for item in cafe.experiences %}<article class="experience-item"><span class="eyebrow">{{ '%02d'|format(loop.index) }} / {{ item.title }}</span><img src="{{ url_for('static', filename=item.image) }}" alt="{{ item.alt }}" loading="lazy" width="900" height="700"><h3>{{ item.title }}</h3><p>{{ item.description }}</p></article>{% endfor %}
+        {% else %}<a class="experience-item" href="{{ url_for('main.methods') }}"><span class="eyebrow">01 / EL CAFÉ</span><div class="experience-media">{{ scene('espresso', 'Máquina espresso, estudio editorial') }}</div><div class="experience-caption"><h3>El ritual de preparar.</h3><span aria-hidden="true">↗</span></div><p>Una mirada a los métodos de extracción.</p></a><a class="experience-item" href="#espacio"><span class="eyebrow">02 / TU MOMENTO</span><div class="experience-media experience-type"><span>Sin<br><em>prisa.</em></span><span class="type-footnote">ESTAR AQUÍ. NADA MÁS.</span></div><div class="experience-caption"><h3>El placer de estar.</h3><span aria-hidden="true">↗</span></div><p>Una pausa entre una cosa y la siguiente.</p></a>{% endif %}
+    </div>
+</section>
+<section class="cafe-section philosophy-band grain" aria-labelledby="philosophy-title"><p class="eyebrow">04 / NUESTRA FORMA DE HACER</p><h2 id="philosophy-title" data-cafe-reveal>Cada detalle.<br><em>En su punto.</em></h2><div class="philosophy-words"><span>Café</span><span>Música</span><span>Espacio</span><span>Personas</span></div></section>

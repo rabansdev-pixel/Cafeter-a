@@ -8,16 +8,16 @@ ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / 'app/static/img/products'
 DEST = ROOT / 'app/static/models'
 MODELS = {
-    'geisha-huila': ('coffee_paper_bag_3d_scan', True),
-    'yirgacheffe': ('costa_coffee_bag', True),
-    'borbon-rosado': ('coffee_packaging', True),
-    'kenia-nyeri': ('dunkin_donuts_coffee', True),
+    'geisha-huila': ('coffee_paper_bag_3d_scan', False),
+    'yirgacheffe': ('costa_coffee_bag', False),
+    'borbon-rosado': ('coffee_packaging', False),
+    'kenia-nyeri': ('dunkin_donuts_coffee', False),
     'espresso': ('espresso_coffee_machine', False),
     'beans': ('coffee_beans-_autodesk_memento', False),
     'ceramic': ('capuchino_in_a_cup', False),
     'cappuccino': ('cup_of_cappuccino', False),
     'takeaway': ('coffee_paper-cup', False),
-    'cups': ('cc0ffee_cups', True),
+    'cups': ('cc0ffee_cups', False),
 }
 
 
@@ -37,13 +37,6 @@ def prepare(key, source, branded):
             }
             if legacy.get('diffuseTexture'):
                 material['pbrMetallicRoughness']['baseColorTexture'] = legacy['diffuseTexture']
-        if branded:
-            extension.pop('KHR_materials_unlit', None)
-            material['pbrMetallicRoughness'].pop('baseColorTexture', None)
-            # Existing logos can also be embossed in normal maps.
-            material.pop('normalTexture', None)
-            material.pop('emissiveTexture', None)
-            material['pbrMetallicRoughness'].update(metallicFactor=0, roughnessFactor=.78)
         if not extension:
             material.pop('extensions', None)
     for field in ['extensionsRequired', 'extensionsUsed']:
@@ -101,7 +94,7 @@ def prepare(key, source, branded):
     data['bufferViews'] = views
     output.extend(b'\0' * (-len(output) % 4))
     data['buffers'] = [{'byteLength': len(output)}]
-    data['asset'].setdefault('extras', {})['adaptation'] = 'ZERO-DAY: external optimized textures; original geometry preserved; brand maps replaced where applicable.'
+    data['asset'].setdefault('extras', {})['adaptation'] = 'ZERO-DAY: external optimized textures; original geometry preserved; original brand identity and materials retained; legacy specular-glossiness converted to metallic-roughness.'
     payload = json.dumps(data, separators=(',', ':')).encode()
     payload += b' ' * (-len(payload) % 4)
     target = DEST / (key + '.glb')

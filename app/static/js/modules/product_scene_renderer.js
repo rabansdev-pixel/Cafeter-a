@@ -1,5 +1,4 @@
 import { WebGLRenderer, Scene, PerspectiveCamera, Group, Box3, Vector3,
-    MeshStandardMaterial, CanvasTexture, SRGBColorSpace, Float32BufferAttribute,
     HemisphereLight, DirectionalLight, GLTFLoader, ACESFilmicToneMapping,
     PMREMGenerator, Mesh, PlaneGeometry, MeshBasicMaterial, DoubleSide } from '../../vendor/three/three-gltf.js';
 
@@ -37,43 +36,6 @@ function studio(renderer) {
     pmrem.dispose(); release(room);
     return target;
 }
-function brand(root, bounds, host) {
-    const size = bounds.getSize(new Vector3());
-    const canvas = document.createElement('canvas'); canvas.width = 1024; canvas.height = 1536;
-    const ctx = canvas.getContext('2d');
-    const colors = { 'geisha-huila': '#ddd9c8', yirgacheffe: '#b8c2b0', 'borbon-rosado': '#c9b0a7', 'kenia-nyeri': '#aaaebc', cups: '#d9d9cb' };
-    ctx.fillStyle = colors[host.dataset.asset] || '#d9d9cb'; ctx.fillRect(0, 0, 1024, 1536);
-    ctx.fillStyle = '#242a29'; ctx.textAlign = 'center';
-    ctx.font = '62px Georgia'; ctx.fillText('ZERO-DAY', 512, 590, 780);
-    ctx.font = '20px sans-serif'; ctx.fillText('C O F F E E', 512, 650);
-    ctx.fillRect(265, 750, 494, 2);
-    ctx.font = '48px Georgia'; ctx.fillText((host.dataset.variety || 'CAFÉ DE ORIGEN').toUpperCase(), 512, 870, 780);
-    ctx.font = '21px sans-serif'; ctx.fillText((host.dataset.origin || 'UN MOMENTO PARA TI').toUpperCase(), 512, 935, 780);
-    ctx.font = '18px sans-serif'; ctx.fillText('ORIGEN ÚNICO · CARÁCTER PROPIO', 512, 1100, 780);
-    const texture = new CanvasTexture(canvas); texture.colorSpace = SRGBColorSpace; texture.channel = 2;
-    root.updateMatrixWorld(true);
-    root.traverse(object => {
-        if (!object.isMesh) return;
-        const geometry = object.geometry;
-        const position = geometry.attributes.position;
-        const surfaceBounds = host.dataset.asset === 'cups' ? new Box3().setFromObject(object) : bounds;
-        const surfaceSize = surfaceBounds.getSize(new Vector3());
-        const uv = new Float32Array(position.count * 2);
-        const p = new Vector3();
-        for (let i = 0; i < position.count; i++) {
-            p.fromBufferAttribute(position, i).applyMatrix4(object.matrixWorld);
-            const cups = host.dataset.asset === 'cups';
-            const front = cups ? p.x < (surfaceBounds.min.x + surfaceBounds.max.x) / 2 : p.z > (bounds.min.z + bounds.max.z) / 2;
-            uv[i * 2] = front ? cups ? (p.z - surfaceBounds.min.z) / surfaceSize.z : (p.x - bounds.min.x) / size.x : .015;
-            uv[i * 2 + 1] = front ? (p.y - surfaceBounds.min.y) / surfaceSize.y : .015;
-        }
-        geometry.setAttribute('uv2', new Float32BufferAttribute(uv, 2));
-        const old = object.material;
-        object.material = new MeshStandardMaterial({ map: texture, roughness: .72, metalness: 0,
-            roughnessMap: old.roughnessMap, aoMap: old.aoMap, aoMapIntensity: .35 });
-        old.dispose();
-    });
-}
 
 export async function createProductScene(host, signal, Renderer = WebGLRenderer) {
     const url = new URL(host.dataset.model, window.location.href).href;
@@ -96,7 +58,6 @@ export async function createProductScene(host, signal, Renderer = WebGLRenderer)
         if (signal.aborted) throw new Error('Product scene cancelled');
         root.updateMatrixWorld(true);
         let bounds = new Box3().setFromObject(root);
-        if (host.dataset.brand === 'true') brand(root, bounds, host);
         const size = bounds.getSize(new Vector3());
         root.position.sub(bounds.getCenter(new Vector3()));
         group.scale.setScalar(2.8 / Math.max(size.x, size.y, size.z));

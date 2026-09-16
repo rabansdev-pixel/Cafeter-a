@@ -1,5 +1,5 @@
 {% extends 'layouts/base.html' %}
-{% from 'components/model_scene.html' import product_scene %}
+{% from 'components/model_scene.html' import scene %}
 {% block body_class %}product-detail-page{% endblock %}
 
 {% block title %}{{ product.name }} | Ficha Técnica ZERO-DAY COFFEE{% endblock %}
@@ -21,10 +21,7 @@
                 <span class="roast-pill" style="position: static; display: inline-block; margin-bottom: 1.5rem;">
                     Tueste {{ product.tasting_profile.roast_level if product.tasting_profile else 'Especial' }}
                 </span>
-                {{ product_scene(product, 'detail-model', true) }}
-                <div style="margin-top: 2rem; color: var(--color-text-muted); font-size: 0.85rem;">
-                    📦 Presentación: Bolsa de 340g con cierre hermético y válvula de desgasificación.
-                </div>
+                {{ scene('beans', 'Granos de café tostados, imagen editorial', 'detail-model', critical=true) }}
             </div>
 
             <!-- Ficha Técnica Editorial -->
@@ -37,22 +34,8 @@
                     "{{ product.tagline }}"
                 </p>
 
-                <!-- Precio y Botón de Compra -->
-                <div style="display: flex; align-items: center; gap: 2rem; margin-bottom: 2.5rem; padding: 1.5rem; background: var(--color-bg-surface); border-radius: var(--radius-md); border: 1px solid var(--glass-border);">
-                    <div>
-                        <small style="color: var(--color-text-muted); display: block; font-size: 0.8rem;">PRECIO DE VENTA</small>
-                        <span class="text-gold" style="font-size: 2rem; font-weight: 700;">{{ product.to_dict().formatted_price }}</span>
-                    </div>
-                    <button 
-                        class="btn btn-primary js-add-to-cart"
-                        data-id="{{ product.id }}"
-                        data-name="{{ product.name }}"
-                        data-price="{{ product.price }}"
-                        data-image="{{ product.display_image_url }}"
-                        style="flex: 1; padding: 1rem 1.75rem;">
-                        + Agregar al Carrito
-                    </button>
-                </div>
+                <p class="editorial-note">Ficha de origen · una lectura sobre el café, sus procesos y su perfil.</p>
+                <a class="cafe-link" href="{{ url_for('main.home') }}#menu">Conoce el menú ↗</a>
 
                 <!-- Descripción Sensorial -->
                 <h3 style="font-size: 1.3rem; margin-bottom: 0.75rem;">Historia del Terroir</h3>

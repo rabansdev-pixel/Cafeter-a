@@ -1,12 +1,6 @@
 <footer class="site-footer">
-    <div class="footer-top">
-        <a class="site-brand" href="{{ url_for('main.home') }}">ZERO-DAY<span>EL ARTE DE TOMARSE UN MOMENTO.</span></a>
-        <nav aria-label="Navegación del pie de página">
-            <a href="{{ url_for('catalog.catalog') }}">Nuestros cafés</a>
-            <a href="{{ url_for('main.origins') }}">El origen</a>
-            <a href="{{ url_for('main.methods') }}">Tu ritual</a>
-        </nav>
-    </div>
-    <div class="footer-bottom"><span>© 2026 ZERO-DAY COFFEE</span><span>Origen único. Carácter propio.</span><a href="#main-content">Volver arriba ↑</a></div>
-    <details class="asset-credits"><summary>Créditos visuales</summary><p>Modelos 3D adaptados para ZERO-DAY. <a href="{{ url_for('static', filename='models/credits.html') }}">Autores, modelos originales y licencias</a>.</p></details>
+    <div class="footer-top"><p>El arte de tomarse<br>un momento.</p><nav aria-label="Navegación del pie de página"><a href="{{ url_for('main.home') }}#menu">Menú</a><a href="{{ url_for('main.home') }}#visitanos">Visítanos</a><a href="{{ url_for('main.origins') }}">Orígenes</a><a href="{{ url_for('main.methods') }}">Métodos</a></nav></div>
+    <a class="footer-word" href="{{ url_for('main.home') }}" aria-label="ZERO-DAY, inicio">ZERO DAY</a>
+    <div class="footer-bottom"><span>© 2026 ZERO-DAY</span><span>CAFÉ · ESPACIO · PERSONAS · TIEMPO</span><a href="#main-content">Volver arriba ↑</a></div>
+    <details class="asset-credits"><summary>Créditos visuales</summary><p>Objetos de una selección editorial. Marcas y diseños pertenecen a sus respectivos autores. <a href="{{ url_for('static', filename='models/credits.html') }}">Modelos originales y licencias ↗</a></p></details>
 </footer>
