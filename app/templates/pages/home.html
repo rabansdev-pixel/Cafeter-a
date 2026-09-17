@@ -1,5 +1,8 @@
 {% extends 'layouts/base.html' %}
 {% from 'components/editorial_image.html' import photo %}
+{% macro home_photo(name, alt, sizes='(max-width: 767px) 90vw, 45vw') -%}
+<img src="{{ url_for('static', filename='img/home/' ~ name ~ '-1600.webp') }}" srcset="{{ url_for('static', filename='img/home/' ~ name ~ '-800.webp') }} 800w, {{ url_for('static', filename='img/home/' ~ name ~ '-1600.webp') }} 1600w" sizes="{{ sizes }}" alt="{{ alt }}" width="1600" height="2400" loading="lazy" decoding="async">
+{%- endmacro %}
 {% block title %}ZERO DAY | El arte de tomarse un momento{% endblock %}
 {% block body_class %}cafe-home zero-home{% endblock %}
 {% block fonts %}
@@ -74,9 +77,9 @@
 </section>
 
 {% if menu_featured %}
-<section class="editorial-section home-tastes" aria-labelledby="tastes-title"><div class="editorial-heading"><div><span class="eyebrow">DE LA CARTA / PARA EMPEZAR</span><h2 id="tastes-title">Un antojo.<br><em>Un buen comienzo.</em></h2></div><a class="cafe-link" href="{{ url_for('cafe.menu') }}">Ver los {{ menu_count }} productos ↗</a></div><div class="featured-tastes">{% for item in menu_featured[:3] %}<a class="taste-card" href="{{ url_for('cafe.product', slug=item.slug) }}"><div class="taste-image"><img src="{{ item.image }}" srcset="{{ item.image_small }} 800w, {{ item.image }} 1600w" sizes="(max-width: 767px) 90vw, 30vw" alt="{{ item.name }}" loading="lazy" width="800" height="1000"><span>0{{ loop.index }} / DESCUBRIR</span></div><div class="taste-caption"><h3>{{ item.name }}</h3><span>{{ item.formatted_price }}</span></div><p>{{ item.short_description }}</p></a>{% endfor %}</div></section>
+<section class="editorial-section home-tastes" aria-labelledby="tastes-title"><div class="editorial-heading"><div><span class="eyebrow">DE LA CARTA / PARA EMPEZAR</span><h2 id="tastes-title">Un antojo.<br>Un buen comienzo.</h2></div><a class="cafe-link" href="{{ url_for('cafe.menu') }}">Ver los {{ menu_count }} productos ↗</a></div><div class="featured-tastes">{% for item in menu_featured[:3] %}<a class="taste-card" href="{{ url_for('cafe.product', slug=item.slug) }}"><div class="taste-image"><img src="{{ item.image }}" srcset="{{ item.image_small }} 800w, {{ item.image }} 1600w" sizes="(max-width: 600px) 90vw, (max-width: 1023px) 45vw, 40vw" decoding="async" alt="{{ item.name }}" loading="lazy" width="800" height="1000"><span>0{{ loop.index }} / DESCUBRIR</span></div><div class="taste-caption"><h3>{{ item.name }}</h3><span>{{ item.formatted_price }}</span></div><p>{{ item.short_description }}</p></a>{% endfor %}</div><p class="home-photo-note">Fotografías de referencia de la carta.</p></section>
 {% endif %}
-<section class="editorial-split home-ritual"><div class="editorial-picture">{{ photo('pour-over', 'Manos preparando café con un filtro y una jarra de vidrio', 'journal') }}<span class="picture-caption">LA BELLEZA DE LO COTIDIANO</span></div><div class="editorial-copy"><span class="eyebrow">EL CAFÉ / SIN COMPLICACIONES</span><h2>Antes del primer sorbo,<br><em>un pequeño ritual.</em></h2><p>El sonido de la molienda. El agua que cae. El aroma que llega antes que la taza. Hay cosas que se disfrutan más cuando les damos tiempo.</p><p>Intenso, suave, sobre hielo o con leche: empieza por lo que te gusta y descubre una nueva forma de tomarlo.</p><a class="cafe-link" href="{{ url_for('cafe.experience') }}">Descubre el ritual ↗</a></div></section>
+<section class="editorial-split home-ritual"><div class="editorial-picture">{{ home_photo('ritual', 'Manos trabajando el portafiltro de una máquina de espresso') }}<span class="picture-caption">EL OFICIO / IMAGEN EDITORIAL</span></div><div class="editorial-copy"><span class="eyebrow">EL CAFÉ / SIN COMPLICACIONES</span><h2>Antes del primer sorbo,<br>un pequeño ritual.</h2><p>El sonido de la molienda. El agua que cae. El aroma que llega antes que la taza. Hay cosas que se disfrutan más cuando les damos tiempo.</p><p>Intenso, suave, sobre hielo o con leche: empieza por lo que te gusta y descubre una nueva forma de tomarlo.</p><a class="cafe-link" href="{{ url_for('cafe.experience') }}">Descubre el ritual ↗</a></div></section>
 
 <!-- 03 / DISCOVER — four pieces, each opening a different room of ZERO DAY. -->
 <section class="home-discover" id="experiencia" aria-labelledby="discover-title">
@@ -91,24 +94,26 @@
             <video autoplay muted loop playsinline preload="none" poster="{{ url_for('static', filename=cafe.coffee_poster) }}" data-video-src="{{ url_for('static', filename=cafe.coffee_video) }}" aria-hidden="true"></video>
             <button class="media-toggle home-video-toggle" type="button" aria-pressed="false" aria-label="Reproducir o pausar el vídeo de ambiente">Reproducir vídeo</button>
             {% endif %}
-            <a class="home-film-caption" href="{{ url_for('cafe.space') }}"><span class="home-label">EL RITUAL / ZERO DAY</span><strong>Un lugar<br>para <em>quedarse.</em></strong><span aria-hidden="true">↗</span></a>
+            <a class="home-film-caption" href="{{ url_for('cafe.space') }}"><span class="home-label">ESPACIO / EL ARTE DE ESTAR</span><strong>Un lugar<br>para <em>quedarse.</em></strong><span aria-hidden="true">↗</span></a>
         </article>
-        <article class="home-card" id="menu" data-home-card>
-            <div class="home-card-top"><div class="home-object-thumbnail"><img src="{{ url_for('static', filename='img/products/ceramic.webp') }}" alt="" width="80" height="80" loading="lazy"></div><span>01</span></div>
+        <article class="home-card home-menu-story" id="menu" data-home-card>
+            <div class="home-story-photo">{{ home_photo('coffee', 'Dos espressos en cerámica sobre una superficie de piedra', '(max-width: 767px) 90vw, 35vw') }}</div>
+            <div class="home-card-top"><span>01 / LA CARTA</span></div>
             <h3>Tu próximo café.</h3>
             <p>El siguiente momento empieza con una elección.</p>
             {% if menu_categories %}<ul class="home-card-notes">{% for category in menu_categories[:3] %}<li>{{ category.name }}</li>{% endfor %}</ul>{% else %}<ul class="home-card-notes"><li>Explora la carta.</li><li>Elige a tu ritmo.</li><li>Haz una pausa.</li></ul>{% endif %}
             <a class="home-card-link" href="{{ url_for('cafe.menu') }}">Ver el menú <span aria-hidden="true">↗</span></a>
         </article>
-        <article class="home-card" id="seleccion" data-home-card>
-            <div class="home-card-top"><div class="home-object-thumbnail"><img src="{{ url_for('static', filename='img/products/espresso.webp') }}" alt="" width="80" height="80" loading="lazy"></div><span>02</span></div>
+        <article class="home-card home-selection-story" id="seleccion" data-home-card>
+            <div class="home-story-photo">{{ home_photo('ceramics', 'Cerámica verde y sombras de luz natural sobre madera', '(max-width: 767px) 45vw, 20vw') }}</div>
+            <div class="home-card-top"><span>02 / OBJETOS &amp; MATERIALES</span></div>
             <h3>Elegir con intención.</h3>
             <p>Lo que elegimos también habla de nosotros.</p>
             <ul class="home-card-notes"><li>Objetos del universo del café.</li><li>Materiales con carácter.</li><li>Identidades propias.</li></ul>
             <a class="home-card-link" href="{{ url_for('catalog.catalog') }}">Explorar la selección <span aria-hidden="true">↗</span></a>
         </article>
-        <article class="home-card" id="visitanos" data-home-card>
-            <div class="home-card-top"><div class="home-object-thumbnail home-card-monogram" aria-hidden="true">zd.</div><span>03</span></div>
+        <article class="home-card home-visit-story" id="visitanos" data-home-card>
+            <div class="home-card-top"><span>03 / ENCUÉNTRANOS</span></div>
             <h3>Nos vemos aquí.</h3>
             <p>Una mesa. Una conversación. Ninguna prisa.</p>
             <ul class="home-card-notes">{% if cafe.address %}<li>{{ cafe.address }}</li>{% endif %}{% for hours in cafe.hours %}<li>{{ hours }}</li>{% endfor %}</ul>

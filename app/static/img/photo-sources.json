@@ -278,5 +278,50 @@
       "journal/pour-over-800.jpg",
       "journal/pour-over-1600.jpg"
     ]
+  },
+  {
+    "name": "home-ritual",
+    "photo_id": 13735850,
+    "photographer": "Mizuno K",
+    "source": "https://www.pexels.com/photo/13735850/",
+    "license": "https://www.pexels.com/license/",
+    "source_dimensions": [
+      4000,
+      6000
+    ],
+    "files": [
+      "home/ritual-800.webp",
+      "home/ritual-1600.webp"
+    ]
+  },
+  {
+    "name": "home-ceramics",
+    "photo_id": 2775831,
+    "photographer": "Marta Dzedyshko",
+    "source": "https://www.pexels.com/photo/2775831/",
+    "license": "https://www.pexels.com/license/",
+    "source_dimensions": [
+      3456,
+      5184
+    ],
+    "files": [
+      "home/ceramics-800.webp",
+      "home/ceramics-1600.webp"
+    ]
+  },
+  {
+    "name": "home-coffee",
+    "photo_id": 33074061,
+    "photographer": "Iulian Sandu",
+    "source": "https://www.pexels.com/photo/33074061/",
+    "license": "https://www.pexels.com/license/",
+    "source_dimensions": [
+      3213,
+      4819
+    ],
+    "files": [
+      "home/coffee-800.webp",
+      "home/coffee-1600.webp"
+    ]
   }
 ]
