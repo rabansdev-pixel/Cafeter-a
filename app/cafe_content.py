@@ -1,33 +1,28 @@
 """Editorial content. Publish business details only after the café confirms them.
 
 Media paths are relative to static/. Space media must depict the actual café.
-Menu: [{"name": "confirmed category", "items": [{"name": "...", "description": "..."}]}].
+The 24-item menu proposal lives in app/menu_content.py; pricing research is in docs/menu-machala.md.
 Experiences: [{"title": "...", "description": "...", "image": "...", "alt": "..."}].
 """
+from app.menu_content import MENU
+
 CAFE = {
-    'address': 'Ayacucho y 8va Norte', 'hours': ['8:00 a. m. — 8:00 p. m.'],
-    'maps_url': None, 'instagram_url': None,
-    'social_is_example': True, 'menu_is_example': True,
-    'email': None, 'phone': None, 'menu_url': '/menu', 'currency': None,
+    'address': 'Ayacucho y 8va Norte, Machala, Ecuador', 'hours': ['8:00 a. m. — 8:00 p. m.'],
+    'maps_url': 'https://www.google.com/maps/search/?api=1&query=Ayacucho+y+8va+Norte+Machala+Ecuador', 'instagram_url': None,
+    'social_is_example': True, 'menu_is_example': False,
+    'email': None, 'phone': None, 'menu_url': '/menu', 'currency': 'USD',
     'space_gallery': [], 'policies': [], 'space_image': None, 'space_alt': '', 'hero_video': 'img/products/hero.mp4',
-    'hero_poster': 'img/editorial/hero-poster.webp',
-    'experiences': [],
-    # Starter menu requested by the owner. General categories inspired by:
-    # https://www.starbucks.com/menu/coffee-espresso/hot-coffee-espresso
-    # https://www.starbucks.com/menu?preview=true
-    'menu': [
-        {'name': 'Espresso', 'items': [
-            {'name': 'Espresso', 'description': 'Corto, intenso, esencial.'},
-            {'name': 'Americano', 'description': 'Espresso y agua caliente.'},
-            {'name': 'Cappuccino', 'description': 'Espresso, leche y espuma.'},
-            {'name': 'Latte', 'description': 'Espresso con leche vaporizada.'}]},
-        {'name': 'Fríos', 'items': [
-            {'name': 'Cold brew', 'description': 'Café de extracción en frío.'},
-            {'name': 'Iced latte', 'description': 'Espresso, leche y hielo.'}]},
-        {'name': 'Para acompañar', 'items': [
-            {'name': 'Croissant', 'description': 'Hojaldre de mantequilla.'},
-            {'name': 'Pan de banana', 'description': 'Una pausa dulce.'}]},
+    'coffee_video': 'img/products/coffe.mp4',
+    'coffee_poster': 'img/editorial/coffee-poster.webp',
+    'hero_poster': 'img/editorial/hero-v1-poster.webp',
+    # Same approved shot. Deferred sources avoid downloading desktop media on mobile.
+    'hero_sources': [
+        {'path': 'img/products/hero-v1-mobile.mp4', 'type': 'video/mp4', 'media': '(max-width: 767px)'},
+        {'path': 'img/products/hero-v1-web.webm', 'type': 'video/webm', 'media': ''},
+        {'path': 'img/products/hero-v1-web.mp4', 'type': 'video/mp4', 'media': ''},
     ],
+    'experiences': [],
+    'menu': MENU,
 }
 # These are supplied editorial objects, not stock or items for purchase.
 OBJECTS = [

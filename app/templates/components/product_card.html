@@ -1,6 +1,0 @@
-<article class="origin-entry">
-    <p>{{ product.origin.country if product.origin else '' }} · {{ product.origin.region if product.origin else '' }}</p>
-    <h3><a href="{{ url_for('catalog.product_detail', slug=product.slug) }}">{{ product.name }}</a></h3>
-    <p>{{ product.tagline }}</p>
-    <a class="cafe-link" href="{{ url_for('catalog.product_detail', slug=product.slug) }}">Leer sobre este origen ↗</a>
-</article>

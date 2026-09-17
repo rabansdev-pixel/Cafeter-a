@@ -6,12 +6,16 @@ cafe_bp = Blueprint("cafe", __name__)
 
 @cafe_bp.app_context_processor
 def shared_content():
-    return {"cafe": MenuService.content(), "menu_categories": MenuService.categories()}
+    categories = MenuService.categories()
+    products = [item for category in categories for item in category['items']]
+    return {"cafe": MenuService.content(), "menu_categories": categories,
+            "menu_featured": [item for item in products if item.get('featured')],
+            "menu_count": len(products)}
 
 
 @cafe_bp.route("/menu")
 def menu():
-    return render_template("pages/menu.html", categories=MenuService.categories())
+    return render_template("pages/menu.html", categories=MenuService.categories(), item=None)
 
 
 @cafe_bp.route("/producto/<slug>")
@@ -19,7 +23,7 @@ def product(slug):
     item = MenuService.get(slug)
     if not item:
         abort(404)
-    return render_template("pages/menu_product.html", item=item)
+    return render_template("pages/menu.html", item=item)
 
 
 @cafe_bp.route("/carrito")

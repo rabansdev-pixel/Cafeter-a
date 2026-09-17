@@ -5,11 +5,13 @@ def test_home_page_renders_successfully(client):
     assert b"ZERO-DAY" in response.data
     assert b'Ayacucho y 8va Norte' in response.data
     assert b'8:00 a. m.' in response.data
-    assert response.data.count(b'class="object-slide"') == 10
-    assert b'Costa Coffee' in response.data
+    assert response.data.count(b'class="site-nav"') == 1
+    assert b'/static/img/products/hero.mp4' in response.data
+    assert b'/static/img/products/coffe.mp4' in response.data
+    assert b' muted loop playsinline' in response.data
     assert b'js-add-to-cart' not in response.data
     assert b'cart-drawer' not in response.data
-    for anchor in ['cafe', 'espacio', 'menu', 'experiencia', 'visitanos']:
+    for anchor in ['cafe', 'espacio', 'menu', 'seleccion', 'visitanos']:
         assert f'id="{anchor}"'.encode() in response.data
 
 
@@ -27,23 +29,25 @@ def test_catalog_page_renders_successfully(client):
 def test_origins_page_renders(client):
     """Verifica la carga de la página de terroirs y orígenes."""
     response = client.get("/origenes")
-    assert response.status_code == 200
-    assert b"San Agust" in response.data
+    assert response.status_code == 301
+    assert response.headers["Location"] == "/catalogo#origen"
+    assert b'id="origen"' in client.get("/catalogo").data
 
 
 def test_methods_page_renders(client):
     """Verifica la página de guía de métodos de preparación."""
     response = client.get("/metodos")
-    assert response.status_code == 200
-    assert b"Hario V60" in response.data
+    assert response.status_code == 301
+    assert response.headers["Location"] == "/experiencia#metodos"
+    assert b"Hario V60" in client.get("/experiencia").data
 
 
 def test_product_detail_page_valid_slug(client):
     """Verifica la ficha técnica de un café existente."""
     response = client.get("/cafe/geisha-huila-reserva-privada")
-    assert response.status_code == 200
-    assert b"Geisha Huila Reserva Privada" in response.data
-    assert b"1950 msnm" in response.data
+    assert response.status_code == 301
+    assert response.headers["Location"] == "/catalogo#origen"
+    assert client.get(response.headers["Location"]).status_code == 200
 
 
 def test_product_detail_page_invalid_slug_returns_404(client):

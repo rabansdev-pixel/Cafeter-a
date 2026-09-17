@@ -26,6 +26,10 @@ export function initCafe() {
     if (!window.matchMedia) return;
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
     initAtmosphereVideo();
+    if (document.body.classList.contains('zero-home')) {
+        initHomeEditorialMotion();
+        return;
+    }
     if (!window.IntersectionObserver) return;
     const heading = document.querySelector('[data-words]');
     const words = [];
@@ -66,4 +70,113 @@ export function initCafe() {
         window.removeEventListener('scroll', schedule); window.removeEventListener('resize', schedule);
         reduced.removeEventListener('change', schedule); cancelAnimationFrame(frame);
     }, { once: true });
+}
+
+
+/** Homepage word entrances and a scroll-linked reading reveal; no scroll interception. */
+function initHomeEditorialMotion() {
+    if (!window.IntersectionObserver) return;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const headings = [...document.querySelectorAll('[data-home-pull]')];
+    const cards = [...document.querySelectorAll('[data-home-card]')];
+    const paragraph = document.querySelector('[data-home-letters]');
+    const letters = [];
+    let observer, frame = 0, paragraphVisible = false, prepared = false;
+    function accessibleCopy(element) {
+        const copy = document.createElement('span');
+        copy.className = 'home-sr';
+        copy.textContent = element.textContent.trim();
+        return copy;
+    }
+    function prepare() {
+        if (prepared) return;
+        prepared = true;
+        headings.forEach(heading => {
+            const copy = accessibleCopy(heading);
+            const walker = document.createTreeWalker(heading, window.NodeFilter.SHOW_TEXT);
+            const nodes = [];
+            while (walker.nextNode()) nodes.push(walker.currentNode);
+            let wordIndex = 0;
+            nodes.forEach(node => {
+                const fragment = document.createDocumentFragment();
+                node.textContent.split(/(\s+)/).forEach(word => {
+                    if (!word.trim()) { fragment.append(document.createTextNode(word)); return; }
+                    const mask = document.createElement('span');
+                    mask.className = 'home-word-mask';
+                    mask.setAttribute('aria-hidden', 'true');
+                    const inner = document.createElement('span');
+                    inner.textContent = word;
+                    inner.style.setProperty('--word-delay', `${Math.min(wordIndex++ * .08, .48)}s`);
+                    mask.append(inner); fragment.append(mask);
+                });
+                node.replaceWith(fragment);
+            });
+            heading.prepend(copy);
+        });
+        if (paragraph) {
+            const copy = accessibleCopy(paragraph);
+            const fragment = document.createDocumentFragment();
+            // Keep whole words together, while giving each letter its own opacity.
+            paragraph.textContent.split(/(\s+)/).forEach(word => {
+                if (!word.trim()) { fragment.append(document.createTextNode(word)); return; }
+                const group = document.createElement('span');
+                group.style.whiteSpace = 'nowrap';
+                group.setAttribute('aria-hidden', 'true');
+                for (const letter of word) {
+                    const span = document.createElement('span');
+                    span.className = 'home-copy-letter'; span.textContent = letter;
+                    letters.push(span); group.append(span);
+                }
+                fragment.append(group);
+            });
+            paragraph.replaceChildren(copy, fragment);
+        }
+    }
+    function draw() {
+        frame = 0;
+        if (!paragraph || reduced.matches) return;
+        const rect = paragraph.getBoundingClientRect();
+        const progress = Math.max(0, Math.min(1, (window.innerHeight * .82 - rect.top) / Math.max(1, window.innerHeight * .6 + rect.height)));
+        letters.forEach((letter, index) => {
+            const start = index / letters.length - .1;
+            const local = Math.max(0, Math.min(1, (progress - start) / .15));
+            letter.style.setProperty('--letter-opacity', .25 + .75 * local);
+        });
+    }
+    function schedule() {
+        if (!frame && paragraphVisible && !reduced.matches) frame = window.requestAnimationFrame(draw);
+    }
+    function configure() {
+        observer?.disconnect();
+        window.cancelAnimationFrame(frame); frame = 0;
+        if (reduced.matches) {
+            [...headings, ...cards].forEach(node => node.classList.remove('home-ready', 'home-in-view'));
+            letters.forEach(letter => letter.style.removeProperty('--letter-opacity'));
+            return;
+        }
+        prepare();
+        observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.target === paragraph) {
+                    paragraphVisible = entry.isIntersecting;
+                    schedule();
+                } else if (entry.isIntersecting) {
+                    entry.target.classList.add('home-in-view');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: .08 });
+        headings.forEach(heading => { heading.classList.add('home-ready'); observer.observe(heading); });
+        cards.forEach((card, index) => {
+            card.style.setProperty('--card-delay', `${index * .12}s`);
+            card.classList.add('home-ready'); observer.observe(card);
+        });
+        if (paragraph) { observer.observe(paragraph); draw(); }
+    }
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule, { passive: true });
+    reduced.addEventListener('change', configure);
+    window.addEventListener('pagehide', () => { observer?.disconnect(); window.cancelAnimationFrame(frame); frame = 0; });
+    window.addEventListener('pageshow', event => { if (event.persisted) configure(); });
+    configure();
 }

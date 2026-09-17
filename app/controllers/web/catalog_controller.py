@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, abort
+from flask import Blueprint, render_template, abort, redirect, url_for
 from app.services.product_service import ProductService
 from app.cafe_content import OBJECTS
 
@@ -18,4 +18,4 @@ def product_detail(slug):
     product = product_service.get_by_slug(slug)
     if not product:
         abort(404)
-    return render_template("pages/product_detail.html", product=product)
+    return redirect(url_for("catalog.catalog", _anchor="origen"), code=301)

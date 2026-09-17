@@ -1,10 +1,12 @@
-{% extends 'layouts/interior.html' %}
+{% extends 'layouts/base.html' %}
+{% from 'components/editorial_image.html' import photo %}
 {% block title %}Tu selección | ZERO DAY{% endblock %}
-{% block page_class %}cart-page{% endblock %}
-{% block interior_content %}
+{% block body_class %}cafe-home interior-page cart-page{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/interior.css') }}">{% endblock %}
+{% block content %}
 <header class="interior-heading"><p class="eyebrow">ZERO DAY / TU SELECCIÓN</p><div class="heading-grid"><h1>Un momento<br><em>para ti.</em></h1><a class="cafe-link" href="{{ url_for('cafe.menu') }}">Seguir mirando la carta ↗</a></div></header>
 <section class="cart-content paper" data-cart-page aria-label="Tu selección">
-    <div class="cart-empty" data-cart-empty><span class="empty-mark" aria-hidden="true">( pausa )</span><div><h2>Todo empieza<br>con una elección.</h2><p>Tu selección está vacía.</p><a class="cafe-link" href="{{ url_for('cafe.menu') }}">Explorar el menú ↗</a></div></div>
+    <div class="cart-empty" data-cart-empty><figure class="cart-empty-photo">{{ photo('croissant', 'Un croissant para acompañar tu próxima taza') }}</figure><div><h2>Todo empieza<br>con una elección.</h2><p>Tu selección está vacía.</p><a class="cafe-link" href="{{ url_for('cafe.menu') }}">Explorar el menú ↗</a></div></div>
     <div class="cart-layout" data-cart-filled hidden><div><div data-cart-lines></div><button type="button" class="text-control" data-cart-clear>Vaciar mi selección</button></div><aside class="cart-summary" aria-labelledby="summary-title"><span class="eyebrow" id="summary-title">TU MOMENTO / RESUMEN</span><div class="summary-total"><span>Subtotal</span><strong data-cart-subtotal>—</strong></div><p data-cart-quote-note></p><p class="checkout-note">Tu selección queda guardada en este dispositivo. Los pedidos en línea no están habilitados.</p><a class="cafe-link" href="{{ url_for('cafe.visit') }}">Nos vemos en el café ↗</a></aside></div>
     <p class="form-feedback" role="status" aria-live="polite" data-cart-feedback></p><button class="text-control" type="button" data-cart-retry hidden>Volver a calcular ↗</button>
     <noscript><p>Activa JavaScript para recuperar y editar tu selección guardada.</p></noscript>

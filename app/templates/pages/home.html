@@ -1,10 +1,120 @@
 {% extends 'layouts/base.html' %}
-{% from 'components/model_scene.html' import scene %}
-{% block title %}ZERO-DAY | El arte de tomarse un momento{% endblock %}
-{% block body_class %}cafe-home{% endblock %}
+{% from 'components/editorial_image.html' import photo %}
+{% block title %}ZERO DAY | El arte de tomarse un momento{% endblock %}
+{% block body_class %}cafe-home zero-home{% endblock %}
+{% block fonts %}
+<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+{% endblock %}
+{% block extra_head %}
+<style>
+/* The homepage's entire visual composition lives here. Interior pages keep their system. */
+.zero-home{--home-cream:#e1e0cc;--home-muted:#aaa99e;--home-black:#080a08;--font-body:'Almarai',sans-serif;--font-heading:'Almarai',sans-serif;background:var(--home-black);color:var(--home-cream);font-family:var(--font-body)}
+.zero-home::before{display:none}.zero-home h1,.zero-home h2,.zero-home h3,.zero-home p{color:inherit}.zero-home em{font-family:'Instrument Serif',Georgia,serif;font-weight:400}.zero-home a,.zero-home button{touch-action:manipulation}.zero-home [hidden]{display:none!important}.zero-home :focus-visible{outline:2px solid var(--home-cream);outline-offset:6px}.zero-home .skip-link:not(:focus){clip-path:inset(50%)}
+.zero-home .site-header{position:absolute;top:24px;left:50%;right:auto;width:max-content;max-width:calc(100% - 80px);transform:translateX(-50%)}
+.zero-home .site-nav{min-height:0;display:flex;padding:12px 30px 16px;border:0;border-radius:0 0 25px 25px;background:var(--home-black);gap:0}
+.zero-home .site-menu{display:flex;gap:clamp(22px,3.5vw,58px);margin:0;list-style:none;width:auto}.zero-home .site-menu a{font-size:14px;font-weight:400;letter-spacing:0;color:#e1e0ccdb;min-height:44px;padding:12px 0}.zero-home .site-menu a:hover{color:var(--home-cream)}.zero-home .nav-selection{padding-left:18px}.zero-home .home-nav-brand{display:none}.zero-home .menu-toggle{display:none}
+.home-hero{height:100svh;min-height:640px;max-height:1200px;padding:24px;position:relative}.home-hero-frame{position:relative;isolation:isolate;height:100%;border-radius:30px;overflow:hidden;background:#292b23}
+.home-hero-media{position:absolute;inset:0;z-index:-3;width:100%;height:100%;object-fit:cover;object-position:center;filter:none!important;transform:none;backdrop-filter:none}.home-hero-frame video,.home-film video{opacity:0;transition:opacity .65s ease}.home-hero-frame video.is-playing,.home-film video.is-playing{opacity:1}
+.home-hero-frame::before{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg,#00000014 0%,transparent 36%,transparent 63%,#00000073 100%)}
+.home-grain{position:absolute;inset:0;z-index:0;pointer-events:none;background:url('{{ url_for("static", filename="img/noise.svg") }}');mix-blend-mode:soft-light;opacity:.015}
+.home-hero-caption{position:absolute;top:110px;left:32px;right:32px;display:flex;justify-content:space-between;gap:1rem;font-size:12px;letter-spacing:.08em;color:#fff9e9}
+.home-hero-content{position:absolute;bottom:38px;left:32px;right:38px;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:clamp(16px,2.5vw,40px);align-items:end;z-index:1}
+.zero-home .home-title{grid-column:1/9;position:relative;font-size:clamp(70px,12vw,240px);line-height:.85;letter-spacing:-.085em;font-weight:400;white-space:nowrap;margin:0 0 4px -.035em;animation:none}
+.home-title-mark{font-size:.27em;display:inline-block;vertical-align:top;line-height:1;margin:.14em 0 0 .18em;letter-spacing:0;font-weight:300}
+.home-hero-copy{grid-column:9/-1;padding-left:10px}.zero-home .home-hero-copy p{font-size:clamp(15px,1.15vw,19px);line-height:1.5;max-width:340px;color:#e1e0cce6;margin:0 0 24px}
+.home-pill{display:inline-flex;align-items:center;justify-content:space-between;gap:26px;min-height:54px;padding:7px 7px 7px 23px;border-radius:999px;background:#dedbc8;color:#11160f;font-size:15px;font-weight:700;transition:gap .35s cubic-bezier(.16,1,.3,1)}.home-pill:hover{gap:36px}.home-pill>span{display:grid;place-items:center;width:40px;height:40px;flex-shrink:0;background:#131710;color:#e1e0cc;border-radius:50%;font-size:23px;transition:transform .35s ease}.home-pill:hover>span{transform:rotate(-35deg)}
+.zero-home .home-video-toggle{position:absolute;top:28px;right:24px;bottom:auto;left:auto;z-index:3;min-height:44px;padding:9px 13px;border:1px solid #fff5;border-radius:999px;font-size:11px;line-height:1.3;color:#f4f1e3;background:#0004;cursor:pointer}
+.home-about{padding:clamp(50px,8vw,120px) 24px}.home-about-inner{max-width:1152px;margin:auto;background:#10130f;padding:clamp(40px,6.5vw,94px) clamp(24px,6vw,100px);text-align:center;border-radius:3px}.home-label{display:block;font-size:12px;letter-spacing:.07em;font-weight:400;line-height:1.5}.zero-home .home-about h2{font-size:clamp(33px,4.8vw,70px);font-weight:400;line-height:1.09;letter-spacing:-.05em;max-width:890px;margin:36px auto 30px}.home-about h2 em{font-size:1.14em;letter-spacing:-.025em}.zero-home .home-about-copy{font-size:clamp(15px,1.3vw,18px);line-height:1.75;max-width:690px;margin:auto;color:#dedbc8}.home-about-link{display:inline-flex;gap:22px;align-items:center;margin-top:27px;min-height:44px;padding:8px 0;border-bottom:1px solid #73766a;font-size:14px}.home-about-link span{font-size:20px;transition:transform .3s ease}.home-about-link:hover span{transform:translate(3px,-3px)}
+.home-discover{position:relative;isolation:isolate;padding:0 24px clamp(50px,6vw,90px)}.home-discover::before{content:'';position:absolute;inset:0;z-index:-1;background:url('{{ url_for("static", filename="img/noise.svg") }}');opacity:.025;pointer-events:none}.home-discover-heading{max-width:1440px;margin:0 auto 36px}.zero-home .home-discover-heading h2{font-size:clamp(25px,3vw,44px);font-weight:400;line-height:1.25;letter-spacing:-.035em}.home-discover-heading h2>span{display:block;color:#93958a}.home-discover-heading>.home-label{margin-bottom:22px;color:#b7b9aa}
+.home-card-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;max-width:1720px;margin:auto}.home-card{position:relative;display:flex;flex-direction:column;min-width:0;min-height:480px;background:#20231e;padding:28px 25px;color:var(--home-cream);border-radius:3px;overflow:hidden}.home-card:nth-child(3){background:#242820}.home-card:nth-child(4){background:#20231e}.home-card-top{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:45px}.home-card-top>span{font-size:12px;color:#aaa99e}.home-object-thumbnail{width:60px;height:60px;background:#33392c;border-radius:5px;display:grid;place-items:center;overflow:hidden}.home-object-thumbnail img{width:100%;height:100%;object-fit:contain;transform:scale(1.1)}.home-card-monogram{font:italic 400 42px/1 'Instrument Serif',serif;color:#c6ccb1}.zero-home .home-card h3{font-size:clamp(21px,2vw,29px);font-weight:400;line-height:1.2;letter-spacing:-.045em;margin:0 0 22px}.zero-home .home-card p{font-size:15px;line-height:1.65;color:#b4b6aa;margin:0 0 22px}.home-card-notes{list-style:none;margin:0 0 28px;padding:0;display:grid;gap:15px}.home-card-notes li{font-size:14px;color:#b4b6aa;line-height:1.5;display:flex;align-items:baseline;gap:10px}.home-card-notes li::before{content:'—';color:#d0d5c0}.home-card-link{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:44px;padding:12px 0 3px;font-size:14px;color:var(--home-cream);border-top:1px solid #b4b6aa30}.home-card-link span{font-size:22px;transition:transform .35s ease}.home-card-link:hover span{transform:translate(3px,-3px)}
+.home-film{padding:0;background:#33392c;isolation:isolate}.home-film>img,.home-film>video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:32% center;z-index:-2;filter:none}.home-film::after{content:'';position:absolute;inset:45% 0 0;background:linear-gradient(transparent,#000b);z-index:-1;pointer-events:none}.home-film-caption{margin-top:auto;padding:28px;display:block}.home-film-caption>.home-label{font-size:11px;margin-bottom:16px;color:#e1e0cc}.home-film-caption strong{display:block;font-size:clamp(27px,2.8vw,40px);font-weight:400;letter-spacing:-.04em;line-height:1.15}.home-film-caption strong em{font-size:1.2em}.home-film-caption>span:last-child{display:block;margin-top:22px;font-size:24px}.zero-home .home-film .home-video-toggle{top:16px;right:16px;font-size:10px;padding:8px 11px}
+.zero-home .site-footer{background:#080a08;border-top:1px solid #dad9c526;padding:40px 32px 24px}.zero-home .footer-top{padding-bottom:0}.zero-home .footer-top p{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-size:24px}.zero-home .footer-top nav{font-size:14px;gap:24px}.zero-home .footer-word{font-family:'Almarai',sans-serif;font-size:15vw;font-weight:400;line-height:1;letter-spacing:-.08em;padding:40px 0 30px}.zero-home .footer-bottom,.zero-home .asset-credits{font-size:12px;color:#aaa99e}.zero-home .asset-credits{max-width:680px}.home-sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}.home-word-mask{display:inline-block;overflow:clip;vertical-align:bottom;padding-bottom:.12em;margin-bottom:-.12em}.home-word-mask>span{display:inline-block}.home-ready .home-word-mask>span{transform:translateY(24px);opacity:.25;transition:transform .7s cubic-bezier(.16,1,.3,1),opacity .7s ease;transition-delay:var(--word-delay,0s)}.home-ready.home-in-view .home-word-mask>span{transform:none;opacity:1}.home-card.home-ready{opacity:.3;transform:translateY(16px) scale(.97);transition:opacity .6s ease,transform .8s cubic-bezier(.16,1,.3,1);transition-delay:var(--card-delay,0s)}.home-card.home-in-view{opacity:1;transform:none}.home-copy-letter{opacity:var(--letter-opacity,1)}
+@media(min-width:1800px){.home-hero-content{left:55px;right:55px;bottom:55px}.home-card{padding:36px;min-height:520px}.home-film{padding:0}}
+@media(max-width:1100px){.home-hero-content{grid-template-columns:1fr;gap:30px}.zero-home .home-title{grid-column:1;font-size:16vw;order:2}.home-hero-copy{grid-column:1;max-width:450px;padding-left:0;display:flex;align-items:center;gap:22px}.zero-home .home-hero-copy p{margin:0;font-size:15px;max-width:245px}.home-pill{font-size:14px;gap:20px;white-space:nowrap}.home-card-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.home-card{min-height:420px}.home-card h3{font-size:28px}.home-card-top{margin-bottom:32px}.home-hero-caption{top:100px}.zero-home .home-video-toggle{top:88px}.home-film-caption strong{font-size:38px}}
+@media(max-width:767px){.home-hero{padding:16px;height:100svh;min-height:650px;max-height:950px}.home-hero-frame{border-radius:18px}.zero-home .site-header{top:16px;max-width:calc(100% - 72px);width:calc(100% - 72px)}.zero-home .site-nav{min-height:58px;padding:8px 18px 12px;border-radius:0 0 19px 19px;justify-content:space-between;flex-wrap:wrap;gap:0}.zero-home .home-nav-brand{display:block;font-size:13px;letter-spacing:.02em;line-height:1.2;padding:12px 0}.zero-home .menu-toggle{display:block;margin-left:auto;font-size:13px;padding:12px 0;color:var(--home-cream)}.zero-home .site-menu{order:3;flex-basis:100%;width:100%;display:flex;flex-wrap:wrap;gap:0 18px;margin:8px 0 0;border-top:1px solid #ffffff20;padding-top:8px}.zero-home .site-menu li{flex:1 0 40%;padding:0;border:0}.zero-home .site-menu a{font-size:14px;padding:12px 0}.zero-home .menu-ready .site-menu{display:none}.zero-home .menu-ready.menu-open .site-menu{display:flex}.zero-home .site-header.menu-open{background:none}.zero-home .site-menu .nav-selection{flex-basis:100%;border-top:1px solid #ffffff20}.home-hero-caption{top:95px;left:20px;right:20px;font-size:10px;max-width:70%;line-height:1.7}.home-hero-caption>span:last-child{display:none}.zero-home .home-video-toggle{top:85px;right:15px;padding:8px 10px;font-size:10px;max-width:110px}.home-hero-media{object-position:35% center}.home-hero-content{bottom:26px;left:18px;right:18px;gap:26px}.zero-home .home-title{font-size:16.5vw;line-height:.95;letter-spacing:-.085em;order:2;margin-bottom:0}.home-title-mark{margin-left:.12em}.home-hero-copy{display:block;max-width:300px}.zero-home .home-hero-copy p{font-size:15px;max-width:280px;line-height:1.55;margin-bottom:20px}.home-pill{min-height:50px;padding:6px 6px 6px 20px;font-size:14px}.home-pill>span{width:38px;height:38px}.home-about{padding:56px 16px}.home-about-inner{padding:40px 23px}.home-label{font-size:11px}.zero-home .home-about h2{font-size:clamp(31px,7.5vw,45px);line-height:1.15;margin:28px auto 25px;letter-spacing:-.045em}.zero-home .home-about-copy{font-size:15px;line-height:1.7}.home-discover{padding:0 16px 50px}.home-discover-heading{margin-bottom:26px;padding:0 6px}.zero-home .home-discover-heading h2{font-size:27px;line-height:1.3}.home-card-grid{grid-template-columns:1fr;gap:12px}.home-card{min-height:365px;padding:26px}.home-card-top{margin-bottom:30px}.zero-home .home-card h3{font-size:28px}.home-film{min-height:420px;padding:0}.home-film-caption{padding:28px}.home-film-caption strong{font-size:39px}.zero-home .site-footer{padding:32px 22px 22px}.zero-home .footer-top nav{gap:20px;font-size:14px}.zero-home .footer-word{font-size:15vw;padding:34px 0}.zero-home .footer-bottom{font-size:11px}.zero-home .asset-credits{font-size:12px}.home-about-link{font-size:14px}}
+@media(prefers-reduced-motion:reduce){.zero-home *{scroll-behavior:auto}.home-ready .home-word-mask>span,.home-card.home-ready{opacity:1;transform:none;transition:none}.home-copy-letter{opacity:1!important}}
+</style>
+{% endblock %}
+
+
+
 {% block content %}
-{% include 'components/home/hero.html' %}
-{% include 'components/home/space.html' %}
-{% include 'components/home/showcase.html' %}
-{% include 'components/home/menu_visit.html' %}
+<!-- 01 / HERO — original café video, natural color and an inset frame. -->
+<section class="home-hero" aria-labelledby="hero-title">
+    <div class="home-hero-frame" data-video-container>
+        <img class="home-hero-media" src="{{ url_for('static', filename=cafe.hero_poster) }}" alt="" width="2560" height="1440" fetchpriority="high">
+        {% if cafe.hero_video %}
+        <video class="home-hero-media" autoplay muted loop playsinline preload="metadata" width="2560" height="1440" poster="{{ url_for('static', filename=cafe.hero_poster) }}" {% if not cafe.hero_sources %}data-video-src="{{ url_for('static', filename=cafe.hero_video) }}"{% endif %} aria-hidden="true">
+            {% for source in cafe.hero_sources|default([]) %}
+            <source data-src="{{ url_for('static', filename=source.path) }}" type="{{ source.type }}"{% if source.media %} media="{{ source.media }}"{% endif %}>
+            {% endfor %}
+        </video>
+        <button class="media-toggle home-video-toggle" type="button" aria-pressed="false" aria-label="Reproducir o pausar el vídeo de portada">Reproducir vídeo</button>
+        {% endif %}
+        <div class="home-grain" aria-hidden="true"></div>
+        <div class="home-hero-caption"><span>CAFÉ. ESPACIO. TIEMPO.</span><span>EL ARTE DE TOMARSE UN MOMENTO.</span></div>
+        <div class="home-hero-content">
+            <h1 id="hero-title" class="home-title"><span data-home-pull>ZERO DAY</span><span class="home-title-mark" aria-hidden="true">*</span></h1>
+            <div class="home-hero-copy">
+                <p>Un café. Una mesa. Un poco de tiempo para ti. ZERO DAY es ese momento entre una cosa y la siguiente.</p>
+                <a class="home-pill" href="{{ url_for('cafe.menu') }}">Explora la carta <span aria-hidden="true">→</span></a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 02 / ABOUT — mixed typography and a progressive reading reveal. -->
+<section class="home-about" id="cafe" aria-labelledby="about-title">
+    <div class="home-about-inner">
+        <span class="home-label">ZERO DAY / UNA FORMA DE ESTAR</span>
+        <h2 id="about-title" data-home-pull>No vienes solo por café. <em>Vienes por ese momento.</em> El de bajar el ritmo y quedarte un rato.</h2>
+        <p class="home-about-copy" data-home-letters>El lugar donde crece. Las manos que lo cuidan. El tiempo que necesita. El café es el comienzo; tú pones el momento. Una mesa, una conversación y ninguna prisa.</p>
+        <a class="home-about-link" href="{{ url_for('cafe.experience') }}">Conoce la experiencia <span aria-hidden="true">↗</span></a>
+    </div>
+</section>
+
+{% if menu_featured %}
+<section class="editorial-section home-tastes" aria-labelledby="tastes-title"><div class="editorial-heading"><div><span class="eyebrow">DE LA CARTA / PARA EMPEZAR</span><h2 id="tastes-title">Un antojo.<br><em>Un buen comienzo.</em></h2></div><a class="cafe-link" href="{{ url_for('cafe.menu') }}">Ver los {{ menu_count }} productos ↗</a></div><div class="featured-tastes">{% for item in menu_featured[:3] %}<a class="taste-card" href="{{ url_for('cafe.product', slug=item.slug) }}"><div class="taste-image"><img src="{{ item.image }}" srcset="{{ item.image_small }} 800w, {{ item.image }} 1600w" sizes="(max-width: 767px) 90vw, 30vw" alt="{{ item.name }}" loading="lazy" width="800" height="1000"><span>0{{ loop.index }} / DESCUBRIR</span></div><div class="taste-caption"><h3>{{ item.name }}</h3><span>{{ item.formatted_price }}</span></div><p>{{ item.short_description }}</p></a>{% endfor %}</div></section>
+{% endif %}
+<section class="editorial-split home-ritual"><div class="editorial-picture">{{ photo('pour-over', 'Manos preparando café con un filtro y una jarra de vidrio', 'journal') }}<span class="picture-caption">LA BELLEZA DE LO COTIDIANO</span></div><div class="editorial-copy"><span class="eyebrow">EL CAFÉ / SIN COMPLICACIONES</span><h2>Antes del primer sorbo,<br><em>un pequeño ritual.</em></h2><p>El sonido de la molienda. El agua que cae. El aroma que llega antes que la taza. Hay cosas que se disfrutan más cuando les damos tiempo.</p><p>Intenso, suave, sobre hielo o con leche: empieza por lo que te gusta y descubre una nueva forma de tomarlo.</p><a class="cafe-link" href="{{ url_for('cafe.experience') }}">Descubre el ritual ↗</a></div></section>
+
+<!-- 03 / DISCOVER — four pieces, each opening a different room of ZERO DAY. -->
+<section class="home-discover" id="experiencia" aria-labelledby="discover-title">
+    <div class="home-discover-heading">
+        <span class="home-label">UN CAFÉ. MUCHAS FORMAS DE TOMARSE UN MOMENTO.</span>
+        <h2 id="discover-title" data-home-pull>Cada detalle. En su punto. <span>Un lugar para volver a ti.</span></h2>
+    </div>
+    <div class="home-card-grid">
+        <article class="home-card home-film" id="espacio" data-home-card data-video-container>
+            <img src="{{ url_for('static', filename=cafe.coffee_poster) }}" alt="" width="1280" height="720" loading="lazy">
+            {% if cafe.coffee_video %}
+            <video autoplay muted loop playsinline preload="none" poster="{{ url_for('static', filename=cafe.coffee_poster) }}" data-video-src="{{ url_for('static', filename=cafe.coffee_video) }}" aria-hidden="true"></video>
+            <button class="media-toggle home-video-toggle" type="button" aria-pressed="false" aria-label="Reproducir o pausar el vídeo de ambiente">Reproducir vídeo</button>
+            {% endif %}
+            <a class="home-film-caption" href="{{ url_for('cafe.space') }}"><span class="home-label">EL RITUAL / ZERO DAY</span><strong>Un lugar<br>para <em>quedarse.</em></strong><span aria-hidden="true">↗</span></a>
+        </article>
+        <article class="home-card" id="menu" data-home-card>
+            <div class="home-card-top"><div class="home-object-thumbnail"><img src="{{ url_for('static', filename='img/products/ceramic.webp') }}" alt="" width="80" height="80" loading="lazy"></div><span>01</span></div>
+            <h3>Tu próximo café.</h3>
+            <p>El siguiente momento empieza con una elección.</p>
+            {% if menu_categories %}<ul class="home-card-notes">{% for category in menu_categories[:3] %}<li>{{ category.name }}</li>{% endfor %}</ul>{% else %}<ul class="home-card-notes"><li>Explora la carta.</li><li>Elige a tu ritmo.</li><li>Haz una pausa.</li></ul>{% endif %}
+            <a class="home-card-link" href="{{ url_for('cafe.menu') }}">Ver el menú <span aria-hidden="true">↗</span></a>
+        </article>
+        <article class="home-card" id="seleccion" data-home-card>
+            <div class="home-card-top"><div class="home-object-thumbnail"><img src="{{ url_for('static', filename='img/products/espresso.webp') }}" alt="" width="80" height="80" loading="lazy"></div><span>02</span></div>
+            <h3>Elegir con intención.</h3>
+            <p>Lo que elegimos también habla de nosotros.</p>
+            <ul class="home-card-notes"><li>Objetos del universo del café.</li><li>Materiales con carácter.</li><li>Identidades propias.</li></ul>
+            <a class="home-card-link" href="{{ url_for('catalog.catalog') }}">Explorar la selección <span aria-hidden="true">↗</span></a>
+        </article>
+        <article class="home-card" id="visitanos" data-home-card>
+            <div class="home-card-top"><div class="home-object-thumbnail home-card-monogram" aria-hidden="true">zd.</div><span>03</span></div>
+            <h3>Nos vemos aquí.</h3>
+            <p>Una mesa. Una conversación. Ninguna prisa.</p>
+            <ul class="home-card-notes">{% if cafe.address %}<li>{{ cafe.address }}</li>{% endif %}{% for hours in cafe.hours %}<li>{{ hours }}</li>{% endfor %}</ul>
+            <a class="home-card-link" href="{{ url_for('cafe.visit') }}">Prepara tu visita <span aria-hidden="true">↗</span></a>
+        </article>
+    </div>
+</section>
+<section class="city-signoff"><span class="eyebrow">MACHALA, ECUADOR</span><h2>El día sigue.<br><em>La pausa es tuya.</em></h2><p>Ayacucho y 8va Norte. Café, algo rico y un momento entre una cosa y la siguiente.</p><a class="home-pill" href="{{ url_for('cafe.visit') }}">Ven a encontrarnos <span aria-hidden="true">↗</span></a></section>
 {% endblock %}
