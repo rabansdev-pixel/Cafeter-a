@@ -16,9 +16,9 @@ The brief's React Router / Framer Motion language is implemented with the existi
 | `/espacio` | Spatial composition and slots for authentic photography |
 | `/experiencia` | Existing café philosophy; confirmed service blocks when supplied |
 | `/visitanos` | Verified practical information only |
-| `/origenes`, `/metodos`, `/cafe/<slug>` | Existing educational routes retained |
+| `/origenes`, `/metodos`, `/cafe/<slug>` | Legacy redirects to catalog origins / experience methods; unknown coffee slugs remain 404 |
 
-Shared interior layout: `app/templates/layouts/interior.html`. New room-specific styles: `app/static/css/interior.css`. The homepage's typography, grid and section order remain intact. Its demonstration menu and social link are no longer rendered as public information under Phase 2's content rules.
+Each page contains its own sections in `app/templates/pages/`. The only shared layout is `app/templates/layouts/base.html`; navigation, footer and the technical 3D macro remain shared. New room-specific styles: `app/static/css/interior.css`. The homepage's typography, grid and section order remain intact. Its demonstration menu and social link are no longer rendered as public information under Phase 2's content rules.
 
 ## Add real menu content
 
@@ -111,3 +111,7 @@ Python integration coverage includes direct routes/404s, unpublished content, in
 The local Chromium audit uses an ephemeral testing server and injects artificial menu records only into that process. It checks the complete menu → product → cart flow, refresh, editing, offline recovery, empty/unavailable states, six viewport widths, video, reduced motion, no-JavaScript content and the catalog's WebGL fallback. Screenshots are under `/tmp/zero-day-phase2/` during this working session.
 
 Latest result: 76 Python tests and 27 JavaScript tests pass. Chromium checks pass at 375, 430, 768, 1024, 1440 and 1920 px, with no horizontal overflow or JavaScript errors. The menu/product/cart flow and offline recovery pass at 375 and 1440 px.
+
+The page directory now contains seven primary templates and two error templates. Preparation guidance lives in `experience.html#metodos`; the useful origin/ficha concepts live in `catalog.html#origen`. The retired seeded coffee detail pages are not promoted to purchasable menu items.
+
+`menu.html` contains both the full menu and individual product view, selected by the route-provided `item`. `/menu` and `/producto/<slug>` remain separate URLs.

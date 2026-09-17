@@ -36,3 +36,21 @@ Author attribution and licenses remain at `/static/models/credits.html`.
 ## Validation
 
 45 Python tests and 21 JavaScript tests pass. Chromium review at 375, 430, 768, 1024, 1440 and 1920 px found no horizontal overflow or JavaScript errors. All ten exhibition models reach the rendered state, with one shared canvas. Mobile navigation, keyboard selection, reduced motion, no-JavaScript content and all five public routes were checked. Review screenshots and results: `/tmp/zero-day-refinement/`.
+
+## Shared visual refinement (September 2026)
+
+All pages now use `components/navbar.html` and the homepage's Almarai / Instrument
+Serif typography. `css/unified.css` supplies the shared dark palette, compact
+interior headings, responsive navigation, menu presentation and practical visit
+layout. The existing space illustration remains until real venue photos exist.
+
+Atmosphere videos initialize muted, looping and inline, including future `<video>`
+elements. Lazy sources use `data-video-src`; an optional pause button belongs in
+`data-video-container`. Playback pauses offscreen and respects reduced motion and
+data saving. The hero retains its original file; `coffe.mp4` appears on the home
+card and Experience page with a matching generated poster. No video re-encoding
+or quality enhancement was applied; native looping does not hide cuts in the source.
+
+Validation: 76 Python and 27 JavaScript tests pass. Seven routes checked at 375,
+768 and 1440 px have no horizontal overflow or JavaScript errors; mobile navigation
+opens and closes with Escape.

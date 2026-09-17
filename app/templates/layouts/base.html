@@ -11,7 +11,7 @@
     <!-- Tipografía Editorial Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    {% block fonts %}<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">{% endblock %}
 
     <!-- Hojas de Estilos del Sistema de Diseño -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/variables.css') }}">
@@ -22,11 +22,13 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/site.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/cafe.css') }}">
     {% block extra_head %}{% endblock %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/unified.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/editorial-update.css') }}">
 </head>
 <body class="{% block body_class %}{% endblock %}">
     <a class="skip-link" href="#main-content">Saltar al contenido</a>
     <!-- Navbar Flotante -->
-    {% include 'components/navbar.html' %}
+    {% block navigation %}{% include 'components/navbar.html' %}{% endblock %}
 
     <!-- Contenido Principal -->
     <main id="main-content" tabindex="-1">

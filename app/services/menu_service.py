@@ -90,6 +90,7 @@ class MenuService:
                     ),
                     long_description=item.get("long_description", ""),
                     image=media_url(item.get("image")),
+                    image_small=media_url(item.get("image_small")),
                     gallery=item.get("gallery", []),
                     options=item.get("options", []),
                     modifiers=item.get("modifiers", []),
@@ -117,6 +118,8 @@ class MenuService:
                 group = dict(
                     name=item["category"],
                     anchor=f"categoria-{len(categories) + 1}",
+                    intro=next((c.get("intro", "") for c in cls.content().get("menu", [])
+                                if c.get("name") == item["category"]), ""),
                     items=[],
                 )
                 categories.append(group)

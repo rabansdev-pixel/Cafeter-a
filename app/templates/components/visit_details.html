@@ -1,5 +1,0 @@
-{% if cafe.address %}<div class="visit-fact"><h2>Encuéntranos</h2><address>{{ cafe.address }}</address>{% if cafe.maps_url %}<a class="cafe-link" href="{{ cafe.maps_url }}" rel="noopener noreferrer">Cómo llegar ↗</a>{% endif %}</div>{% endif %}
-{% if cafe.hours %}<div class="visit-fact"><h2>Horarios</h2>{% for hours in cafe.hours %}<p>{{ hours }}</p>{% endfor %}</div>{% endif %}
-{% if cafe.email or cafe.phone %}<div class="visit-fact"><h2>Hablemos</h2>{% if cafe.email %}<a class="cafe-link" href="mailto:{{ cafe.email }}">{{ cafe.email }}</a>{% endif %}{% if cafe.phone %}<a class="cafe-link" href="tel:{{ cafe.phone }}">{{ cafe.phone }}</a>{% endif %}</div>{% endif %}
-{% if cafe.instagram_url and not cafe.social_is_example %}<div class="visit-fact"><h2>Más de ZERO DAY</h2><a class="cafe-link" href="{{ cafe.instagram_url }}" rel="noopener noreferrer">Instagram ↗</a></div>{% endif %}
-{% for policy in cafe.policies %}<div class="visit-fact"><h2>{{ policy.title }}</h2><p>{{ policy.description }}</p></div>{% endfor %}

@@ -7,7 +7,7 @@ import { initCartDrawer } from '../../app/static/js/modules/cart_drawer.js';
 import { initHeroProduct } from '../../app/static/js/modules/hero_product.js';
 import { initTastingRadar } from '../../app/static/js/modules/tasting_radar.js';
 
-const cartMarkup = readFileSync(new URL('../../app/templates/components/cart_drawer.html', import.meta.url), 'utf8');
+const cartMarkup = readFileSync(new URL('../fixtures/cart_drawer.html', import.meta.url), 'utf8');
 const product = { id: 12, name: '<img src=x onerror=alert(1)>', price: 25000.5, quantity: 1, image_url: '/coffee.svg' };
 
 function setup(t, markup = '') {

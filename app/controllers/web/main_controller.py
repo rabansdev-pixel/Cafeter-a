@@ -1,9 +1,7 @@
-from flask import Blueprint, render_template
-from app.services.product_service import ProductService
+from flask import Blueprint, render_template, redirect, url_for
 from app.cafe_content import OBJECTS
 
 main_bp = Blueprint("main", __name__)
-product_service = ProductService()
 
 
 @main_bp.route("/")
@@ -15,12 +13,11 @@ def home():
 
 @main_bp.route("/origenes")
 def origins():
-    """Página de historia de fincas, altitud y procesos de fermentación."""
-    products = product_service.get_catalog()
-    return render_template("pages/origins.html", products=products)
+    """Keep old bookmarks pointing to the consolidated origin section."""
+    return redirect(url_for("catalog.catalog", _anchor="origen"), code=301)
 
 
 @main_bp.route("/metodos")
 def methods():
-    """Guía interactiva de métodos de extracción de café de especialidad."""
-    return render_template("pages/methods.html")
+    """Preparation now belongs to the café experience."""
+    return redirect(url_for("cafe.experience", _anchor="metodos"), code=301)

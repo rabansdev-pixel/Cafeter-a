@@ -1,6 +1,6 @@
 <footer class="site-footer">
-    <div class="footer-top"><p>El arte de tomarse<br>un momento.</p><nav aria-label="Navegación del pie de página"><a href="{{ url_for('cafe.menu') }}">Menú</a><a href="{{ url_for('cafe.visit') }}">Visítanos</a><a href="{{ url_for('catalog.catalog') }}">Catálogo</a><a href="{{ url_for('main.methods') }}">Métodos</a></nav></div>
+    <div class="footer-top"><p>El arte de tomarse<br>un momento.</p><nav aria-label="Navegación del pie de página"><a href="{{ url_for('cafe.menu') }}">Menú</a><a href="{{ url_for('cafe.visit') }}">Visítanos</a><a href="{{ url_for('catalog.catalog') }}">Catálogo</a><a href="{{ url_for('cafe.experience', _anchor='metodos') }}">Métodos</a></nav></div>
     <a class="footer-word" href="{{ url_for('main.home') }}" aria-label="ZERO-DAY, inicio">ZERO DAY</a>
     <div class="footer-bottom"><span>© 2026 ZERO-DAY</span><span>CAFÉ · ESPACIO · PERSONAS · TIEMPO</span><a href="#main-content">Volver arriba ↑</a></div>
-    <details class="asset-credits"><summary>Créditos visuales</summary><p>Objetos de una selección editorial. Marcas y diseños pertenecen a sus respectivos autores. <a href="{{ url_for('static', filename='models/credits.html') }}">Modelos originales y licencias ↗</a></p></details>
+    <details class="asset-credits"><summary>Créditos visuales</summary><p>Objetos de una selección editorial. Marcas y diseños pertenecen a sus respectivos autores. <a href="{{ url_for('static', filename='models/credits.html') }}">Modelos originales y licencias ↗</a></p><p>Fotografías de referencia de Pexels y Unsplash; no representan necesariamente los productos o el local. <a href="{{ url_for('static', filename='img/photo-credits.html') }}">Fotografías y fuentes ↗</a></p></details>
 </footer>

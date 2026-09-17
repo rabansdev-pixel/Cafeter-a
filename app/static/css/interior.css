@@ -16,3 +16,5 @@
 @supports(view-transition-name:none){@view-transition{navigation:auto}::view-transition-old(root),::view-transition-new(root){animation-duration:.18s}}
 @media(prefers-reduced-motion:reduce){::view-transition-old(root),::view-transition-new(root){animation:none}}
 .interior-page::before{display:none}.skip-link:not(:focus){clip-path:inset(50%)}
+/* Compact educational content consolidated from the retired standalone pages. */
+.reading-section{scroll-margin-top:2rem}.reading-section h2{margin:1.5rem 0}.reading-section>p:not(.eyebrow){max-width:640px}.reading-notes{margin:2rem 0;max-width:960px}.reading-notes details{border-top:1px solid #27372d44;padding:1rem 0}.reading-notes details:last-child{border-bottom:1px solid #27372d44}.reading-notes summary{cursor:pointer;min-height:44px;font:400 clamp(1.4rem,2.3vw,2.2rem)/1.4 var(--font-heading);padding:.4rem 0}.reading-notes summary span{float:right;font:400 .875rem/2 var(--font-body);margin-left:1rem}.reading-notes details p{margin:1rem 0;max-width:650px;font-size:1rem}
