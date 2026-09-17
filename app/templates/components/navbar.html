@@ -1,6 +1,11 @@
 <header class="site-header">
     <nav class="site-nav" aria-label="Navegación principal">
         <a href="{{ url_for('main.home') }}" class="home-nav-brand" aria-label="ZERO DAY, inicio">ZERO DAY</a>
+        {% if request.endpoint == 'main.home' %}
+        <button class="home-theme-toggle" type="button" aria-label="Activar tema claro" aria-pressed="false" hidden>
+            <span class="theme-symbol" aria-hidden="true">◐</span><span data-theme-label>Claro</span>
+        </button>
+        {% endif %}
         <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-menu">Explorar <span aria-hidden="true">+</span></button>
         <ul class="site-menu" id="site-menu">
             {% for endpoint, label in [('main.home', 'Nuestro café'), ('cafe.space', 'Espacio'), ('cafe.menu', 'Menú'), ('cafe.experience', 'Experiencia'), ('cafe.visit', 'Visítanos')] %}

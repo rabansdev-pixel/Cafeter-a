@@ -9,6 +9,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
 {% endblock %}
 {% block extra_head %}
+<script>
+    try {
+        const saved = localStorage.getItem('zero-day-home-theme');
+        document.documentElement.dataset.homeTheme = saved === 'light' || saved === 'dark'
+            ? saved : (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+    } catch (_) { document.documentElement.dataset.homeTheme = 'dark'; }
+</script>
 <style>
 /* The homepage's entire visual composition lives here. Interior pages keep their system. */
 .zero-home{--home-cream:#e1e0cc;--home-muted:#aaa99e;--home-black:#080a08;--font-body:'Almarai',sans-serif;--font-heading:'Almarai',sans-serif;background:var(--home-black);color:var(--home-cream);font-family:var(--font-body)}
@@ -71,13 +78,14 @@
     <div class="home-about-inner">
         <span class="home-label">ZERO DAY / UNA FORMA DE ESTAR</span>
         <h2 id="about-title" data-home-pull>No vienes solo por café. <em>Vienes por ese momento.</em> El de bajar el ritmo y quedarte un rato.</h2>
+        <figure class="home-about-photo">{{ home_photo('ritual', 'Manos preparando espresso junto a una máquina de café', '(max-width: 767px) 90vw, 40vw') }}<figcaption>EL TIEMPO TAMBIÉN ES UN INGREDIENTE / IMAGEN EDITORIAL</figcaption></figure>
         <p class="home-about-copy" data-home-letters>El lugar donde crece. Las manos que lo cuidan. El tiempo que necesita. El café es el comienzo; tú pones el momento. Una mesa, una conversación y ninguna prisa.</p>
         <a class="home-about-link" href="{{ url_for('cafe.experience') }}">Conoce la experiencia <span aria-hidden="true">↗</span></a>
     </div>
 </section>
 
 {% if menu_featured %}
-<section class="editorial-section home-tastes" aria-labelledby="tastes-title"><div class="editorial-heading"><div><span class="eyebrow">DE LA CARTA / PARA EMPEZAR</span><h2 id="tastes-title">Un antojo.<br>Un buen comienzo.</h2></div><a class="cafe-link" href="{{ url_for('cafe.menu') }}">Ver los {{ menu_count }} productos ↗</a></div><div class="featured-tastes">{% for item in menu_featured[:3] %}<a class="taste-card" href="{{ url_for('cafe.product', slug=item.slug) }}"><div class="taste-image"><img src="{{ item.image }}" srcset="{{ item.image_small }} 800w, {{ item.image }} 1600w" sizes="(max-width: 600px) 90vw, (max-width: 1023px) 45vw, 40vw" decoding="async" alt="{{ item.name }}" loading="lazy" width="800" height="1000"><span>0{{ loop.index }} / DESCUBRIR</span></div><div class="taste-caption"><h3>{{ item.name }}</h3><span>{{ item.formatted_price }}</span></div><p>{{ item.short_description }}</p></a>{% endfor %}</div><p class="home-photo-note">Fotografías de referencia de la carta.</p></section>
+<section class="editorial-section home-tastes" aria-labelledby="tastes-title"><div class="editorial-heading"><div><span class="eyebrow">DE LA CARTA / PARA EMPEZAR</span><h2 id="tastes-title">Un antojo.<br>Un buen comienzo.</h2></div><a class="cafe-link" href="{{ url_for('cafe.menu') }}">Ver los {{ menu_count }} productos ↗</a></div><div class="featured-tastes">{% for item in menu_featured[:3] %}<a class="taste-card" href="{{ url_for('cafe.product', slug=item.slug) }}"><div class="taste-image"{% if item.slug == 'cold-brew' %} data-cold-brew{% endif %}>{% if item.slug == 'cold-brew' %}{{ home_photo('cold-brew', 'Café frío con hielo sobre madera, con luz natural', '(max-width: 767px) 90vw, 45vw') }}{% else %}<img src="{{ item.image }}" srcset="{{ item.image_small }} 800w, {{ item.image }} 1600w" sizes="(max-width: 600px) 90vw, (max-width: 1023px) 45vw, 40vw" decoding="async" alt="{{ item.name }}" loading="lazy" width="800" height="1000">{% endif %}<span>0{{ loop.index }} / DESCUBRIR</span></div><div class="taste-caption"><h3>{{ item.name }}</h3><span>{{ item.formatted_price }}</span></div><p>{{ item.short_description }}</p></a>{% endfor %}</div><p class="home-photo-note">Fotografías de referencia de la carta.</p></section>
 {% endif %}
 <section class="editorial-split home-ritual"><div class="editorial-picture">{{ home_photo('ritual', 'Manos trabajando el portafiltro de una máquina de espresso') }}<span class="picture-caption">EL OFICIO / IMAGEN EDITORIAL</span></div><div class="editorial-copy"><span class="eyebrow">EL CAFÉ / SIN COMPLICACIONES</span><h2>Antes del primer sorbo,<br>un pequeño ritual.</h2><p>El sonido de la molienda. El agua que cae. El aroma que llega antes que la taza. Hay cosas que se disfrutan más cuando les damos tiempo.</p><p>Intenso, suave, sobre hielo o con leche: empieza por lo que te gusta y descubre una nueva forma de tomarlo.</p><a class="cafe-link" href="{{ url_for('cafe.experience') }}">Descubre el ritual ↗</a></div></section>
 
@@ -122,4 +130,8 @@
     </div>
 </section>
 <section class="city-signoff"><span class="eyebrow">MACHALA, ECUADOR</span><h2>El día sigue.<br><em>La pausa es tuya.</em></h2><p>Ayacucho y 8va Norte. Café, algo rico y un momento entre una cosa y la siguiente.</p><a class="home-pill" href="{{ url_for('cafe.visit') }}">Ven a encontrarnos <span aria-hidden="true">↗</span></a></section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/home_theme.js') }}" defer></script>
 {% endblock %}

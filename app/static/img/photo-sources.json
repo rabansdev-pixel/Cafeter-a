@@ -323,5 +323,15 @@
       "home/coffee-800.webp",
       "home/coffee-1600.webp"
     ]
+  },
+  {
+    "name": "home-cold-brew",
+    "photographer": "Takeshi Arai",
+    "source": "https://www.pexels.com/photo/8931529/",
+    "license": "https://www.pexels.com/license/",
+    "files": [
+      "home/cold-brew-800.webp",
+      "home/cold-brew-1600.webp"
+    ]
   }
 ]
