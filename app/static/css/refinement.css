@@ -1,0 +1,182 @@
+/* HOME only. Loaded last to override inline home styles, unified.css radii/grids,
+   and cafe.css heading specificity without changing the shared design system. */
+.zero-home { --home-gutter:clamp(22px,5vw,96px); --home-ease:cubic-bezier(.16,1,.3,1); }
+.zero-home .site-nav { gap:32px; padding:10px 28px 14px; border-radius:0 0 20px 20px; }
+.zero-home .home-nav-brand { display:block; flex-shrink:0; font-size:13px; letter-spacing:-.04em; padding:14px 24px 14px 0; border-right:1px solid #e1e0cc26; }
+.zero-home .site-menu { gap:clamp(20px,2.6vw,42px); }
+.zero-home .site-menu a { font-size:13px; }
+.zero-home .home-hero-content { left:clamp(24px,3vw,64px); right:clamp(24px,3vw,64px); bottom:clamp(32px,4vw,64px); gap:32px; }
+.zero-home .home-title { font-size:clamp(70px,11.5vw,220px); letter-spacing:-.075em; line-height:.94; }
+.zero-home .home-hero-copy { padding:0 0 4px; }
+.zero-home .home-hero-copy p { max-width:30ch; font-size:clamp(15px,1.05vw,18px); line-height:1.65; margin-bottom:24px; }
+.zero-home .home-hero-caption { left:clamp(24px,3vw,64px); right:clamp(24px,3vw,64px); letter-spacing:.12em; font-size:11px; }
+.zero-home .home-pill { font-weight:400; gap:28px; transition:background .3s var(--home-ease); }
+.zero-home .home-pill:hover { gap:28px; background:#efecdc; }
+.zero-home .home-pill:hover>span { transform:translateX(2px); }
+.zero-home .home-about { padding:clamp(64px,8vw,120px) var(--home-gutter) clamp(48px,6vw,88px); }
+.zero-home .home-about-inner { max-width:1440px; padding:0; margin:auto; background:none; border-radius:0; text-align:left; display:grid; grid-template-columns:repeat(12,minmax(0,1fr)); column-gap:28px; }
+.zero-home .home-about .home-label { grid-column:1/4; padding-top:10px; max-width:20ch; color:#b4b6aa; }
+.zero-home .home-about h2 { grid-column:4/-1; font-size:clamp(32px,3.7vw,60px); line-height:1.18; letter-spacing:-.04em; margin:0 0 36px; max-width:24ch; }
+.zero-home .home-about h2 em { font-size:1.08em; }
+.zero-home .home-about-copy { grid-column:7/-1; margin:0; max-width:43ch; font-size:16px; color:#b4b6aa; }
+.zero-home .home-about-link { grid-column:7/-1; justify-self:start; margin-top:20px; }
+.zero-home .home-copy-letter { opacity:calc(.65 + var(--letter-opacity,1)*.35); }
+.zero-home .home-tastes { max-width:1632px; margin:auto; padding:36px var(--home-gutter) 80px; }
+.zero-home .editorial-heading { border-top:1px solid #e1e0cc2b; padding-top:28px; margin-bottom:40px; }
+.zero-home .editorial-heading h2 { font-size:clamp(32px,3.5vw,54px); line-height:1.16; margin-top:20px; }
+.zero-home .featured-tastes { grid-template-columns:1.35fr 1fr; gap:36px 7%; align-items:start; }
+.zero-home .taste-card:first-child { grid-row:1/3; }
+.zero-home .taste-card:not(:first-child) { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,.85fr); gap:0 24px; align-items:start; }
+.zero-home .taste-card:not(:first-child) .taste-image { grid-row:1/3; aspect-ratio:.82; }
+.zero-home .taste-card:not(:first-child) .taste-caption { display:block; padding-top:12px; }
+.zero-home .taste-card:not(:first-child) .taste-caption>span { display:block; margin-top:12px; }
+.zero-home .taste-card:not(:first-child)>p { font-size:14px; align-self:start; }
+.zero-home .taste-image { border-radius:2px; aspect-ratio:1; }
+.zero-home .taste-image img { object-position:50% 55%; transition:transform .6s var(--home-ease); }
+.zero-home .taste-image>span { top:auto; bottom:14px; left:14px; border-radius:0; background:#080a08d9; padding:7px 10px; }
+.zero-home .taste-caption { padding-top:18px; }
+.zero-home .taste-caption h3 { font-size:clamp(20px,1.8vw,28px); line-height:1.25; }
+.zero-home .home-ritual { max-width:1632px; margin:auto; padding:32px var(--home-gutter) clamp(72px,9vw,136px); grid-template-columns:1fr 1.05fr; gap:9%; align-items:center; }
+.zero-home .home-ritual .editorial-picture { border-radius:2px; aspect-ratio:.9; }
+.zero-home .home-ritual img { object-position:48% 44%; }
+.zero-home .home-ritual .picture-caption { position:static; display:block; background:#080a08; padding:14px 0 0; font-size:10px; letter-spacing:.1em; border-radius:0; color:#b4b6aa; }
+.zero-home .home-ritual .editorial-copy h2 { font-size:clamp(30px,3.4vw,52px); line-height:1.2; font-weight:400; }
+.zero-home .home-ritual .editorial-copy p { font-size:16px; max-width:39ch; }
+.zero-home .home-discover { padding:0 var(--home-gutter) 32px; max-width:1632px; margin:auto; }
+.zero-home .home-discover::before { display:none; }
+.zero-home .home-discover-heading { margin:0 0 40px; display:grid; grid-template-columns:1fr 2fr; gap:40px; border-top:1px solid #e1e0cc2b; padding-top:28px; }
+.zero-home .home-discover-heading>.home-label { max-width:24ch; margin:0; }
+.zero-home .home-discover-heading h2 { font-size:clamp(28px,3vw,44px); margin:0; }
+.zero-home .home-card-grid { grid-template-columns:repeat(12,minmax(0,1fr)); gap:36px; align-items:start; }
+.zero-home .home-card { padding:0; border-radius:0; min-height:0; background:none; overflow:visible; }
+.zero-home .home-film { grid-column:1/8; grid-row:1/3; min-height:720px; height:100%; overflow:hidden; border-radius:3px; background:#20251d; }
+.zero-home .home-film>img,.zero-home .home-film>video { object-position:43% center; }
+.zero-home .home-film-caption { padding:36px; }
+.zero-home .home-film-caption strong { font-size:clamp(38px,4.6vw,70px); }
+.zero-home .home-menu-story { grid-column:8/-1; }
+.zero-home .home-selection-story { grid-column:8/-1; display:grid; grid-template-columns:1fr 1.1fr; gap:0 24px; border-top:1px solid #e1e0cc30; padding-top:28px; }
+.zero-home .home-story-photo { overflow:hidden; aspect-ratio:1.6; margin-bottom:22px; }
+.zero-home .home-story-photo img { width:100%; height:100%; display:block; object-fit:cover; object-position:50% 56%; transition:transform .6s var(--home-ease); }
+.zero-home .home-menu-story .home-story-photo img { object-position:50% 58%; }
+.zero-home .home-selection-story .home-story-photo { grid-column:1; grid-row:1/6; margin:0; aspect-ratio:.7; }
+.zero-home .home-selection-story .home-story-photo img { object-position:53% 48%; }
+.zero-home .home-selection-story>*:not(.home-story-photo) { grid-column:2; }
+.zero-home .home-card-top { margin:0 0 16px; }
+.zero-home .home-card h3 { font-size:clamp(23px,2.1vw,32px); margin-bottom:14px; }
+.zero-home .home-card p { font-size:14px; line-height:1.7; margin-bottom:18px; }
+.zero-home .home-card-notes { gap:7px; margin-bottom:22px; }
+.zero-home .home-card-notes li { font-size:13px; }
+.zero-home .home-card-link { font-size:14px; padding:12px 0; }
+.zero-home .home-visit-story { grid-column:1/-1; display:grid; grid-template-columns:1fr 1.4fr 1.2fr; gap:12px 36px; padding:32px 0; border-top:1px solid #e1e0cc30; border-bottom:1px solid #e1e0cc30; }
+.zero-home .home-visit-story .home-card-top { grid-column:1; grid-row:1/3; }
+.zero-home .home-visit-story h3 { grid-column:2; }
+.zero-home .home-visit-story p { grid-column:2; grid-row:2; margin:0; }
+.zero-home .home-visit-story .home-card-notes { grid-column:3; grid-row:1/3; }
+.zero-home .home-visit-story .home-card-link { grid-column:3; border:0; }
+.zero-home .city-signoff { max-width:1440px; margin:0 auto; padding:clamp(56px,7vw,104px) var(--home-gutter); background:none; border-radius:0; }
+.zero-home .city-signoff h2 { font-size:clamp(38px,4.6vw,68px); line-height:1.13; }
+.zero-home .city-signoff p { font-size:15px; }
+.zero-home .site-footer { padding:36px var(--home-gutter) 24px; }
+.zero-home .footer-top { max-width:1440px; margin:auto; align-items:center; }
+.zero-home .footer-top nav a { padding-block:10px; }
+.zero-home .footer-word { font-size:clamp(60px,14.6vw,330px); text-align:center; padding:44px 0 36px; }
+.zero-home .footer-bottom { padding-top:22px; }
+.zero-home .home-card.home-ready { transform:translateY(16px); }
+.zero-home .home-card.home-in-view { transform:none; }
+.zero-home .home-ready .home-word-mask>span { transform:translateY(16px); }
+.zero-home .home-ready.home-in-view .home-word-mask>span { transform:none; }
+@media(hover:hover) {
+ .zero-home .home-card:hover .home-story-photo img { transform:scale(1.02); }
+ .zero-home .footer-top a:hover { text-decoration:underline; text-underline-offset:6px; }
+}
+@media(min-width:768px) and (max-width:1100px) {
+ .zero-home .site-nav { gap:20px; padding-inline:22px; }
+ .zero-home .site-menu { gap:18px; }
+ .zero-home .home-nav-brand { padding-right:18px; font-size:12px; }
+ .zero-home .site-menu a { font-size:12px; }
+ .zero-home .home-title { font-size:15vw; }
+ .zero-home .home-hero-copy { max-width:550px; }
+ .zero-home .home-hero-copy p { margin:0; }
+ .zero-home .home-about .home-label { grid-column:1/4; }
+ .zero-home .home-about h2 { grid-column:4/-1; }
+ .zero-home .home-about-copy,.zero-home .home-about-link { grid-column:5/-1; }
+ .zero-home .featured-tastes { gap:32px; grid-template-columns:1fr 1fr; }
+ .zero-home .taste-card:not(:first-child) { display:block; }
+ .zero-home .taste-card:not(:first-child) .taste-image { aspect-ratio:1.5; }
+ .zero-home .taste-card:first-child .taste-image { aspect-ratio:.64; }
+ .zero-home .taste-card:not(:first-child) .taste-caption { display:flex; padding-top:16px; }
+ .zero-home .taste-card:not(:first-child) .taste-caption>span { margin:0; }
+ .zero-home .home-card-grid { gap:28px; }
+ .zero-home .home-film { grid-column:1/7; min-height:760px; }
+ .zero-home .home-menu-story,.zero-home .home-selection-story { grid-column:7/-1; }
+ .zero-home .home-selection-story { display:block; }
+ .zero-home .home-selection-story .home-story-photo { float:left; width:38%; margin:0 20px 12px 0; }
+ .zero-home .home-selection-story .home-card-link { clear:both; }
+ .zero-home .home-visit-story { grid-template-columns:.8fr 1.2fr 1.2fr; gap:16px; }
+}
+@media(max-width:767px) {
+ .zero-home .site-nav { padding:8px 18px 12px; gap:0; }
+ .zero-home .home-nav-brand { border:0; padding:12px 0; font-size:13px; }
+ .zero-home .site-menu { gap:0 18px; }
+ .zero-home .site-menu a { font-size:14px; }
+ .zero-home .home-hero { min-height:620px; max-height:900px; }
+ .zero-home .home-hero-content { left:20px; right:20px; bottom:28px; gap:28px; }
+ .zero-home .home-title { font-size:16vw; letter-spacing:-.075em; }
+ .zero-home .home-hero-caption { left:20px; font-size:10px; }
+ .zero-home .home-hero-copy p { max-width:27ch; font-size:15px; }
+ .zero-home .home-about { padding:64px var(--home-gutter) 48px; }
+ .zero-home .home-about-inner { grid-template-columns:1fr; gap:0; }
+ .zero-home .home-about .home-label,.zero-home .home-about h2,.zero-home .home-about-copy,.zero-home .home-about-link { grid-column:1; }
+ .zero-home .home-about .home-label { max-width:none; margin-bottom:24px; }
+ .zero-home .home-about h2 { font-size:clamp(31px,7vw,45px); margin-bottom:26px; }
+ .zero-home .home-about-copy { font-size:15px; max-width:39ch; }
+ .zero-home .home-tastes { padding:24px var(--home-gutter) 56px; }
+ .zero-home .editorial-heading { margin-bottom:28px; }
+ .zero-home .editorial-heading h2 { font-size:34px; }
+ .zero-home .featured-tastes { grid-template-columns:1fr; gap:28px; }
+ .zero-home .taste-card:first-child { grid-row:auto; }
+ .zero-home .taste-card:first-child .taste-image { aspect-ratio:1.2; }
+ .zero-home .taste-card:not(:first-child) { grid-template-columns:1fr 1fr; gap:0 18px; padding-top:24px; border-top:1px solid #e1e0cc26; }
+ .zero-home .taste-card:not(:first-child) .taste-image { aspect-ratio:.78; }
+ .zero-home .taste-card:not(:first-child) .taste-caption { padding-top:0; }
+ .zero-home .taste-caption h3 { font-size:21px; }
+ .zero-home .taste-card:not(:first-child)>p { font-size:13px; line-height:1.6; }
+ .zero-home .taste-image>span { font-size:9px; left:8px; bottom:8px; }
+ .zero-home .home-ritual { grid-template-columns:1fr; gap:28px; padding:12px var(--home-gutter) 64px; }
+ .zero-home .home-ritual .editorial-picture { aspect-ratio:1.1; }
+ .zero-home .home-ritual img { object-position:50% 38%; }
+ .zero-home .home-ritual .editorial-copy h2 { font-size:34px; }
+ .zero-home .home-ritual .editorial-copy p { font-size:15px; }
+ .zero-home .home-discover-heading { grid-template-columns:1fr; gap:20px; padding:24px 0 0; margin-bottom:28px; }
+ .zero-home .home-discover-heading>.home-label { max-width:30ch; }
+ .zero-home .home-discover-heading h2 { font-size:29px; }
+ .zero-home .home-card-grid { grid-template-columns:minmax(0,1fr); gap:32px; }
+ .zero-home .home-card-grid>.home-card { grid-column:1; grid-row:auto; }
+ .zero-home .home-film { min-height:480px; }
+ .zero-home .home-film-caption { padding:28px; }
+ .zero-home .home-film-caption strong { font-size:46px; }
+ .zero-home .home-menu-story .home-story-photo { aspect-ratio:1.4; }
+ .zero-home .home-selection-story { grid-template-columns:.9fr 1fr; gap:0 18px; }
+ .zero-home .home-selection-story .home-story-photo { aspect-ratio:.6; }
+ .zero-home .home-selection-story h3 { font-size:24px; }
+ .zero-home .home-card-notes li { font-size:13px; }
+ .zero-home .home-selection-story .home-card-notes { grid-column:1/-1; margin-top:20px; }
+ .zero-home .home-selection-story .home-card-link { grid-column:1/-1; }
+ .zero-home .home-visit-story { grid-template-columns:1fr; gap:8px; }
+ .zero-home .home-visit-story>* { grid-column:1; grid-row:auto; }
+ .zero-home .home-visit-story .home-card-top,.zero-home .home-visit-story h3,.zero-home .home-visit-story p,.zero-home .home-visit-story .home-card-notes,.zero-home .home-visit-story .home-card-link { grid-column:1; grid-row:auto; }
+ .zero-home .home-visit-story .home-card-notes { margin-top:14px; margin-bottom:0; }
+ .zero-home .city-signoff { padding:40px var(--home-gutter) 64px; }
+ .zero-home .city-signoff h2 { font-size:42px; }
+ .zero-home .footer-top { align-items:start; }
+ .zero-home .footer-top nav { display:grid; grid-template-columns:1fr 1fr; gap:4px 32px; }
+ .zero-home .footer-word { padding:30px 0; font-size:14vw; }
+}
+@media(prefers-reduced-motion:reduce) {
+ .zero-home .home-card.home-ready,.zero-home .home-ready .home-word-mask>span { transform:none; opacity:1; transition:none; }
+ .zero-home .taste-card:hover img,.zero-home .home-card:hover .home-story-photo img,.zero-home .home-pill:hover>span { transform:none; }
+}
+/* Reserve the caption line instead of cropping it below the full-height image. */
+.zero-home .home-ritual .editorial-picture img { height:calc(100% - 32px); }
+.zero-home .home-ritual .picture-caption { height:32px; }
+.zero-home .home-photo-note { margin-top:22px; font-size:12px; color:#b4b6aa; }

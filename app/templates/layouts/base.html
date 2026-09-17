@@ -24,6 +24,7 @@
     {% block extra_head %}{% endblock %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/unified.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/editorial-update.css') }}">
+    {% if request.endpoint == 'main.home' %}<link rel="stylesheet" href="{{ url_for('static', filename='css/refinement.css') }}">{% endif %}
 </head>
 <body class="{% block body_class %}{% endblock %}">
     <a class="skip-link" href="#main-content">Saltar al contenido</a>
