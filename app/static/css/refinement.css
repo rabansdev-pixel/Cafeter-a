@@ -180,3 +180,171 @@
 .zero-home .home-ritual .editorial-picture img { height:calc(100% - 32px); }
 .zero-home .home-ritual .picture-caption { height:32px; }
 .zero-home .home-photo-note { margin-top:22px; font-size:12px; color:#b4b6aa; }
+
+/* Warm paper, botanical greens and a local light/dark preference. */
+.zero-home {
+ --home-page:#111a15;
+ --home-ink:#e8e5d5;
+ --home-secondary:#b9c1af;
+ --home-rule:#d8dec039;
+ background:var(--home-page);
+ color:var(--home-ink);
+}
+.zero-home .home-theme-toggle {
+ display:inline-flex; align-items:center; justify-content:center; gap:7px;
+ min-height:44px; padding:6px 10px; color:#e1e0cc; background:transparent;
+ border:1px solid #e1e0cc42; border-radius:999px; cursor:pointer; font:400 12px/1.2 'Almarai',sans-serif;
+}
+.zero-home .home-theme-toggle:hover { background:#e1e0cc18; }
+.zero-home .theme-symbol { font-size:19px; }
+.zero-home .site-nav { gap:20px; }
+.zero-home .home-nav-brand { padding-right:18px; }
+.zero-home .site-menu { gap:clamp(16px,2vw,32px); }
+.zero-home .home-hero { color:#e1e0cc; }
+.zero-home .home-about {
+ background:#e8e1cf; color:#283b2e; margin-top:32px;
+ padding-block:clamp(56px,7vw,104px);
+}
+.zero-home .home-about .home-label { color:#52634c; }
+.zero-home .home-about h2 em { color:#586c40; }
+.zero-home .home-about-copy { color:#43503f; }
+.zero-home .home-about-link { border-color:#687953; }
+.zero-home .home-about :focus-visible { outline-color:#283b2e; }
+.zero-home .home-tastes { padding-top:clamp(56px,6vw,88px); }
+.zero-home .home-tastes .editorial-heading { border-top:0; padding-top:0; }
+.zero-home .home-tastes .eyebrow { color:#c3cf9d; }
+.zero-home .home-tastes .taste-caption>span { color:#c3cf9d; }
+.zero-home .home-tastes .taste-card>p,
+.zero-home .home-photo-note,
+.zero-home .home-ritual .editorial-copy p,
+.zero-home .home-ritual .eyebrow,
+.zero-home .home-card p,
+.zero-home .home-card-notes li,
+.zero-home .home-card-top>span,
+.zero-home .home-discover-heading>.home-label { color:var(--home-secondary); }
+.zero-home .home-ritual .picture-caption { background:var(--home-page); color:var(--home-secondary); }
+.zero-home .home-discover-heading,.zero-home .home-selection-story,
+.zero-home .home-visit-story,.zero-home .home-card-link { border-color:var(--home-rule); }
+.zero-home .home-card-link { color:var(--home-ink); }
+.zero-home .home-film { color:#e1e0cc; }
+.zero-home .home-film-caption>.home-label { color:#e1e0cc; }
+.zero-home .home-visit-story { padding:32px 24px; background:#24362a; border:0; }
+.zero-home .city-signoff {
+ max-width:none; margin-top:32px; background:#bdc6a4; color:#26382b;
+ padding-block:clamp(56px,7vw,100px);
+}
+.zero-home .city-signoff .eyebrow { color:#40533a; }
+.zero-home .city-signoff h2 em { color:#46603b; }
+.zero-home .city-signoff p { color:#40513b; }
+.zero-home .city-signoff .home-pill { background:#263c2e; color:#f1ead8; }
+.zero-home .city-signoff .home-pill>span { background:#e5e7cf; color:#263c2e; }
+.zero-home .city-signoff :focus-visible { outline-color:#263c2e; }
+.zero-home .site-footer { background:#203b2e; color:#e9e4d0; border-top:0; padding-top:52px; }
+.zero-home .footer-top { display:grid; grid-template-columns:1.3fr 1fr auto; align-items:start; gap:40px; }
+.zero-home .footer-top p { font-size:clamp(28px,2.7vw,42px); line-height:1.15; }
+.zero-home .footer-top nav { display:grid; grid-template-columns:1fr 1fr; gap:2px 32px; }
+.zero-home .footer-location { display:flex; flex-direction:column; gap:10px; max-width:28ch; font-size:14px; }
+.zero-home .footer-location address { font-style:normal; line-height:1.6; }
+.zero-home .footer-location>span:not(.footer-kicker) { color:#c6cdbb; }
+.zero-home .footer-kicker { color:#c3d09f; font-size:10px; letter-spacing:.13em; margin-bottom:6px; }
+.zero-home .footer-location>a { align-self:start; padding:8px 0; min-height:44px; border-bottom:1px solid #c3d09f70; }
+.zero-home .footer-word { color:#c8d0ac; padding-block:48px 36px; }
+.zero-home .footer-bottom,.zero-home .asset-credits { color:#c6cdbb; }
+.zero-home .footer-bottom { border-color:#c6cdbb40; }
+.zero-home .asset-credits p { color:inherit; font-size:12px; }
+.zero-home .asset-credits summary { min-height:44px; padding-block:12px; }
+
+/* Light is warm limestone and ink green, while cinematic media stays dark. */
+html[data-home-theme='light'] .zero-home {
+ --home-page:#f2eee3;
+ --home-ink:#293e30;
+ --home-secondary:#53614f;
+ --home-rule:#53614f40;
+ --home-cream:#293e30;
+ background:var(--home-page);
+ color:var(--home-ink);
+}
+html[data-home-theme='light'] .zero-home .site-nav { background:#eee8d8; }
+html[data-home-theme='light'] .zero-home .home-nav-brand,
+html[data-home-theme='light'] .zero-home .site-menu a,
+html[data-home-theme='light'] .zero-home .menu-toggle,
+html[data-home-theme='light'] .zero-home .home-theme-toggle { color:#293e30; border-color:#53614f40; }
+html[data-home-theme='light'] .zero-home .home-theme-toggle:hover { background:#d9dfc9; }
+html[data-home-theme='light'] .zero-home .home-about { background:#e3e6d5; }
+html[data-home-theme='light'] .zero-home .home-tastes .eyebrow,
+html[data-home-theme='light'] .zero-home .taste-caption>span { color:#52653a; }
+html[data-home-theme='light'] .zero-home .home-discover-heading h2>span { color:#65705d; }
+html[data-home-theme='light'] .zero-home .home-visit-story { background:#e2e5d5; }
+html[data-home-theme='light'] .zero-home .home-card-notes li::before { color:#65705d; }
+html[data-home-theme='light'] .zero-home .taste-card:not(:first-child) { border-color:var(--home-rule); }
+html[data-home-theme='light'] .zero-home :focus-visible { outline-color:#47633b; }
+html[data-home-theme='light'] .zero-home .home-hero :focus-visible,
+html[data-home-theme='light'] .zero-home .home-film :focus-visible,
+html[data-home-theme='light'] .zero-home .site-footer :focus-visible { outline-color:#f1ead8; }
+@media(min-width:768px) and (max-width:1100px) {
+ .zero-home .site-nav { gap:12px; padding-inline:16px; }
+ .zero-home .site-menu { gap:12px; }
+ .zero-home .home-nav-brand { padding-right:12px; }
+ .zero-home .home-theme-toggle { padding-inline:8px; }
+ .zero-home .footer-top { grid-template-columns:1fr 1fr; }
+ .zero-home .footer-top nav { grid-column:2; }
+}
+@media(max-width:767px) {
+ .zero-home .site-nav { gap:10px; padding-inline:14px; }
+ .zero-home .home-nav-brand { padding-right:0; font-size:12px; }
+ .zero-home .home-theme-toggle { margin-left:auto; padding:5px 8px; gap:4px; font-size:11px; }
+ .zero-home .menu-toggle { margin-left:0; font-size:12px; }
+ .zero-home .site-menu { gap:0 18px; }
+ html[data-home-theme='light'] .zero-home .site-menu,
+ html[data-home-theme='light'] .zero-home .site-menu .nav-selection { border-color:#53614f40; }
+ .zero-home .home-about { margin-top:16px; }
+ .zero-home .home-visit-story { padding:28px 20px; }
+ .zero-home .site-footer { padding-top:40px; }
+ .zero-home .footer-top { grid-template-columns:1fr 1fr; gap:28px 22px; }
+ .zero-home .footer-top>p { grid-column:1/-1; font-size:34px; }
+ .zero-home .footer-top nav { grid-template-columns:1fr; gap:0; font-size:14px; }
+ .zero-home .footer-location { font-size:13px; }
+ .zero-home .footer-word { padding-block:36px 28px; }
+}
+
+/* A complete manifesto composition and a compact hospitality footer. */
+.zero-home .home-about h2 { font-size:clamp(32px,3.3vw,54px); max-width:25ch; margin-bottom:32px; text-wrap:pretty; }
+.zero-home .home-about-photo { grid-column:2/7; grid-row:2/4; margin:4px 24px 0 0; }
+.zero-home .home-about-photo img { display:block; width:100%; height:clamp(210px,20vw,310px); object-fit:cover; object-position:50% 37%; border-radius:2px; }
+.zero-home .home-about-photo figcaption { font-size:10px; letter-spacing:.08em; line-height:1.6; color:#52634c; padding-top:12px; }
+.zero-home .home-about-copy { grid-row:2; align-self:center; padding-top:16px; }
+.zero-home .home-about-link { grid-row:3; align-self:start; margin-top:14px; }
+.zero-home .taste-image[data-cold-brew] img { object-position:58% 100%; }
+.zero-home .site-footer { padding-block:52px 20px; }
+.zero-home .footer-top { grid-template-columns:1.5fr 1.2fr .8fr 1fr; gap:clamp(24px,4vw,64px); padding-bottom:40px; max-width:1440px; }
+.zero-home .footer-brand { display:inline-flex; gap:8px; align-items:start; font-size:clamp(30px,3vw,46px); line-height:1; letter-spacing:-.065em; color:#e9e4d0; }
+.zero-home .footer-brand>span { font-size:26px; color:#c8d0ac; }
+.zero-home .footer-brand-block p { font-size:24px; margin:20px 0; color:#d2d7bf; }
+.zero-home .footer-origin { font-size:10px; letter-spacing:.12em; color:#c6cdbb; }
+.zero-home .footer-top nav { display:flex; flex-direction:column; gap:0; align-items:stretch; }
+.zero-home .footer-top .footer-kicker { font-family:'Almarai',sans-serif; font-size:11px; font-weight:400; letter-spacing:.13em; line-height:1.5; margin:0 0 18px; color:#c3d09f; }
+.zero-home .footer-top nav a { min-height:44px; padding:10px 0; font-size:14px; }
+.zero-home .footer-social a { display:flex; align-items:center; gap:10px; }
+.zero-home .footer-social svg { width:17px; height:17px; fill:none; stroke:currentColor; stroke-width:1.5; flex-shrink:0; }
+.zero-home .footer-social a>span { margin-left:auto; }
+.zero-home .footer-social small { font-size:11px; color:#c6cdbb; margin-top:12px; }
+.zero-home .footer-bottom { max-width:1440px; margin:auto; font-size:11px; }
+.zero-home .asset-credits { max-width:1440px; margin:8px auto 0; }
+@media(min-width:768px) and (max-width:1100px) {
+ .zero-home .home-about-photo { grid-column:1/5; margin-right:0; }
+ .zero-home .home-about-copy,.zero-home .home-about-link { grid-column:6/-1; }
+ .zero-home .footer-top { grid-template-columns:1.2fr 1fr; gap:32px 48px; }
+ .zero-home .footer-top nav { grid-column:auto; }
+}
+@media(max-width:767px) {
+ .zero-home .home-about h2 { font-size:clamp(31px,7vw,42px); }
+ .zero-home .home-about-photo { grid-column:1; grid-row:auto; margin:0 0 24px; }
+ .zero-home .home-about-photo img { height:230px; object-position:50% 35%; }
+ .zero-home .home-about-copy,.zero-home .home-about-link { grid-column:1; grid-row:auto; padding-top:0; }
+ .zero-home .footer-top { grid-template-columns:1fr 1fr; gap:32px 24px; padding-bottom:28px; }
+ .zero-home .footer-brand-block { grid-column:1/-1; padding-bottom:24px; border-bottom:1px solid #c6cdbb30; }
+ .zero-home .footer-brand { font-size:36px; }
+ .zero-home .footer-brand-block p { font-size:25px; margin:16px 0; }
+ .zero-home .footer-social { grid-column:1/-1; max-width:260px; }
+ .zero-home .footer-location { font-size:14px; }
+}
