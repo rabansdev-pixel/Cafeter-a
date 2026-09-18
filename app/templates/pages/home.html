@@ -9,13 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
 {% endblock %}
 {% block extra_head %}
-<script>
-    try {
-        const saved = localStorage.getItem('zero-day-home-theme');
-        document.documentElement.dataset.homeTheme = saved === 'light' || saved === 'dark'
-            ? saved : (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
-    } catch (_) { document.documentElement.dataset.homeTheme = 'dark'; }
-</script>
+
 <style>
 /* The homepage's entire visual composition lives here. Interior pages keep their system. */
 .zero-home{--home-cream:#e1e0cc;--home-muted:#aaa99e;--home-black:#080a08;--font-body:'Almarai',sans-serif;--font-heading:'Almarai',sans-serif;background:var(--home-black);color:var(--home-cream);font-family:var(--font-body)}
@@ -49,6 +43,7 @@
 
 
 {% block content %}
+
 <!-- 01 / HERO — original café video, natural color and an inset frame. -->
 <section class="home-hero" aria-labelledby="hero-title">
     <div class="home-hero-frame" data-video-container>
@@ -59,7 +54,7 @@
             <source data-src="{{ url_for('static', filename=source.path) }}" type="{{ source.type }}"{% if source.media %} media="{{ source.media }}"{% endif %}>
             {% endfor %}
         </video>
-        <button class="media-toggle home-video-toggle" type="button" aria-pressed="false" aria-label="Reproducir o pausar el vídeo de portada">Reproducir vídeo</button>
+        
         {% endif %}
         <div class="home-grain" aria-hidden="true"></div>
         <div class="home-hero-caption"><span>CAFÉ. ESPACIO. TIEMPO.</span><span>EL ARTE DE TOMARSE UN MOMENTO.</span></div>
@@ -100,7 +95,7 @@
             <img src="{{ url_for('static', filename=cafe.coffee_poster) }}" alt="" width="1280" height="720" loading="lazy">
             {% if cafe.coffee_video %}
             <video autoplay muted loop playsinline preload="none" poster="{{ url_for('static', filename=cafe.coffee_poster) }}" data-video-src="{{ url_for('static', filename=cafe.coffee_video) }}" aria-hidden="true"></video>
-            <button class="media-toggle home-video-toggle" type="button" aria-pressed="false" aria-label="Reproducir o pausar el vídeo de ambiente">Reproducir vídeo</button>
+            
             {% endif %}
             <a class="home-film-caption" href="{{ url_for('cafe.space') }}"><span class="home-label">ESPACIO / EL ARTE DE ESTAR</span><strong>Un lugar<br>para <em>quedarse.</em></strong><span aria-hidden="true">↗</span></a>
         </article>
@@ -129,9 +124,7 @@
         </article>
     </div>
 </section>
-<section class="city-signoff"><span class="eyebrow">MACHALA, ECUADOR</span><h2>El día sigue.<br><em>La pausa es tuya.</em></h2><p>Ayacucho y 8va Norte. Café, algo rico y un momento entre una cosa y la siguiente.</p><a class="home-pill" href="{{ url_for('cafe.visit') }}">Ven a encontrarnos <span aria-hidden="true">↗</span></a></section>
+<section class="city-signoff" aria-label="Una pausa ZERO DAY"><span class="eyebrow">ZERO DAY / CAFÉ · ESPACIO · TIEMPO</span><h2>El día sigue. <em>La pausa es tuya.</em></h2></section>
 {% endblock %}
 
-{% block extra_scripts %}
-<script src="{{ url_for('static', filename='js/home_theme.js') }}" defer></script>
-{% endblock %}
+

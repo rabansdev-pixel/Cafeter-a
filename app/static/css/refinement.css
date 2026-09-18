@@ -348,3 +348,110 @@ html[data-home-theme='light'] .zero-home .site-footer :focus-visible { outline-c
  .zero-home .footer-social { grid-column:1/-1; max-width:260px; }
  .zero-home .footer-location { font-size:14px; }
 }
+
+/* Neutral finish. This final layer also overrides the earlier light-theme rules. */
+.zero-home {
+ --home-page:#141614; --home-surface:#202220; --home-ink:#fafaf7;
+ --home-secondary:#bfc1be; --home-rule:#ffffff26; --home-cream:#fafaf7;
+ --home-black:#141614; color-scheme:dark;
+}
+html[data-home-theme='light'] .zero-home {
+ --home-page:#fafaf7; --home-surface:#fff; --home-ink:#242624;
+ --home-secondary:#5c605c; --home-rule:#24262426; --home-cream:#242624;
+ color-scheme:light;
+}
+html[data-home-theme] .zero-home { background:var(--home-page); color:var(--home-ink); }
+html[data-home-theme] .zero-home .site-nav { background:var(--home-page); }
+html[data-home-theme] .zero-home .home-nav-brand,
+html[data-home-theme] .zero-home .site-menu a,
+html[data-home-theme] .zero-home .menu-toggle { color:var(--home-ink); border-color:var(--home-rule); }
+html[data-home-theme] .zero-home .site-menu,
+html[data-home-theme] .zero-home .site-menu .nav-selection { border-color:var(--home-rule); }
+html[data-home-theme] .zero-home .home-about,
+html[data-home-theme] .zero-home .home-visit-story { background:var(--home-surface); color:var(--home-ink); }
+html[data-home-theme] .zero-home .home-about h2 em { color:var(--home-ink); }
+html[data-home-theme] .zero-home .home-about .home-label,
+html[data-home-theme] .zero-home .home-about-copy,
+html[data-home-theme] .zero-home .home-about-photo figcaption,
+html[data-home-theme] .zero-home .home-tastes .eyebrow,
+html[data-home-theme] .zero-home .taste-caption>span,
+html[data-home-theme] .zero-home .home-discover-heading h2>span,
+html[data-home-theme] .zero-home .home-card-notes li::before { color:var(--home-secondary); }
+html[data-home-theme] .zero-home .home-about-link { border-color:var(--home-rule); }
+html[data-home-theme] .zero-home .home-hero,
+html[data-home-theme] .zero-home .home-film { color:#fafaf7; }
+html[data-home-theme] .zero-home .home-hero-copy p,
+html[data-home-theme] .zero-home .home-hero-caption,
+html[data-home-theme] .zero-home .home-film-caption>.home-label { color:#fafaf7; }
+html[data-home-theme] .zero-home .home-pill { background:#fafaf7; color:#242624; }
+html[data-home-theme] .zero-home .home-pill>span { background:#242624; color:#fafaf7; }
+html[data-home-theme] .zero-home .home-pill:hover { background:#e7e8e5; }
+html[data-home-theme] .zero-home .taste-image,
+html[data-home-theme] .zero-home .editorial-picture { background:var(--home-surface); }
+html[data-home-theme] .zero-home .taste-image>span { background:#141614e6; color:#fafaf7; }
+html[data-home-theme] .zero-home .city-signoff { background:var(--home-page); color:var(--home-ink); margin:0 auto; padding-block:40px 48px; }
+html[data-home-theme] .zero-home .city-signoff h2 { font-size:clamp(28px,3vw,44px); margin-top:16px; line-height:1.25; }
+html[data-home-theme] .zero-home .city-signoff .eyebrow { color:var(--home-secondary); }
+html[data-home-theme] .zero-home .city-signoff h2 em { color:var(--home-ink); }
+html[data-home-theme] .zero-home :focus-visible { outline-color:var(--home-ink); }
+html[data-home-theme] .zero-home .home-hero :focus-visible,
+html[data-home-theme] .zero-home .home-film :focus-visible,
+html[data-home-theme] .zero-home .site-footer :focus-visible { outline-color:#fafaf7; }
+
+/* A separate, stationary control; its space is reserved beside the navigation. */
+html[data-home-theme] .zero-home .home-theme-toggle {
+ position:absolute; top:32px; right:32px; z-index:1001; width:44px; height:44px;
+ min-height:44px; padding:11px; margin:0; border-radius:50%;
+ background:var(--home-page); color:var(--home-ink); border:1px solid var(--home-rule);
+}
+html[data-home-theme] .zero-home .home-theme-toggle:hover { background:var(--home-surface); }
+.zero-home .home-theme-toggle svg { width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; }
+.zero-home .theme-moon { display:none; }
+html[data-home-theme='light'] .zero-home .theme-sun { display:none; }
+html[data-home-theme='light'] .zero-home .theme-moon { display:block; }
+.zero-home .theme-tooltip {
+ position:absolute; top:calc(100% + 8px); right:0; width:max-content;
+ padding:8px 12px; background:var(--home-page); color:var(--home-ink);
+ border:1px solid var(--home-rule); font-size:12px; line-height:1.4;
+ opacity:0; visibility:hidden; pointer-events:none;
+}
+.zero-home .home-theme-toggle:hover .theme-tooltip,
+.zero-home .home-theme-toggle:focus-visible .theme-tooltip { opacity:1; visibility:visible; }
+.zero-home .site-header { max-width:calc(100% - 184px); }
+.zero-home .home-hero-frame>.home-video-toggle { top:90px; right:16px; }
+.zero-home .home-hero-caption { top:110px; right:160px; }
+
+html[data-home-theme] .zero-home .site-footer { background:#141614; color:#fafaf7; border-top:1px solid #ffffff26; }
+html[data-home-theme] .zero-home .footer-brand,
+html[data-home-theme] .zero-home .footer-brand>span { color:#fafaf7; }
+html[data-home-theme] .zero-home .footer-brand-block p { color:#d0d2ce; font-size:23px; }
+html[data-home-theme] .zero-home .footer-top .footer-kicker,
+html[data-home-theme] .zero-home .footer-origin,
+html[data-home-theme] .zero-home .footer-location>span,
+html[data-home-theme] .zero-home .footer-social small,
+html[data-home-theme] .zero-home .footer-bottom,
+html[data-home-theme] .zero-home .asset-credits { color:#bfc1be; }
+html[data-home-theme] .zero-home .footer-location>a,
+html[data-home-theme] .zero-home .footer-brand-block { border-color:#ffffff26; }
+.zero-home .home-footer-meta { max-width:1440px; margin:auto; display:grid; grid-template-columns:1fr auto; column-gap:32px; align-items:start; border-top:1px solid #ffffff26; padding-top:14px; }
+.zero-home .home-footer-meta .footer-bottom { border:0; margin:0; padding:0; align-items:center; min-height:44px; }
+.zero-home .home-footer-meta .footer-bottom>span:nth-child(2) { display:none; }
+.zero-home .home-footer-meta .footer-bottom>a { padding-block:12px; }
+.zero-home .home-footer-meta .asset-credits { margin:0; max-width:360px; font-size:11px; }
+@media(max-width:1100px) and (min-width:768px) {
+ .zero-home .site-nav { gap:10px; padding-inline:14px; }
+ .zero-home .site-menu { gap:12px; }
+ .zero-home .home-nav-brand { padding-right:10px; }
+ .zero-home .site-header { max-width:calc(100% - 144px); }
+}
+@media(max-width:767px) {
+ .zero-home .site-header { left:28px; transform:none; width:calc(100% - 112px); max-width:none; }
+ .zero-home .menu-toggle { margin-left:auto; }
+ html[data-home-theme] .zero-home .home-theme-toggle { top:22px; right:24px; }
+ .zero-home .home-hero-frame>.home-video-toggle { top:90px; right:15px; }
+ .zero-home .home-hero-caption { top:95px; right:135px; max-width:none; }
+ .zero-home .footer-social { grid-column:auto; max-width:none; }
+ .zero-home .home-footer-meta { grid-template-columns:1fr; gap:0; }
+ .zero-home .home-footer-meta .asset-credits { max-width:none; }
+ html[data-home-theme] .zero-home .city-signoff { padding-block:28px 36px; }
+}

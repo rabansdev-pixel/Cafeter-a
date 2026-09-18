@@ -112,9 +112,19 @@ function initCart() {
     const note = root.querySelector('[data-cart-quote-note]');
     const retry = root.querySelector('[data-cart-retry]');
     let controller, generation = 0;
+    const resolvedRows = new Map();
     function lineView(stored, row) {
         const key = lineKey(stored);
         const article = el('article', 'cart-line'); article.dataset.lineKey = key;
+        const media = el('div', 'cart-line-media');
+        if (row.image) {
+            const image = el('img');
+            image.src = row.slug === 'cold-brew' ? '/static/img/home/cold-brew-800.webp' : row.image;
+            image.alt = ''; image.width = 160; image.height = 160; image.loading = 'lazy'; image.decoding = 'async';
+            image.addEventListener('error', () => { image.remove(); media.textContent = 'ZD'; }, { once: true });
+            media.append(image);
+        } else { media.textContent = 'ZD'; }
+        article.append(media);
         const copy = el('div', 'cart-line-copy');
         const title = el('h2', '', row.name);
         if (row.slug) { const link = el('a', '', row.name); link.href = `/producto/${encodeURIComponent(row.slug)}`; title.replaceChildren(link); }
@@ -141,13 +151,25 @@ function initCart() {
         root.querySelector('[data-cart-empty]').hidden = lines.length > 0;
         root.querySelector('[data-cart-filled]').hidden = lines.length === 0;
         retry.hidden = true; feedback.textContent = cartStore.warning(); subtotal.textContent = '—';
-        if (!lines.length) { list.replaceChildren(); return; }
+        if (!lines.length) { list.replaceChildren(); resolvedRows.clear(); list.removeAttribute('aria-busy'); return; }
         list.setAttribute('aria-busy', 'true'); note.textContent = 'Comprobando tu selección…';
         // Keep quantities/removal available offline, without displaying stale prices.
         const previous = new Map([...list.children].map(node => [node.dataset.lineKey, node.querySelector('h2')?.textContent]));
         const focused = document.activeElement?.dataset;
         const focusKey = focused?.key, focusAction = focused?.action;
-        list.replaceChildren(...lines.map(line => lineView(line, { name: previous.get(lineKey(line)) || 'Tu selección', error: 'Comprobando disponibilidad…' })));
+        const existing = new Map([...list.children].map(node => [node.dataset.lineKey, node]));
+        const pending = lines.map(line => {
+            const key = lineKey(line);
+            const node = existing.get(key);
+            if (!node) return lineView(line, { ...resolvedRows.get(key), name: resolvedRows.get(key)?.name || previous.get(key) || 'Tu selección', available: false, error: 'Comprobando disponibilidad…' });
+            node.querySelector('[data-action="quantity"]').value = line.quantity;
+            node.querySelector('[data-action="decrease"]').disabled = line.quantity <= 1;
+            node.querySelector('[data-action="increase"]').disabled = line.quantity >= 99;
+            node.querySelector('.cart-line-price').textContent = '—';
+            return node;
+        });
+        [...list.children].forEach(node => { if (!pending.includes(node)) node.remove(); });
+        pending.forEach((node, index) => { if (list.children[index] !== node) list.insertBefore(node, list.children[index] || null); });
         function restoreFocus() {
             if (!focusKey) return;
             const candidates = [...list.querySelectorAll('[data-key]')];
@@ -157,6 +179,7 @@ function initCart() {
         try {
             const result = await quote(lines, controller.signal);
             if (ticket !== generation) return;
+            lines.forEach((line, i) => resolvedRows.set(lineKey(line), result.lines[i]));
             list.replaceChildren(...lines.map((line, i) => lineView(line, result.lines[i])));
             subtotal.textContent = result.formatted_subtotal || '—';
             note.textContent = result.has_errors ? 'El subtotal incluye solo las selecciones disponibles. Revisa los elementos señalados.' : 'Opciones y cantidades incluidas.';

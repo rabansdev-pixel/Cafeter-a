@@ -1,4 +1,4 @@
-/* Presentation preference, deliberately limited to the homepage. */
+/* Presentation preference, shared across the public pages. */
 (() => {
     const button = document.querySelector('.home-theme-toggle');
     if (!button) return;
@@ -12,7 +12,7 @@
         button.setAttribute('aria-pressed', String(light));
         button.setAttribute('aria-label', 'Tema claro');
         button.title = light ? 'Cambiar a tema oscuro' : 'Cambiar a tema claro';
-        button.querySelector('[data-theme-label]').textContent = light ? 'Oscuro' : 'Claro';
+        button.querySelector('[data-theme-label]').textContent = light ? 'Cambiar a tema oscuro' : 'Cambiar a tema claro';
     }
     render(root.dataset.homeTheme || 'dark');
     button.hidden = false;
