@@ -1,15 +1,14 @@
 <footer class="site-footer">
-    {% if request.endpoint == 'main.home' %}
+
     <div class="footer-top">
         <div class="footer-brand-block"><a class="footer-brand" href="{{ url_for('main.home') }}">ZERO DAY<span aria-hidden="true">*</span></a><p>El arte de tomarse<br>un momento.</p><span class="footer-origin">CAFÉ · MACHALA, ECUADOR</span></div>
-        <div class="footer-location"><h2 class="footer-kicker">VISÍTANOS</h2>{% if cafe.address %}<address>{{ cafe.address }}</address>{% endif %}{% for hours in cafe.hours %}<span>{{ hours }}</span>{% endfor %}<a href="{{ url_for('cafe.visit') }}">Cómo llegar ↗</a></div>
-        <nav aria-label="Navegación del pie de página"><h2 class="footer-kicker">EXPLORA</h2><a href="{{ url_for('cafe.menu') }}">Menú</a><a href="{{ url_for('cafe.space') }}">Espacio</a><a href="{{ url_for('cafe.experience') }}">Experiencia</a><a href="{{ url_for('catalog.catalog') }}">Selección</a></nav>
+        <div class="footer-location"><h2 class="footer-kicker">VISÍTANOS</h2>{% if cafe is defined and cafe.address %}<address>{{ cafe.address }}</address>{% endif %}{% for hours in (cafe.hours if cafe is defined else []) %}<span>{{ hours }}</span>{% endfor %}<a href="{{ url_for('cafe.visit') }}">Cómo llegar ↗</a></div>
+        <nav aria-label="Navegación del pie de página"><h2 class="footer-kicker">EXPLORA</h2><a href="{{ url_for('cafe.menu') }}">Tienda</a><a href="{{ url_for('cafe.space') }}">Espacio</a><a href="{{ url_for('cafe.experience') }}">Experiencia</a><a href="{{ url_for('catalog.catalog') }}">Selección</a></nav>
         <nav class="footer-social" aria-label="Redes sociales de ejemplo"><h2 class="footer-kicker">CONECTA</h2><a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram, enlace de ejemplo, abre en otra pestaña"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8"/></svg>Instagram <span aria-hidden="true">↗</span></a><a href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer" aria-label="TikTok, enlace de ejemplo, abre en otra pestaña"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3v13a4 4 0 1 1-4-4M14 3c0 4 3 6 6 6"/></svg>TikTok <span aria-hidden="true">↗</span></a><small>Enlaces de ejemplo.</small></nav>
     </div>
-    {% else %}
-    <div class="footer-top"><p>El arte de tomarse<br>un momento.</p>{% if request.endpoint == 'main.home' %}<div class="footer-location"><span class="footer-kicker">NOS VEMOS EN MACHALA</span>{% if cafe.address %}<address>{{ cafe.address }}</address>{% endif %}{% for hours in cafe.hours %}<span>{{ hours }}</span>{% endfor %}<a href="{{ url_for('cafe.visit') }}">Cómo llegar ↗</a></div>{% endif %}<nav aria-label="Navegación del pie de página"><a href="{{ url_for('cafe.menu') }}">Menú</a><a href="{{ url_for('cafe.visit') }}">Visítanos</a><a href="{{ url_for('catalog.catalog') }}">Catálogo</a><a href="{{ url_for('cafe.experience', _anchor='metodos') }}">Métodos</a></nav></div>
-    <a class="footer-word" href="{{ url_for('main.home') }}" aria-label="ZERO-DAY, inicio">ZERO DAY</a>
-    {% endif %}
+
+    <div class="home-footer-meta">
     <div class="footer-bottom"><span>© 2026 ZERO-DAY</span><span>CAFÉ · ESPACIO · PERSONAS · TIEMPO</span><a href="#main-content">Volver arriba ↑</a></div>
     <details class="asset-credits"><summary>Créditos visuales</summary><p>Objetos de una selección editorial. Marcas y diseños pertenecen a sus respectivos autores. <a href="{{ url_for('static', filename='models/credits.html') }}">Modelos originales y licencias ↗</a></p><p>Fotografías de referencia de Pexels y Unsplash; no representan necesariamente los productos o el local. <a href="{{ url_for('static', filename='img/photo-credits.html') }}">Fotografías y fuentes ↗</a></p></details>
+    </div>
 </footer>

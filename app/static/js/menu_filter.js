@@ -21,3 +21,11 @@ if (search) {
         link.addEventListener('click', () => { search.value = ''; update(); });
     });
 }
+
+const shopSearch = document.querySelector('[data-shop-search]');
+shopSearch?.addEventListener('submit', event => {
+    event.preventDefault();
+    search.dispatchEvent(new Event('input'));
+    const destination = document.querySelector('.menu-chapter:not([hidden])') || document.querySelector('[data-menu-empty]');
+    destination?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start' });
+});

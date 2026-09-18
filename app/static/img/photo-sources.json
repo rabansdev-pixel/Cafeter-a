@@ -151,13 +151,14 @@
   },
   {
     "name": "chai-latte",
-    "photo_id": 37146476,
-    "source": "https://www.pexels.com/photo/37146476/",
+    "photo_id": 35024895,
+    "source": "https://www.pexels.com/photo/35024895/",
     "license": "https://www.pexels.com/license/",
     "files": [
       "menu/chai-latte-800.jpg",
       "menu/chai-latte-1600.jpg"
-    ]
+    ],
+    "photographer": "Merve Arlı"
   },
   {
     "name": "croissant",
@@ -261,13 +262,14 @@
   },
   {
     "name": "grilled-cheese",
-    "photo_id": 6824498,
-    "source": "https://www.pexels.com/photo/6824498/",
+    "photo_id": 13689918,
+    "source": "https://www.pexels.com/photo/13689918/",
     "license": "https://www.pexels.com/license/",
     "files": [
       "menu/grilled-cheese-800.jpg",
       "menu/grilled-cheese-1600.jpg"
-    ]
+    ],
+    "photographer": "Daniel Torobekov"
   },
   {
     "name": "pour-over",
