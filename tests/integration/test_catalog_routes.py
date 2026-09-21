@@ -6,7 +6,7 @@ def test_home_page_renders_successfully(client):
     assert b'Ayacucho y 8va Norte' in response.data
     assert b'8:00 a. m.' in response.data
     assert response.data.count(b'class="site-nav"') == 1
-    assert b'/static/img/products/hero.mp4' in response.data
+    assert b'/static/img/products/hero-v1-web.mp4' in response.data
     assert b'/static/img/products/coffe.mp4' in response.data
     assert b' muted loop playsinline' in response.data
     assert b'js-add-to-cart' not in response.data
