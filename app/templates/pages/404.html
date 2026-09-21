@@ -1,0 +1,7 @@
+{% extends 'layouts/base.html' %}
+{% block body_class %}cafe-home interior-page {% endblock %}
+{% block title %}Página no encontrada | ZERO DAY{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/interior.css') }}">{% endblock %}
+{% block content %}
+<section class="interior-heading error-composition"><span class="eyebrow">ZERO DAY / 404</span><h1>Tomemos<br><em>otro camino.</em></h1><p>La página o selección que buscas no está disponible.</p><div><a class="cafe-link" href="{{ url_for('main.home') }}">Volver a ZERO DAY ↗</a><a class="cafe-link" href="{{ url_for('cafe.menu') }}">Explorar el menú ↗</a></div></section>
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends 'layouts/base.html' %}
+{% from 'components/model_scene.html' import scene %}
+{% from 'components/editorial_image.html' import photo %}
+{% block title %}Nuestra selección | ZERO DAY{% endblock %}
+{% block body_class %}cafe-home interior-page objects-page{% endblock %}
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/interior.css') }}">{% endblock %}
+{% block content %}
+<header class="interior-heading">
+    <p class="eyebrow">ZERO DAY / OBJETOS, MATERIALES, IDENTIDADES</p>
+    <div class="heading-grid">
+        <h1>Elegir también<br>es <em>una forma de ser.</em></h1>
+        <p>Una mirada al universo del café.<br>El detalle merece su momento.</p>
+    </div>
+</header>
+<section class="cafe-section showcase-section" id="seleccion" aria-labelledby="showcase-title">
+    <div class="section-heading">
+        <p class="eyebrow">05 / UNA SELECCIÓN CON CARÁCTER</p><span>OBJETOS DEL UNIVERSO DEL CAFÉ</span>
+    </div>
+    <div class="showcase-heading">
+        <h2 id="showcase-title">Lo que elegimos<br>también <em>habla de nosotros.</em></h2>
+        <p>Formas, materiales e identidades que nos llaman la atención. Una selección editorial para mirar de cerca.</p>
+    </div>
+    <div class="object-exhibition" aria-label="Selección editorial de objetos">
+        {% for object in objects %}<article class="object-slide" id="objeto-{{ loop.index }}"
+            aria-labelledby="object-title-{{ loop.index }}">
+            <div class="object-info"><span class="eyebrow">{{ object.category }}</span>
+                <h3 id="object-title-{{ loop.index }}">{{ object.name }}</h3>
+                <p>{{ object.text }}</p><span class="object-count">{{ '%02d'|format(loop.index) }} <span>/ {{
+                        '%02d'|format(objects|length) }}</span></span>
+            </div>
+            {{ scene(object.asset, object.alt, 'exhibition-model') }}
+        </article>{% endfor %}
+    </div>
+    <div class="exhibition-controls" hidden><button class="object-prev" type="button"
+            aria-label="Objeto anterior">←</button>
+        <div class="object-progress" aria-label="Elegir objeto">{% for object in objects %}<button type="button"
+                data-object-index="{{ loop.index0 }}" aria-label="Ver {{ object.name }}"
+                aria-pressed="{{ 'true' if loop.first else 'false' }}">{{ '%02d'|format(loop.index) }}</button>{% endfor
+            %}</div><button class="object-next" type="button" aria-label="Objeto siguiente">→</button>
+    </div>
+    <p class="exhibition-note">{% if request.endpoint == 'main.home' %}<a
+            href="{{ url_for('catalog.catalog') }}">Explorar la selección ↗</a>{% else %}Una mirada editorial al café y
+        su diseño.{% endif %} <a href="{{ url_for('static', filename='models/credits.html') }}">Conoce a los autores
+            ↗</a></p>
+</section>
+
+
+<section class="editorial-split objects-to-cup">
+    <div class="editorial-picture">{{ photo('beans', 'Granos tostados: textura y color del café', 'journal') }}</div>
+    <div class="editorial-copy"><span class="eyebrow">DEL OBJETO AL MOMENTO</span>
+        <h2>Todo empieza<br>con <em>un grano.</em></h2>
+        <p>La máquina, el filtro y la taza son herramientas. Lo interesante sucede cuando el agua se encuentra con el
+            café y aparece una nueva manera de disfrutarlo.</p><a class="cafe-link"
+            href="{{ url_for('cafe.menu') }}">Encuentra tu próxima taza ↗</a>
+    </div>
+</section>
+<section class="cafe-section paper reading-section" id="origen" aria-labelledby="origin-title">
+    <p class="eyebrow">ANTES DE LA TAZA / EL ORIGEN</p>
+    <h2 id="origin-title">El carácter<br><em>empieza en la tierra.</em></h2>
+    <p>El lugar donde crece, la variedad y el proceso forman parte de la historia de un café. Una ficha de origen ayuda
+        a leer esa historia.</p>
+    <div class="reading-notes">
+        <details>
+            <summary>El lugar y las manos <span>01</span></summary>
+            <p>País, región, finca y productor sitúan el café en su contexto. Huila, en Colombia, y Yirgacheffe, en
+                Etiopía, son dos de los paisajes del recorrido editorial de ZERO DAY.</p>
+        </details>
+        <details>
+            <summary>Altura y variedad <span>02</span></summary>
+            <p>La altitud se expresa en metros sobre el nivel del mar. La variedad identifica el café cultivado: Geisha,
+                Heirloom o Borbón son nombres presentes en nuestras lecturas sobre el origen.</p>
+        </details>
+        <details>
+            <summary>Proceso y perfil <span>03</span></summary>
+            <p>Lavado, natural o honey describen maneras de transformar el fruto. El nivel de tueste y las notas de cata
+                completan la ficha y ayudan a explorar lo que percibimos en la taza.</p>
+        </details>
+    </div>
+    <a class="cafe-link" href="{{ url_for('cafe.experience', _anchor='metodos') }}">Del origen a la preparación ↗</a>
+</section>
+<section class="catalog-closing"><span class="eyebrow">LA FORMA / EL RITUAL</span>
+    <h2>Lo cotidiano,<br><em>mirado de cerca.</em></h2>
+    <p>La cerámica, el papel, una máquina. Objetos con identidad propia que dan forma a nuestra mirada sobre el café.
+    </p><a class="cafe-link" href="{{ url_for('cafe.experience') }}">Conoce la experiencia ↗</a>
+</section>
+{% endblock %}

@@ -1,0 +1,28 @@
+services:
+  app_test:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      target: testing
+    container_name: cafe_app_testing
+    environment:
+      - APP_ENV=testing
+    volumes:
+      - .:/app
+    command: pytest tests/ --cov=app --cov-report=xml:/app/coverage.xml --cov-report=term-missing
+    networks:
+      - cafe_network
+
+  sonarqube:
+    image: sonarqube:community
+    container_name: cafe_sonarqube
+    ports:
+      - "9000:9000"
+    environment:
+      - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_logs:/opt/sonarqube/logs
+    networks:
+      - cafe_network

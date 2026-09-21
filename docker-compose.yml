@@ -1,0 +1,21 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    environment:
+      - APP_ENV=${APP_ENV:-development}
+      - SECRET_KEY=${SECRET_KEY:-super-secret-cafe-key}
+      - DATABASE_URL=${DATABASE_URL:-sqlite:///dev_cafe.db}
+    networks:
+      - cafe_network
+
+networks:
+  cafe_network:
+    driver: bridge
+
+volumes:
+  cafe_db_data:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_logs:

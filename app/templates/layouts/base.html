@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+<script src="{{ url_for('static', filename='js/theme_init.js') }}"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/theme_canvas.css') }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0e0c0a">
+    <meta name="description" content="{% block meta_description %}ZERO DAY. Una cafetería. Un lugar para quedarse. El arte de tomarse un momento.{% endblock %}">
+    <title>{% block title %}ZERO-DAY COFFEE | Granos de Especialidad & Origen Único{% endblock %}</title>
+
+    <!-- Tipografía Editorial Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    {% block fonts %}<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">{% endblock %}
+
+    <!-- Hojas de Estilos del Sistema de Diseño -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/variables.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animations.css') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/site.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cafe.css') }}">
+    {% block extra_head %}{% endblock %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/unified.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/editorial-update.css') }}">
+    {% if request.endpoint == 'main.home' %}<link rel="stylesheet" href="{{ url_for('static', filename='css/refinement.css') }}">{% endif %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/shared-refinement.css') }}">
+    {% if request.endpoint in ['cafe.menu', 'cafe.product'] %}<link rel="stylesheet" href="{{ url_for('static', filename='css/shop.css') }}">{% endif %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+    <a class="skip-link" href="#main-content">Saltar al contenido</a>
+    <!-- Navbar Flotante -->
+    {% block navigation %}{% include 'components/navbar.html' %}{% endblock %}
+
+<button class="home-theme-toggle" type="button" aria-label="Tema claro" aria-pressed="false" aria-describedby="home-theme-description" hidden>
+    <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg>
+    <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 15.5A9 9 0 0 1 8.5 4 9 9 0 1 0 20 15.5Z"/></svg>
+    <span id="home-theme-description" class="theme-tooltip" data-theme-label>Cambiar a tema claro</span>
+</button>
+    <!-- Contenido Principal -->
+    <main id="main-content" tabindex="-1">
+        {% block content %}{% endblock %}
+    </main>
+
+
+    {% include 'components/footer.html' %}
+
+    <!-- Scripts Modulares ES -->
+    <script type="module" src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='js/cart_indicator.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/home_theme.js') }}" defer></script>
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

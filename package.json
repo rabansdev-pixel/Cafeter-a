@@ -1,0 +1,13 @@
+{
+  "name": "cafeteria-frontend-tests",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test --test-isolation=none tests/js/*.test.js",
+    "test:coverage": "c8 --all --include 'app/static/js/**/*.js' --reporter=text --reporter=lcov --reporter=json-summary --reports-dir=coverage-js npm test"
+  },
+  "devDependencies": {
+    "c8": "12.0.0",
+    "jsdom": "30.0.1"
+  }
+}

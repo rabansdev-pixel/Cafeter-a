@@ -1,0 +1,54 @@
+<!-- Overlay oscurecedor de fondo -->
+<div id="cart-overlay" class="cart-overlay"></div>
+
+<!-- Drawer Deslizante Lateral -->
+<aside id="cart-drawer" class="cart-drawer" role="dialog" aria-modal="true" aria-label="Tu selección de cafés" aria-hidden="true" inert>
+    <div class="cart-header">
+        <div style="display: flex; align-items: center; gap: 0.65rem;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--color-accent-gold);">
+                <circle cx="9" cy="21" r="1"></circle>
+                <circle cx="20" cy="21" r="1"></circle>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+            <h3 style="font-size: 1.25rem;">Tu Selección</h3>
+        </div>
+        <button id="cart-close-btn" class="cart-close-btn" aria-label="Cerrar carrito">✕</button>
+    </div>
+
+    <!-- Barra de progreso para envío gratis -->
+    <div class="cart-shipping-bar">
+        <div id="shipping-status-text" style="color: var(--color-text-secondary); font-size: 0.85rem;">
+            Envío gratis en compras mayores a $50.000
+        </div>
+        <div class="progress-track">
+            <div id="shipping-progress-fill" class="progress-fill" style="width: 0%;"></div>
+        </div>
+    </div>
+
+    <!-- Lista de Items en Carrito -->
+    <div id="cart-items-container" class="cart-items-list">
+        <!-- Renderizado dinámicamente por cart_drawer.js -->
+    </div>
+
+    <!-- Resumen y Checkout -->
+    <div class="cart-footer">
+        <div class="cart-subtotal-row">
+            <span style="color: var(--color-text-muted);">Subtotal</span>
+            <span id="cart-subtotal-val" style="font-weight: 600;">$0</span>
+        </div>
+        <div class="cart-subtotal-row">
+            <span style="color: var(--color-text-muted);">Envío</span>
+            <span id="cart-shipping-val" style="font-weight: 600; color: var(--color-accent-gold);">Gratis</span>
+        </div>
+        <div class="cart-total-row">
+            <span>Total</span>
+            <span id="cart-total-val" class="text-gold">$0</span>
+        </div>
+        <button id="cart-checkout-btn" class="btn btn-primary" style="width: 100%; font-size: 1rem; padding: 1rem;">
+            Proceder al Pago
+        </button>
+        <p style="text-align: center; font-size: 0.75rem; color: var(--color-text-muted); margin-top: 0.75rem;">
+            🔒 Tostado bajo pedido semanal. Empaque con válvula desgasificadora.
+        </p>
+    </div>
+</aside>

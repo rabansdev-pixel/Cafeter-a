@@ -1,0 +1,15 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Error Inesperado | ZERO-DAY COFFEE{% endblock %}
+
+{% block content %}
+<section style="min-height: 70vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 8rem 1rem;">
+    <div class="container" style="max-width: 550px;">
+        <span style="font-size: 4rem; display: block; margin-bottom: 1rem;">⚙️☕</span>
+        <h1 style="font-size: 3.5rem; margin-bottom: 1rem;" class="text-gold">500</h1>
+        <h2 style="font-size: 1.5rem; margin-bottom: 1rem;">Calibrando el Molino</h2>
+        <p style="margin-bottom: 2rem;">Ha ocurrido una anomalía inesperada en el servidor. Nuestro equipo técnico ya está ajustando los parámetros.</p>
+        <a href="{{ url_for('main.home') }}" class="btn btn-primary">Regresar a la Cafetería</a>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends 'layouts/base.html' %}
+{% from 'components/editorial_image.html' import photo %}
+{% block title %}{{ item.name if item else 'Tienda' }} | ZERO DAY{% endblock %}
+{% block meta_description %}{% if item %}{{ item.short_description }}{% else %}{{ super() }}{% endif %}{% endblock %}
+{% block body_class %}cafe-home interior-page shop-page {{ 'menu-product-page' if item else 'digital-menu' }}{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/interior.css') }}">{% endblock %}
+{% block content %}
+{% if item %}
+<!-- Detalle de un producto: /producto/<slug> -->
+
+<div class="product-breadcrumb"><a href="{{ url_for('cafe.menu') }}">← Volver a la tienda</a><span>{{ item.category }}</span></div>
+<section class="menu-product-layout">
+    <div class="product-media {{ 'typographic-product' if not item.image else '' }}">
+        {% if item.image %}<img src="{{ url_for('static', filename='img/home/cold-brew-1600.webp') if item.slug == 'cold-brew' else item.image }}" {% if item.image_small %}srcset="{{ url_for('static', filename='img/home/cold-brew-800.webp') if item.slug == 'cold-brew' else item.image_small }} 800w, {{ url_for('static', filename='img/home/cold-brew-1600.webp') if item.slug == 'cold-brew' else item.image }} 1600w" sizes="(max-width: 767px) 90vw, 48vw"{% endif %} alt="{{ item.name }}" width="1000" height="1200" fetchpriority="high">{% else %}<span class="eyebrow">ZERO DAY / {{ item.category }}</span><span class="product-letter" aria-hidden="true">{{ item.name[:1] }}</span><p>El tiempo de<br><em>tu elección.</em></p>{% endif %}
+    </div>
+    <div class="menu-product-copy"><p class="eyebrow">{{ item.category }}</p><h1>{{ item.name }}</h1><p class="product-description">{{ item.short_description }}</p>{% if item.long_description %}<p>{{ item.long_description }}</p>{% endif %}
+        <p class="product-price-line" data-product-price>{{ item.formatted_price or 'Consulta en el café' }}</p>
+        <div class="product-details-strip"><span>{{ item.portion }}</span>{% for note in item.tasting_notes %}<span>{{ note }}</span>{% endfor %}</div>
+        {% if item.allergens %}<details class="product-ingredients"><summary>Ingredientes y alérgenos</summary><p>{{ item.allergens }}. Consulta la preparación y posibles trazas antes de consumir.</p></details>{% endif %}
+        <p class="product-photo-note">Fotografía de referencia; la presentación puede variar.</p>
+        {% if item.orderable %}<form class="product-order" data-product-id="{{ item.id }}" data-base-price="{{ item.formatted_price }}">
+            {% for kind in ['options', 'modifiers'] %}{% for group in item[kind] %}<fieldset class="product-option-group" data-kind="{{ kind }}" data-group="{{ group.id }}" data-required="{{ 'true' if group.required else 'false' }}" data-max="{{ group.max_choices or (1 if kind == 'options' else group.choices|length) }}"><legend>{{ group.label }} <span>{{ 'Elige una opción' if group.required else 'Opcional' }}</span></legend>
+            {% if kind == 'options' and not group.required %}<label class="choice-row"><input type="radio" name="{{ kind }}-{{ group.id }}" value="" checked><span>Sin selección</span></label>{% endif %}
+            {% for choice in group.choices %}<label class="choice-row"><input type="{{ 'radio' if kind == 'options' else 'checkbox' }}" name="{{ kind }}-{{ group.id }}" value="{{ choice.id }}" {% if kind == 'options' and group.required %}required{% endif %} {% if choice.available is defined and not choice.available %}disabled{% endif %}><span>{{ choice.label }}</span>{% if choice.price_delta and choice.price_delta|string not in ['0', '0.00'] %}<span class="choice-price">+ {{ '%.2f'|format(choice.price_delta|float) }} {{ item.currency }}</span>{% endif %}</label>{% endfor %}</fieldset>{% endfor %}{% endfor %}
+            <div class="product-order-actions"><label class="quantity-label" for="product-quantity">Cantidad<input id="product-quantity" name="quantity" type="number" inputmode="numeric" min="1" max="99" value="1" required></label><button class="editorial-submit" type="submit" data-add-button>Añadir a mi selección <span aria-hidden="true">↗</span></button></div>
+            <p class="form-feedback" role="status" aria-live="polite" data-order-feedback></p><a class="cafe-link selection-link" href="{{ url_for('cafe.cart') }}">Ver mi selección ↗</a>
+        </form>{% else %}<div class="product-unavailable"><p>Esta selección no está disponible para pedidos.</p><a class="cafe-link" href="{{ url_for('cafe.menu') }}">Volver a la tienda ↗</a></div>{% endif %}
+        <noscript><p>Activa JavaScript para personalizar y guardar tu selección.</p></noscript>
+    </div>
+</section>
+<section class="product-return"><span class="eyebrow">EL MOMENTO CONTINÚA</span><h2>¿Algo para <em>acompañar?</em></h2><a class="cafe-link" href="{{ url_for('cafe.menu') }}">Volver a los {{ menu_count }} sabores ↗</a></section>
+{% if item.gallery %}<section class="product-gallery" aria-label="Más imágenes de {{ item.name }}">{% for photo in item.gallery %}<figure><img src="{{ photo.image }}" alt="{{ photo.alt }}" width="1200" height="900" loading="lazy">{% if photo.caption %}<figcaption>{{ photo.caption }}</figcaption>{% endif %}</figure>{% endfor %}</section>{% endif %}
+
+{% else %}
+<!-- Carta completa: /menu -->
+
+<header class="shop-intro">
+    <p class="eyebrow">ZERO DAY / ELIGE TU MOMENTO</p>
+    {% if categories %}
+    <div class="shop-constellation" aria-label="Descubre la selección">
+        {% for category in categories[:4] %}{% set pick = category['items'][0] %}
+        <a class="shop-float" href="{{ url_for('cafe.product', slug=pick.slug) }}">
+            <img src="{{ url_for('static', filename='img/home/cold-brew-800.webp') if pick.slug == 'cold-brew' else pick.image_small }}" alt="{{ pick.name }}" width="800" height="800" decoding="async" {% if loop.index > 2 %}loading="lazy"{% endif %}>
+            <span>{{ pick.name }}</span><small>{{ pick.formatted_price }}</small>
+        </a>{% endfor %}
+    </div>
+    {% endif %}
+    <h1>Tienda<span aria-hidden="true">.</span></h1>
+    <p class="shop-intro-copy">Encuentra tu próxima pausa.</p>
+    {% if categories %}
+    <form class="shop-search" role="search" data-shop-search>
+        <label class="shop-sr" for="menu-search">Buscar en la tienda</label>
+        <input id="menu-search" type="search" placeholder="¿Qué te apetece hoy?" autocomplete="off">
+        <button type="submit" aria-label="Buscar productos"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
+    </form>
+    <p class="shop-result-count" data-menu-results role="status" aria-live="polite">{{ menu_count }} productos · Precios en USD</p>
+    {% endif %}
+</header>
+{% if categories %}
+<nav class="menu-category-nav" aria-label="Categorías de la tienda"><div>{% for category in categories %}<a href="#{{ category.anchor }}"><span class="shop-category-mark" aria-hidden="true">{{ '%02d'|format(loop.index) }}</span>{{ ['Café', 'Fríos', 'Matcha', 'Del horno', 'Salados'][loop.index0] if loop.index0 < 5 else category.name }}</a>{% endfor %}</div><a class="menu-cart-link" href="{{ url_for('cafe.cart') }}">Carrito <span data-cart-count>0</span></a></nav>
+<div class="menu-chapters paper">{% for category in categories %}<section class="menu-chapter" id="{{ category.anchor }}" aria-labelledby="title-{{ category.anchor }}"><div class="menu-chapter-title"><span class="eyebrow">{{ '%02d'|format(loop.index) }} / TIENDA</span><h2 id="title-{{ category.anchor }}">{{ category.name }}</h2><p>{{ category.intro }}</p></div><div class="menu-entries">{% for item in category['items'] %}{% set entry_number = loop.index %}<article class="menu-entry {{ 'menu-entry-featured' if item.featured else '' }}" data-menu-entry data-search="{{ item.name }} {{ item.short_description }} {{ category.name }}">
+    {% if item.image %}<a class="menu-entry-image" href="{{ url_for('cafe.product', slug=item.slug) }}" tabindex="-1" aria-hidden="true"><img src="{{ url_for('static', filename='img/home/cold-brew-1600.webp') if item.slug == 'cold-brew' else item.image }}" {% if item.image_small %}srcset="{{ url_for('static', filename='img/home/cold-brew-800.webp') if item.slug == 'cold-brew' else item.image_small }} 800w, {{ url_for('static', filename='img/home/cold-brew-1600.webp') if item.slug == 'cold-brew' else item.image }} 1600w" sizes="(max-width: 600px) 90vw, (max-width: 1100px) 45vw, 29vw"{% endif %} alt="" width="900" height="1000" loading="lazy" decoding="async">{% if item.featured %}<span class="menu-photo-label">Para descubrir</span>{% endif %}</a>{% endif %}
+    <div class="menu-entry-copy"><span class="entry-index" aria-hidden="true">{{ '%02d'|format(entry_number) }}</span><h3><a href="{{ url_for('cafe.product', slug=item.slug) }}">{{ item.name }}</a></h3><p>{{ item.short_description }}</p><span class="product-portion">{{ item.portion }}</span>
+        <div class="menu-entry-action"><span>{{ item.formatted_price or 'Consulta en el café' }}</span>
+        {% if item.orderable and not item.customizable %}<button type="button" class="quiet-add" data-quick-add="{{ item.id }}" aria-label="Añadir {{ item.name }}">Añadir <span aria-hidden="true">+</span></button>{% else %}<a class="cafe-link" href="{{ url_for('cafe.product', slug=item.slug) }}">{{ 'Elegir' if item.orderable else 'Ver detalle' }} ↗</a>{% endif %}</div>
+    </div>
+</article>
+{% endfor %}</div></section>{% endfor %}</div>
+{% else %}
+<section class="menu-unpublished paper"><span class="eyebrow">LA TIENDA DE ZERO DAY</span><div class="menu-empty-type" aria-hidden="true">A tu<br><em>gusto.</em></div><div><h2>Elige tu momento.</h2><p>Consulta la selección disponible en el café.</p><a class="cafe-link" href="{{ url_for('cafe.visit') }}">Ven a vernos ↗</a></div></section>
+{% endif %}
+<p class="menu-no-results" data-menu-empty hidden>No encontramos ese antojo. Prueba «café», «matcha» o «croissant».</p>
+<p class="menu-image-note">Fotografías de referencia. La presentación puede variar. Si tienes alguna alergia, consulta los ingredientes antes de pedir.</p>
+<div class="commerce-feedback" role="status" aria-live="polite" data-commerce-feedback></div>
+<noscript><p class="no-script-note">Puedes consultar la carta sin JavaScript. Actívalo para guardar tu selección.</p></noscript>
+
+{% endif %}
+{% endblock %}
+{% block extra_scripts %}<script type="module" src="{{ url_for('static', filename='js/commerce.js') }}"></script><script type="module" src="{{ url_for('static', filename='js/menu_filter.js') }}"></script>{% endblock %}
