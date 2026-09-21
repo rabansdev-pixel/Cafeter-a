@@ -7,7 +7,7 @@ export function normalizeLine(raw) {
     for (const kind of ['options', 'modifiers']) {
         const group = raw[kind] ?? {};
         if (!group || typeof group !== 'object' || Array.isArray(group) || Object.keys(group).length > 30) throw new Error('Opciones inválidas.');
-        for (const key of Object.keys(group).sort()) {
+        for (const key of Object.keys(group).sort((a, b) => a.localeCompare(b))) {
             if (['__proto__', 'constructor', 'prototype'].includes(key)) throw new Error('Opciones inválidas.');
             const value = group[key];
             if (kind === 'options') {
@@ -15,7 +15,7 @@ export function normalizeLine(raw) {
                 if (value) clean[kind][key] = value;
             } else {
                 if (!Array.isArray(value) || value.length > 30 || value.some(v => typeof v !== 'string' || v.length > 140)) throw new Error('Complementos inválidos.');
-                if (value.length) clean[kind][key] = [...new Set(value)].sort();
+                if (value.length) clean[kind][key] = [...new Set(value)].sort((a, b) => a.localeCompare(b));
             }
         }
     }

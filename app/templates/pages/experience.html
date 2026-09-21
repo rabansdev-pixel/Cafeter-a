@@ -9,7 +9,7 @@
 {% if cafe.experiences %}{% for experience in cafe.experiences %}<section class="experience-chapter"><div><span class="eyebrow">{{ '%02d'|format(loop.index) }} / ZERO DAY</span><h2>{{ experience.title }}</h2><p>{{ experience.description }}</p></div>{% if experience.image %}<img src="{{ url_for('static', filename=experience.image) }}" alt="{{ experience.alt }}" width="1200" height="1000" loading="lazy">{% endif %}</section>{% endfor %}
 {% else %}<section class="experience-chapter espresso-chapter"><div><p class="eyebrow">EL RITUAL / PREPARAR</p><h2>Cada detalle.<br><em>En su punto.</em></h2><p>Una molienda. Una extracción.<br>Una manera de descubrir el café.</p><a class="cafe-link" href="{{ url_for('cafe.experience', _anchor='metodos') }}">Una mirada a los métodos ↗</a></div><div class="editorial-film" data-video-container>
 <img src="{{ url_for('static', filename=cafe.coffee_poster) }}" alt="Preparación del café" width="1280" height="720" loading="lazy">
-<video autoplay muted loop playsinline preload="none" poster="{{ url_for('static', filename=cafe.coffee_poster) }}" data-video-src="{{ url_for('static', filename=cafe.coffee_video) }}" aria-hidden="true"></video>
+<video autoplay muted loop playsinline preload="none" poster="{{ url_for('static', filename=cafe.coffee_poster) }}" data-video-src="{{ url_for('static', filename=cafe.coffee_video) }}" aria-label="Preparación del café"></video>
 
 </div></section>{% endif %}
 

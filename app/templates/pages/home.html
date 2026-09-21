@@ -49,7 +49,7 @@
     <div class="home-hero-frame" data-video-container>
         <img class="home-hero-media" src="{{ url_for('static', filename=cafe.hero_poster) }}" alt="" width="2560" height="1440" fetchpriority="high">
         {% if cafe.hero_video %}
-        <video class="home-hero-media" autoplay muted loop playsinline preload="metadata" width="2560" height="1440" poster="{{ url_for('static', filename=cafe.hero_poster) }}" {% if not cafe.hero_sources %}data-video-src="{{ url_for('static', filename=cafe.hero_video) }}"{% endif %} aria-hidden="true">
+        <video class="home-hero-media" autoplay muted loop playsinline preload="metadata" width="2560" height="1440" poster="{{ url_for('static', filename=cafe.hero_poster) }}" {% if not cafe.hero_sources %}data-video-src="{{ url_for('static', filename=cafe.hero_video) }}"{% endif %} aria-label="Ambiente de la cafetería">
             {% for source in cafe.hero_sources|default([]) %}
             <source data-src="{{ url_for('static', filename=source.path) }}" type="{{ source.type }}"{% if source.media %} media="{{ source.media }}"{% endif %}>
             {% endfor %}
@@ -94,7 +94,7 @@
         <article class="home-card home-film" id="espacio" data-home-card data-video-container>
             <img src="{{ url_for('static', filename=cafe.coffee_poster) }}" alt="" width="1280" height="720" loading="lazy">
             {% if cafe.coffee_video %}
-            <video autoplay muted loop playsinline preload="none" poster="{{ url_for('static', filename=cafe.coffee_poster) }}" data-video-src="{{ url_for('static', filename=cafe.coffee_video) }}" aria-hidden="true"></video>
+            <video autoplay muted loop playsinline preload="none" poster="{{ url_for('static', filename=cafe.coffee_poster) }}" data-video-src="{{ url_for('static', filename=cafe.coffee_video) }}" aria-label="Ambiente del café"></video>
             
             {% endif %}
             <a class="home-film-caption" href="{{ url_for('cafe.space') }}"><span class="home-label">ESPACIO / EL ARTE DE ESTAR</span><strong>Un lugar<br>para <em>quedarse.</em></strong><span aria-hidden="true">↗</span></a>
@@ -126,5 +126,4 @@
 </section>
 <section class="city-signoff" aria-label="Una pausa ZERO DAY"><span class="eyebrow">ZERO DAY / CAFÉ · ESPACIO · TIEMPO</span><h2>El día sigue. <em>La pausa es tuya.</em></h2></section>
 {% endblock %}
-
 

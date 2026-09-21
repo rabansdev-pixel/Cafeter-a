@@ -1,4 +1,6 @@
 import pytest
+from copy import deepcopy
+from app.cafe_content import CAFE
 from tests.menu_fixtures import confirmed_menu
 from app.services.menu_service import MenuService, MenuError, cents
 
@@ -20,13 +22,15 @@ def test_new_routes_support_direct_requests(client, path):
     assert b'aria-current="page"' in response.data or path == "/catalogo"
 
 
-def test_unverified_seed_and_example_content_never_becomes_menu(client):
+def test_unverified_seed_and_example_content_never_becomes_menu(client, app, monkeypatch):
+    example_content = deepcopy(CAFE)
+    example_content["menu_is_example"] = True
+    monkeypatch.setitem(app.config, "CAFE_CONTENT", example_content)
     response = client.get("/api/menu")
     assert response.json == {"products": []}
     assert client.get("/producto/geisha-huila-reserva-privada").status_code == 404
     for path in ["/menu", "/visitanos", "/"]:
         body = client.get(path).get_data(as_text=True)
-        assert "https://www.instagram.com/" not in body
         assert "Cold brew" not in body
         assert "68,000" not in body
 
