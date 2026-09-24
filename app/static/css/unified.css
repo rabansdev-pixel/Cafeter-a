@@ -10,10 +10,10 @@ em{font-family:'Instrument Serif',Georgia,serif;font-weight:400}
 .site-menu a[aria-current=page],.cafe-home .site-menu a[aria-current=page]{color:#e1e0cc;border:0;text-decoration:none}
 .site-menu a[aria-current=page]::after{transform:scaleX(1)}
 .site-menu .nav-selection{padding-left:18px}.menu-toggle{display:none}
-.site-footer,.cafe-home .site-footer{background:#080a08;border-top:1px solid #dad9c526;padding:40px 32px 24px;color:#e1e0cc}
-.footer-top p{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-size:24px}
-.footer-word,.cafe-home .footer-word{font-family:var(--font-body);font-size:15vw;font-weight:400;line-height:1;letter-spacing:-.08em;padding:40px 0 30px}
-.footer-bottom,.asset-credits{color:#aaa99e;font-size:12px}
+
+
+
+
 .interior-page{--material-oat:#242820;--material-espresso:#10130f;--editorial-rule:#e1e0cc30;background:#080a08;color:#e1e0cc}
 .interior-page .paper{background:#10130f;color:#e1e0cc;--color-text-primary:#e1e0cc;--color-text-secondary:#b4b6aa}
 .interior-heading{padding-top:150px;padding-bottom:48px}.interior-heading>.eyebrow{color:#aaa99e;margin-bottom:24px}
@@ -54,7 +54,8 @@ em{font-family:'Instrument Serif',Georgia,serif;font-weight:400}
 .menu-chapter{display:block}.menu-entry:has(.menu-entry-image){grid-template-columns:1fr;gap:18px}.menu-entry-image img{aspect-ratio:1.35}.menu-entry-featured{padding:18px!important}
 .space-closing,.experience-pause,.experience-chapter{padding:24px;margin-bottom:32px;border-radius:18px}.editorial-film{margin-top:24px;aspect-ratio:1.2}.space-full-media img,.space-gallery-figure img{border-radius:18px}
 .visit-practical{display:flex;flex-direction:column;padding-block:24px;gap:24px}.visit-facts{order:0;margin:0;display:block}.visit-location-type{order:1;border-top:1px solid #e1e0cc30;padding-top:24px}.visit-location-type>p{font-size:2.2rem;margin:16px 0}
-.zero-home .home-card-grid{grid-template-columns:1fr}.zero-home .home-film{min-height:440px}.site-footer,.cafe-home .site-footer{padding:32px 22px 22px}
+.zero-home .home-card-grid{grid-template-columns:1fr}.zero-home .home-film{min-height:440px}
+
 }
 /* Keep animated word wrappers inline and retain contrast in the object gallery. */
 .zero-home .home-discover-heading h2>.home-word-mask{display:inline-block;color:inherit}

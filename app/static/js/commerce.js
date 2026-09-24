@@ -211,14 +211,16 @@ function initCart() {
 function initCategoryNavigation() {
     const links = [...document.querySelectorAll('.menu-category-nav a[href^="#"]')];
     if (!links.length || !window.IntersectionObserver) return;
-    const observer = new IntersectionObserver(entries => {
-        const visible = entries.filter(entry => entry.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
-        if (!visible) return;
+    const sections = [...document.querySelectorAll('.menu-chapter')];
+    const observer = new IntersectionObserver(() => {
+        // Observer entries are only the changed sections, not every visible section.
+        const available = sections.filter(section => !section.hidden);
+        const current = available.filter(section => section.getBoundingClientRect().top <= window.innerHeight * .45).at(-1) || available[0];
         links.forEach(link => {
-            if (link.hash === `#${visible.target.id}`) link.setAttribute('aria-current', 'location');
+            if (current && link.hash === `#${current.id}`) link.setAttribute('aria-current', 'location');
             else link.removeAttribute('aria-current');
         });
     }, { rootMargin: '-15% 0px -55% 0px' });
-    document.querySelectorAll('.menu-chapter').forEach(section => observer.observe(section));
+    sections.forEach(section => observer.observe(section));
 }
 initQuickAdd(); initProduct(); initCart(); initCategoryNavigation();
