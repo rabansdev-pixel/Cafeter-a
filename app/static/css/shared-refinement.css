@@ -150,3 +150,59 @@ body .site-footer .asset-credits p { color:inherit; font-size:12px; }
 /* Layout display rules must never override the cart's mutually exclusive states. */
 .cart-page [hidden] { display:none!important; }
 .cart-page .cart-layout>*,.cart-page .cart-line>* { min-width:0; }
+
+/* Distinguish the footer from the dark canvas, without changing light mode. */
+html[data-home-theme='dark'] body .site-footer {
+ background:#232623;
+ border-top:1px solid #ffffff20;
+}
+/* Compact phone footer: brand, two information columns and a social row. */
+@media(max-width:767px) {
+ body .site-footer,body.cafe-home .site-footer,body.zero-home .site-footer {
+  padding:28px 20px 12px;
+ }
+ body .site-footer .footer-top,body.zero-home .site-footer .footer-top {
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:20px 24px; padding-bottom:18px;
+ }
+ body .site-footer .footer-brand-block,body.zero-home .site-footer .footer-brand-block {
+  display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:8px 24px;
+  grid-column:1/-1; padding-bottom:18px;
+ }
+ body .site-footer .footer-brand { font-size:28px; }
+ body .site-footer .footer-brand>span { font-size:20px; }
+ body .site-footer .footer-brand-block p,body.zero-home .site-footer .footer-brand-block p {
+  margin:0; font-size:20px; line-height:1.2;
+ }
+ body .site-footer .footer-origin { grid-column:1/-1; font-size:9px; }
+ body .site-footer .footer-location { font-size:13px; gap:6px; }
+ body .site-footer .footer-kicker,body.zero-home .site-footer .footer-kicker {
+  margin-bottom:6px; font-size:10px;
+ }
+ body .site-footer .footer-top nav a { padding-block:8px; min-height:44px; font-size:13px; }
+ body .site-footer .footer-social,body.zero-home .site-footer .footer-social {
+  grid-column:1/-1; display:grid; grid-template-columns:1fr 1fr; gap:0 24px;
+  max-width:none; padding-top:12px; border-top:1px solid #ffffff20;
+ }
+ body .site-footer .footer-social .footer-kicker { grid-column:1/-1; }
+ body .site-footer .footer-social small { grid-column:1/-1; margin-top:0; font-size:10px; }
+ body .site-footer .home-footer-meta { padding-top:8px; }
+ body .site-footer .footer-bottom { font-size:10px; }
+ body .site-footer .asset-credits summary { padding-block:8px; }
+}
+
+/* A cooler graphite distinguishes the footer without adding a strong accent. */
+html[data-home-theme='dark'] body .site-footer {
+ background:#20242b;
+ border-top:1px solid #bfc7d32b;
+}
+@media(max-width:767px) {
+ body .site-footer .footer-origin { display:none; }
+ body .site-footer .footer-kicker,
+ body.zero-home .site-footer .footer-kicker { font-size:11px; letter-spacing:.08em; }
+ body .site-footer .footer-location,
+ body .site-footer .footer-top nav a { font-size:14px; }
+ body .site-footer .footer-social small { font-size:11px; }
+ body .site-footer .footer-bottom,
+ body .site-footer .asset-credits { font-size:12px; }
+}

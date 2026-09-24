@@ -455,3 +455,134 @@ html[data-home-theme] .zero-home .footer-brand-block { border-color:#ffffff26; }
  .zero-home .home-footer-meta .asset-credits { max-width:none; }
  html[data-home-theme] .zero-home .city-signoff { padding-block:28px 36px; }
 }
+
+/* Mobile composition, based on the supplied phone capture. Desktop unchanged. */
+@media(max-width:767px) {
+ .zero-home { --home-gutter:20px; }
+ .zero-home .home-hero { height:86svh; min-height:520px; max-height:740px; padding:12px; }
+ .zero-home .home-hero-frame { border-radius:18px; }
+ .zero-home .home-hero-content { left:20px; right:20px; bottom:24px; gap:22px; }
+ .zero-home .home-hero-copy { max-width:30ch; }
+ .zero-home .home-hero-copy p { font-size:16px; line-height:1.55; margin-bottom:18px; }
+ .zero-home .home-title { font-size:15.5vw; letter-spacing:-.065em; }
+ .zero-home .home-hero-caption { top:90px; font-size:10px; }
+ .zero-home .home-nav-brand,.zero-home .menu-toggle { font-size:13px; }
+ .zero-home .home-about { padding:40px 20px; }
+ .zero-home .home-about h2 { font-size:clamp(28px,7.5vw,36px); line-height:1.2; margin-bottom:22px; }
+ .zero-home .home-about-photo img { height:auto; aspect-ratio:1.4; object-fit:cover; }
+ .zero-home .home-about-copy { max-width:none; font-size:16px; line-height:1.65; }
+ .zero-home .home-about-link { margin-top:12px; }
+ .zero-home .home-tastes { padding:36px 20px; }
+ .zero-home .editorial-heading { margin-bottom:24px; }
+ .zero-home .editorial-heading h2 { font-size:32px; }
+ .zero-home .featured-tastes { display:grid; grid-template-columns:minmax(0,1fr); gap:28px; }
+ .zero-home .taste-card:not(:first-child) { display:block; padding-top:0; border:0; }
+ .zero-home .taste-card .taste-image,
+ .zero-home .taste-card:first-child .taste-image,
+ .zero-home .taste-card:not(:first-child) .taste-image { aspect-ratio:1.3; border-radius:12px; }
+ .zero-home .taste-card .taste-image img { width:100%; height:100%; object-fit:cover; }
+ .zero-home .taste-card .taste-caption,
+ .zero-home .taste-card:not(:first-child) .taste-caption { display:flex; align-items:baseline; justify-content:space-between; gap:12px; padding-top:14px; }
+ .zero-home .taste-card:not(:first-child) .taste-caption>span { margin:0; }
+ .zero-home .taste-caption h3 { font-size:22px; }
+ .zero-home .taste-card>p,.zero-home .taste-card:not(:first-child)>p { font-size:15px; line-height:1.6; max-width:none; margin-top:8px; }
+ .zero-home .home-ritual { padding:8px 20px 36px; display:block; }
+ /* The same ritual image already appears in the manifesto. */
+ .zero-home .home-ritual .editorial-picture { display:none; }
+ .zero-home .home-ritual .editorial-copy { border-top:1px solid var(--home-rule); padding-top:24px; }
+ .zero-home .home-ritual .editorial-copy h2 { font-size:30px; margin-top:16px; }
+ .zero-home .home-ritual .editorial-copy p { max-width:none; font-size:16px; line-height:1.65; margin:16px 0; }
+ .zero-home .home-discover { padding:0 20px 24px; }
+ .zero-home .home-discover-heading h2 { font-size:28px; }
+ .zero-home .home-card-grid { gap:24px; }
+ .zero-home .home-film { min-height:340px; border-radius:14px; }
+ .zero-home .home-film-caption { padding:24px; }
+ .zero-home .home-film-caption strong { font-size:38px; }
+ .zero-home .home-menu-story,.zero-home .home-selection-story { display:block; padding-top:20px; border-top:1px solid var(--home-rule); }
+ .zero-home .home-menu-story .home-story-photo,
+ .zero-home .home-selection-story .home-story-photo { float:none; width:100%; aspect-ratio:1.65; margin:0 0 18px; border-radius:12px; }
+ .zero-home .home-menu-story .home-card-notes,.zero-home .home-selection-story .home-card-notes { display:none; }
+ .zero-home .home-card h3,.zero-home .home-selection-story h3 { font-size:26px; margin-bottom:10px; }
+ .zero-home .home-card p { font-size:15px; margin-bottom:12px; }
+ .zero-home .home-card-top { margin-bottom:12px; }
+ .zero-home .home-visit-story { padding:24px 20px; border-radius:12px; }
+ .zero-home .home-visit-story p { display:none; }
+ html[data-home-theme] .zero-home .city-signoff { padding:16px 20px 28px; }
+ html[data-home-theme] .zero-home .city-signoff h2 { font-size:28px; }
+ /* Scroll reveals must not leave phone content dim while reading. */
+ .zero-home .home-card.home-ready,
+ .zero-home .home-ready .home-word-mask>span { opacity:1; transform:none; transition:none; }
+ .zero-home .home-copy-letter { opacity:1; }
+ body.zero-home .site-footer { padding:32px 20px 16px; }
+ body.zero-home .site-footer .footer-top { grid-template-columns:1fr 1fr; gap:24px 20px; padding-bottom:24px; }
+ body.zero-home .site-footer .footer-brand-block { grid-column:1/-1; padding-bottom:20px; }
+ body.zero-home .site-footer .footer-social { grid-column:auto; }
+ body.zero-home .site-footer .footer-kicker { margin-bottom:10px; }
+ body.zero-home .site-footer .footer-brand-block p { margin:12px 0; }
+}
+
+/* Phone rhythm: one visual lead, compact destinations, one visit invitation. */
+@media(max-width:767px) {
+ .zero-home .home-hero-content { gap:18px; bottom:26px; }
+ .zero-home .home-hero-copy { max-width:29ch; }
+ .zero-home .home-hero-copy p { max-width:none; margin-bottom:16px; font-size:16px; line-height:1.55; }
+ .zero-home .home-title { font-size:15vw; line-height:1.1; margin:0; }
+ .zero-home .home-pill { min-height:48px; }
+ .zero-home .home-tastes .taste-card .taste-image,
+ .zero-home .home-tastes .taste-card:first-child .taste-image,
+ .zero-home .home-tastes .taste-card:not(:first-child) .taste-image { aspect-ratio:1.5; }
+ .zero-home .taste-caption h3 { font-size:23px; }
+ .zero-home .taste-caption>span { font-size:15px; }
+ .zero-home .taste-card>p,
+ .zero-home .taste-card:not(:first-child)>p { font-size:16px; line-height:1.55; }
+ .zero-home .home-ritual .editorial-copy p+p { display:none; }
+ .zero-home .home-ritual { padding-bottom:28px; }
+ .zero-home .home-discover-heading { margin-bottom:22px; gap:14px; }
+ .zero-home .home-discover-heading>.home-label { font-size:11px; max-width:none; }
+ .zero-home .home-film { min-height:320px; }
+ .zero-home .home-card-grid { gap:22px; }
+ .zero-home .home-card-grid .home-menu-story,
+ .zero-home .home-card-grid .home-selection-story {
+  display:grid; grid-template-columns:104px minmax(0,1fr);
+  grid-template-rows:auto auto auto; gap:6px 18px;
+  padding:20px 0 0; align-items:start;
+ }
+ .zero-home .home-menu-story .home-story-photo,
+ .zero-home .home-selection-story .home-story-photo {
+  grid-column:1; grid-row:1/4; width:104px; height:132px;
+  aspect-ratio:auto; margin:0; border-radius:12px;
+ }
+ .zero-home .home-menu-story .home-story-photo img,
+ .zero-home .home-selection-story .home-story-photo img {
+  width:100%; height:100%; object-fit:cover; object-position:50% 58%;
+ }
+ .zero-home .home-menu-story .home-card-top,
+ .zero-home .home-selection-story .home-card-top { display:none; }
+ .zero-home .home-menu-story h3,
+ .zero-home .home-selection-story h3 {
+  grid-column:2; grid-row:1; margin:0; font-size:23px; line-height:1.2;
+ }
+ .zero-home .home-menu-story p,
+ .zero-home .home-selection-story p {
+  grid-column:2; grid-row:2; margin:0; font-size:14px; line-height:1.5;
+ }
+ .zero-home .home-menu-story .home-card-link,
+ .zero-home .home-selection-story .home-card-link {
+  grid-column:2; grid-row:3; margin:0; min-height:44px;
+  border:0; padding:6px 0; font-size:14px; gap:10px;
+ }
+ .zero-home .home-visit-story { margin-top:6px; padding:24px 20px; }
+ .zero-home .home-visit-story .home-card-top { display:none; }
+ .zero-home .home-visit-story .home-card-notes li { font-size:15px; line-height:1.6; }
+ .zero-home .home-visit-story .home-card-link { font-size:15px; }
+ html[data-home-theme] .zero-home .city-signoff { display:none; }
+ .zero-home .home-discover { padding-bottom:32px; }
+}
+@media(max-width:360px) {
+ .zero-home .home-card-grid .home-menu-story,
+ .zero-home .home-card-grid .home-selection-story { grid-template-columns:88px minmax(0,1fr); gap:6px 14px; }
+ .zero-home .home-menu-story .home-story-photo,
+ .zero-home .home-selection-story .home-story-photo { width:88px; }
+ .zero-home .home-menu-story h3,
+ .zero-home .home-selection-story h3 { font-size:21px; }
+}
