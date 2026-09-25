@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <title>{% block title %}Tu cuenta{% endblock %} | ZERO DAY</title>
+    <script src="{{ url_for('static', filename='js/theme_init.js') }}"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/account.css') }}">
+</head>
+<body class="account-ui {% block body_class %}{% endblock %}">
+    <a class="skip-link" href="#account-main">Saltar al contenido</a>
+    <header class="account-topbar">
+        <a class="account-logo" href="{{ url_for('main.home') }}">ZERO DAY<span aria-hidden="true">*</span></a>
+        <div><a href="{{ url_for('cafe.menu') }}">Volver a la tienda <span aria-hidden="true">↗</span></a>
+        <button class="home-theme-toggle" type="button" aria-label="Tema claro" aria-pressed="false" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg><span class="sr-only" data-theme-label>Cambiar tema</span></button></div>
+    </header>
+    {% block content %}{% endblock %}
+    <script src="{{ url_for('static', filename='js/home_theme.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/account_preview.js') }}" defer></script>
+</body>
+</html>

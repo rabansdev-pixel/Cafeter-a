@@ -578,3 +578,69 @@ html[data-home-theme='light'] .zero-home .theme-moon { display:block; }
  .zero-home .home-menu-story h3,
  .zero-home .home-selection-story h3 { font-size:21px; }
 }
+
+/* Home light: distinct surfaces, clearer reading and a charcoal visit invitation. */
+html[data-home-theme='light'] .zero-home {
+ --home-page:#fafafa; --home-surface:#fff; --home-secondary:#505550;
+}
+html[data-home-theme='light'] .zero-home .home-about { background:#fff; }
+html[data-home-theme='light'] .zero-home .home-tastes { background:#f1f2f0; }
+html[data-home-theme='light'] .zero-home .home-ritual { background:#fff; }
+html[data-home-theme='light'] .zero-home .home-ritual .picture-caption {
+ background:#fff; color:#505550;
+}
+html[data-home-theme='light'] .zero-home .home-about-copy,
+html[data-home-theme='light'] .zero-home .taste-card>p,
+html[data-home-theme='light'] .zero-home .taste-card:not(:first-child)>p,
+html[data-home-theme='light'] .zero-home .home-ritual .editorial-copy p {
+ font-size:16px; line-height:1.65; color:#505550;
+}
+html[data-home-theme='light'] .zero-home .taste-caption>span {
+ font-size:16px; font-weight:700; color:#242624; font-variant-numeric:tabular-nums;
+}
+html[data-home-theme='light'] .zero-home .home-tastes .editorial-heading>.cafe-link {
+ display:inline-flex; align-items:center; justify-content:center; min-height:48px;
+ padding:12px 20px; border:1px solid #242624; border-radius:4px;
+ background:#242624; color:#fff; text-decoration:none;
+}
+html[data-home-theme='light'] .zero-home .home-visit-story {
+ --home-ink:#fafafa; --home-secondary:#d1d4d0; --home-rule:#ffffff30;
+ background:#242624; color:#fafafa; padding:32px;
+}
+html[data-home-theme='light'] .zero-home .home-visit-story h3 { color:#fafafa; }
+html[data-home-theme='light'] .zero-home .home-visit-story :is(p,.home-card-top,.home-card-notes li),
+html[data-home-theme='light'] .zero-home .home-visit-story .home-card-notes li::before {
+ color:#d1d4d0;
+}
+html[data-home-theme='light'] .zero-home .home-visit-story .home-card-notes li {
+ font-size:16px; line-height:1.65;
+}
+html[data-home-theme='light'] .zero-home .home-visit-story .home-card-link {
+ display:inline-flex; align-items:center; gap:20px; width:fit-content;
+ min-height:48px; padding:12px 18px; border:1px solid #fafafa;
+ border-radius:4px; background:#fafafa; color:#242624; text-decoration:none;
+}
+html[data-home-theme='light'] .zero-home .home-visit-story :focus-visible {
+ outline:2px solid #fff; outline-offset:4px;
+}
+@media(min-width:768px) {
+ html[data-home-theme='light'] .zero-home .home-about {
+  padding-block:64px 56px;
+ }
+ html[data-home-theme='light'] .zero-home .home-about h2 { margin-bottom:24px; }
+ html[data-home-theme='light'] .zero-home .home-tastes { padding-block:40px 56px; }
+ html[data-home-theme='light'] .zero-home .home-tastes .editorial-heading {
+  border-top:0; padding-top:0; margin-bottom:28px;
+ }
+ html[data-home-theme='light'] .zero-home .home-ritual {
+  padding-block:56px; gap:6%;
+ }
+ html[data-home-theme='light'] .zero-home .home-discover { padding-top:40px; }
+}
+@media(max-width:767px) {
+ html[data-home-theme='light'] .zero-home .home-tastes { padding-top:28px; }
+ html[data-home-theme='light'] .zero-home .home-visit-story { padding:24px 20px; }
+ html[data-home-theme='light'] .zero-home .home-tastes .editorial-heading>.cafe-link {
+  margin-top:16px;
+ }
+}

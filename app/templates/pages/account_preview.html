@@ -1,0 +1,14 @@
+{% extends 'layouts/account.html' %}
+{% block title %}Mi cuenta · Vista previa{% endblock %}
+{% block content %}
+<main class="customer-main" id="account-main" tabindex="-1">
+    <span class="preview-badge">Vista previa · Sin sesión iniciada</span>
+    <h1>Tu espacio en ZERO DAY.</h1><p class="page-lead">Un lugar para volver a tu próxima pausa.</p>
+    <div class="customer-grid">
+        <section class="account-card"><span class="section-label">Mi perfil</span><h2>Todo empieza por conocerte.</h2><p>El perfil estará disponible cuando se habiliten las cuentas.</p><button class="account-button" disabled>Editar perfil</button></section>
+        <section class="account-card"><span class="section-label">Tu selección</span><h2>¿Qué te apetece hoy?</h2><p>Puedes seguir explorando la tienda y consultar la selección guardada en este dispositivo.</p><a class="account-button primary" href="{{ url_for('cafe.cart') }}">Ver mi carrito</a></section>
+        <section class="account-card customer-orders"><div><span class="section-label">Pedidos</span><h2>Cada pausa, en su lugar.</h2><p>El historial aparecerá aquí cuando se habiliten los pedidos en línea.</p></div><a class="account-link" href="{{ url_for('cafe.menu') }}">Explorar la tienda ↗</a></section>
+    </div>
+    <a class="account-link" href="{{ url_for('main.login') }}">Volver al acceso</a>
+</main>
+{% endblock %}

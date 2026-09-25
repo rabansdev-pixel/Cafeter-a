@@ -1,0 +1,29 @@
+{% extends 'layouts/account.html' %}
+{% block title %}{{ {'login':'Iniciar sesión', 'register':'Crear cuenta', 'recover':'Recuperar acceso'}[mode] }}{% endblock %}
+{% block content %}
+<main class="access-layout" id="account-main" tabindex="-1">
+    <aside class="access-story" aria-label="El momento ZERO DAY">
+        <img src="{{ url_for('static', filename='img/home/cold-brew-800.webp') }}" alt="Café frío sobre una mesa de madera" width="800" height="1000" decoding="async">
+        <div><span>Un café. Un momento.</span><h2>El arte de tomarse<br><em>un momento.</em></h2><p>Encuentra tu próxima pausa.</p></div>
+    </aside>
+    <section class="access-panel">
+        <div class="access-heading"><span class="preview-badge">Vista previa</span>
+        <h1>{{ {'login':'Qué bueno verte.', 'register':'Tu próxima pausa empieza aquí.', 'recover':'Recupera tu acceso.'}[mode] }}</h1>
+        <p>{{ {'login':'Un mismo acceso para clientes y equipo de ZERO DAY.', 'register':'Un espacio para tu cuenta en ZERO DAY.', 'recover':'El acceso a tu cuenta, de nuevo en tus manos.'}[mode] }}</p></div>
+        <p class="preview-notice" id="access-notice">El acceso aún no está habilitado. Este formulario no recibe ni guarda datos.</p>
+        <form aria-describedby="access-notice">
+            <fieldset disabled>
+                <legend class="sr-only">{{ 'Datos de registro' if mode == 'register' else 'Datos de acceso' }}</legend>
+                {% if mode == 'register' %}<label for="access-name">Nombre<input id="access-name" type="text" autocomplete="name" placeholder="Tu nombre"></label>{% endif %}
+                <label for="access-email">Correo electrónico<input id="access-email" type="email" autocomplete="email" placeholder="tu@correo.com"></label>
+                {% if mode != 'recover' %}<label for="access-password">Contraseña<div class="password-field"><input id="access-password" type="password" autocomplete="{{ 'new-password' if mode == 'register' else 'current-password' }}" placeholder="Tu contraseña"><span aria-hidden="true">○</span></div></label>{% endif %}
+                <button class="account-button primary" type="button">{{ {'login':'Iniciar sesión', 'register':'Crear cuenta', 'recover':'Enviar enlace de recuperación'}[mode] }}</button>
+            </fieldset>
+        </form>
+        {% if mode == 'login' %}<a class="account-link" href="{{ url_for('main.recover') }}">¿Olvidaste tu contraseña?</a><p class="access-switch">¿Aún no tienes cuenta? <a href="{{ url_for('main.register') }}">Crear cuenta</a></p>
+        {% else %}<p class="access-switch"><a href="{{ url_for('main.login') }}">Volver a iniciar sesión</a></p>{% endif %}
+        <div class="preview-links"><p>Explora el diseño</p><a href="{{ url_for('main.account_preview') }}">Vista de cliente <span aria-hidden="true">↗</span></a><a href="{{ url_for('main.admin_preview') }}">Vista de administración <span aria-hidden="true">↗</span></a></div>
+        <small class="access-footnote">Las cuentas administrativas no tendrán registro público.</small>
+    </section>
+</main>
+{% endblock %}
