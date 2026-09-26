@@ -29,17 +29,25 @@
     {% if request.endpoint == 'main.home' %}<link rel="stylesheet" href="{{ url_for('static', filename='css/refinement.css') }}">{% endif %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/shared-refinement.css', v='footer-unified-2') }}">
     {% if request.endpoint in ['cafe.menu', 'cafe.product'] %}<link rel="stylesheet" href="{{ url_for('static', filename='css/shop.css') }}">{% endif %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/header-actions.css', v='1') }}">
+    {% if request.endpoint == 'main.home' %}<link rel="stylesheet" href="{{ url_for('static', filename='css/home-finish.css', v='1') }}">{% endif %}
 </head>
 <body class="{% block body_class %}{% endblock %}">
     <a class="skip-link" href="#main-content">Saltar al contenido</a>
     <!-- Navbar Flotante -->
     {% block navigation %}{% include 'components/navbar.html' %}{% endblock %}
 
+<div class="header-actions" role="group" aria-label="Tema y cuenta">
 <button class="home-theme-toggle" type="button" aria-label="Tema claro" aria-pressed="false" aria-describedby="home-theme-description" hidden>
     <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg>
     <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 15.5A9 9 0 0 1 8.5 4 9 9 0 1 0 20 15.5Z"/></svg>
     <span id="home-theme-description" class="theme-tooltip" data-theme-label>Cambiar a tema claro</span>
 </button>
+<a class="header-account" href="{{ url_for('main.account_preview' if current_user else 'main.login') }}" aria-label="{{ 'Mi cuenta' if current_user else 'Iniciar sesión' }}">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 21v-2a7 7 0 0 1 14 0v2"/></svg>
+    <span>{{ 'Mi cuenta' if current_user else 'Iniciar sesión' }}</span>
+</a>
+</div>
     <!-- Contenido Principal -->
     <main id="main-content" tabindex="-1">
         {% block content %}{% endblock %}

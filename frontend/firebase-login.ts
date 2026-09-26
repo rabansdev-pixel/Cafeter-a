@@ -65,8 +65,7 @@ if (root) {
       } finally {
         // Firebase credentials live only in memory; PostgreSQL owns the website session.
         await signOut(auth).catch(() => {});
-        const recaptcha = (window as unknown as {grecaptcha?: {enterprise?: {reset: () => void}}}).grecaptcha;
-        recaptcha?.enterprise?.reset();
+        (window as unknown as {resetAccessCaptcha?: () => void}).resetAccessCaptcha?.();
         buttons.forEach(item => { item.disabled = false; });
         button.removeAttribute('aria-busy');
       }

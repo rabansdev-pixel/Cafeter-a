@@ -1,0 +1,50 @@
+/* Home-only finish. No media selectors, geometry, layout or behavior changes. */
+html[data-home-theme] body.zero-home {
+ --finish-page:#0d0d0b; --finish-secondary:#10100e; --finish-surface:#171714;
+ --finish-ink:#eeece4; --finish-copy:#b5b3aa; --finish-muted:#a09e94;
+ --finish-rule:#dedbc820; --finish-hover:#dedbc83d;
+ --finish-action:#dedbc8; --finish-on-action:#181815;
+ --finish-footer:#1b1a17;
+ background:var(--finish-page); color:var(--finish-ink);
+}
+html[data-home-theme='light'] body.zero-home {
+ --finish-page:#f3f0e7; --finish-secondary:#efeade; --finish-surface:#f8f5ee;
+ --finish-ink:#181815; --finish-copy:#55534b; --finish-muted:#6c685e;
+ --finish-rule:#18181520; --finish-hover:#1818153d;
+ --finish-action:#24231e; --finish-on-action:#f3f0e7;
+ --finish-footer:#e3ddd0;
+}
+html[data-home-theme] .zero-home .home-about,
+html[data-home-theme] .zero-home .home-ritual { background:var(--finish-surface); color:var(--finish-ink); }
+html[data-home-theme] .zero-home .home-tastes { background:var(--finish-secondary); color:var(--finish-ink); }
+html[data-home-theme] .zero-home .home-discover,
+html[data-home-theme] .zero-home .city-signoff { background:var(--finish-page); color:var(--finish-ink); }
+html[data-home-theme] .zero-home .home-visit-story { background:var(--finish-surface); color:var(--finish-ink); --home-ink:var(--finish-ink); --home-secondary:var(--finish-copy); --home-rule:var(--finish-rule); }
+html[data-home-theme] .zero-home :is(.home-about h2,.home-about h2 em,.home-tastes h2,.home-ritual h2,.home-discover-heading h2,.home-menu-story h3,.home-selection-story h3,.home-visit-story h3,.city-signoff h2,.city-signoff h2 em) { color:var(--finish-ink); }
+html[data-home-theme] .zero-home :is(.home-about-copy,.taste-card>p,.taste-card:not(:first-child)>p,.home-ritual .editorial-copy p,.home-menu-story p,.home-selection-story p,.home-visit-story p,.home-card-notes li,.home-discover-heading h2>span) { color:var(--finish-copy); }
+html[data-home-theme] .zero-home :is(.home-about .home-label,.home-tastes .eyebrow,.home-ritual .eyebrow,.home-discover-heading .home-label,.city-signoff .eyebrow,.home-card-top,.home-photo-note) { color:var(--finish-muted); letter-spacing:.08em; }
+html[data-home-theme] .zero-home :is(.home-about h2,.home-ritual h2,.home-tastes h2) { font-weight:400; letter-spacing:-.035em; }
+html[data-home-theme] .zero-home .taste-caption h3 { color:var(--finish-ink); font-weight:700; letter-spacing:-.025em; }
+html[data-home-theme] .zero-home .taste-caption>span { color:var(--finish-copy); font-weight:400; font-variant-numeric:tabular-nums; }
+html[data-home-theme] .zero-home :is(.home-about-link,.home-card-link,.home-discover-heading) { border-color:var(--finish-rule); }
+html[data-home-theme] .zero-home :is(.home-about-link,.home-card-link,.home-ritual .cafe-link) { color:var(--finish-ink); text-underline-offset:5px; text-decoration-thickness:1px; transition:color .18s,border-color .18s; }
+html[data-home-theme] .zero-home :is(.home-about-link,.home-card-link,.home-ritual .cafe-link):hover { color:var(--finish-copy); border-color:var(--finish-hover); }
+html[data-home-theme] .zero-home .home-tastes .editorial-heading>.cafe-link { background:var(--finish-action); color:var(--finish-on-action); border-color:var(--finish-action); border-radius:6px; transition:background-color .18s,border-color .18s; }
+html[data-home-theme] .zero-home .home-tastes .editorial-heading>.cafe-link:hover { background:var(--finish-ink); border-color:var(--finish-ink); }
+html[data-home-theme] .zero-home .site-nav { background:var(--finish-page); }
+html[data-home-theme] .zero-home :is(.home-nav-brand,.site-menu a,.menu-toggle) { color:var(--finish-ink); border-color:var(--finish-rule); }
+html[data-home-theme] .zero-home :is(.site-menu,.site-menu .nav-selection) { border-color:var(--finish-rule); }
+html[data-home-theme] .zero-home .site-menu a { transition:color .18s; text-underline-offset:6px; }
+html[data-home-theme] .zero-home .site-menu a:hover { color:var(--finish-copy); }
+html[data-home-theme] .zero-home .site-menu a[aria-current] { text-decoration-color:var(--finish-action); }
+html[data-home-theme] .zero-home .header-account { background:var(--finish-action); color:var(--finish-on-action); border-color:var(--finish-action); }
+html[data-home-theme] .zero-home .header-actions .home-theme-toggle { background:var(--finish-page); color:var(--finish-ink); border-color:var(--finish-rule); }
+html[data-home-theme] .zero-home .site-footer { background:var(--finish-footer); color:var(--finish-ink); border-color:var(--finish-rule); }
+html[data-home-theme] .zero-home .site-footer :is(p,address,small,.footer-origin,.footer-location>span,.footer-bottom,.asset-credits,.footer-kicker) { color:var(--finish-copy); }
+html[data-home-theme] .zero-home .site-footer :is(a,.footer-brand) { color:var(--finish-ink); text-underline-offset:5px; transition:color .18s; }
+html[data-home-theme] .zero-home .site-footer a:hover { color:var(--finish-copy); }
+html[data-home-theme] .zero-home .site-footer :is(.footer-top,.footer-bottom,.home-footer-meta,.asset-credits) { border-color:var(--finish-rule); }
+html[data-home-theme] .zero-home :is(.site-nav,.header-actions,.home-about,.home-tastes,.home-ritual .editorial-copy,.home-menu-story,.home-selection-story,.home-visit-story,.site-footer) :focus-visible { outline:2px solid var(--finish-ink); outline-offset:4px; }
+@media(prefers-reduced-motion:reduce) {
+ html[data-home-theme] .zero-home :is(.home-about-link,.home-card-link,.home-ritual .cafe-link,.home-tastes .editorial-heading>.cafe-link,.site-menu a,.site-footer a) { transition:none; }
+}
