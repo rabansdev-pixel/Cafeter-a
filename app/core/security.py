@@ -23,6 +23,10 @@ def setup_security_headers(app):
         auth_frame = f'https://{firebase_host}' if valid_firebase_host and app.config.get('AUTH_PROVIDER') == 'firebase' else "'none'"
         firebase_scripts = ' https://apis.google.com' if app.config.get('AUTH_PROVIDER') == 'firebase' else ''
         firebase_connect = ' https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com' if app.config.get('AUTH_PROVIDER') == 'firebase' else ''
+        if app.config.get('RECAPTCHA_SITE_KEY'):
+            firebase_scripts += ' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/'
+            firebase_connect += ' https://www.google.com/recaptcha/'
+            auth_frame = ('' if auth_frame == "'none'" else auth_frame + ' ') + 'https://www.google.com/recaptcha/ https://recaptcha.google.com/recaptcha/'
         csp_directives = (
             "default-src 'self'; "
             f"script-src 'self'{firebase_scripts}; "

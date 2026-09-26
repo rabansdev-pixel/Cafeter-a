@@ -25,6 +25,13 @@ if (root) {
       message.textContent = 'No se pudo preparar el acceso con Google. Recarga la página.';
     });
     button.addEventListener('click', async () => {
+      const captcha = document.querySelector<HTMLTextAreaElement>('[name="g-recaptcha-response"]');
+      const captchaToken = captcha?.value || '';
+      if (document.querySelector('.g-recaptcha') && !captchaToken) {
+        message.textContent = 'Completa el captcha antes de continuar con Google.';
+        document.querySelector<HTMLElement>('.g-recaptcha')?.scrollIntoView({block: 'center'});
+        return;
+      }
       button.disabled = true;
       button.setAttribute('aria-busy', 'true');
       message.textContent = 'Abriendo Google…';
@@ -37,7 +44,7 @@ if (root) {
         const response = await fetch(root.dataset.sessionUrl!, {
           method: 'POST', credentials: 'same-origin',
           headers: {'Content-Type':'application/json', 'X-CSRFToken':csrf},
-          body: JSON.stringify({id_token:token, legacy_password:password}),
+          body: JSON.stringify({id_token:token, legacy_password:password, captcha_token:captchaToken}),
         });
         const data = await response.json();
         if (!response.ok) {
@@ -55,6 +62,8 @@ if (root) {
       } finally {
         // Firebase credentials live only in memory; PostgreSQL owns the website session.
         await signOut(auth).catch(() => {});
+        const recaptcha = (window as unknown as {grecaptcha?: {enterprise?: {reset: () => void}}}).grecaptcha;
+        recaptcha?.enterprise?.reset();
         button.disabled = false;
         button.removeAttribute('aria-busy');
       }

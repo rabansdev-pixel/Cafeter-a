@@ -43,6 +43,9 @@ endblock %}
                             id="access-password" type="password"
                             autocomplete="{{ 'new-password' if mode == 'register' else 'current-password' }}"
                             placeholder="Tu contraseña"><span aria-hidden="true">○</span></div></label>{% endif %}
+                {% if config.RECAPTCHA_SITE_KEY %}
+                <div class="g-recaptcha" data-sitekey="{{ config.RECAPTCHA_SITE_KEY }}" data-size="compact"></div>
+                {% endif %}
                 <button class="account-button primary" type="submit">{{ {'login':'Iniciar sesión', 'register':'Crear
                     cuenta', 'recover':'Enviar enlace de recuperación'}[mode] }}</button>
             </fieldset>
@@ -56,4 +59,4 @@ endblock %}
     </section>
 </main>
 {% endblock %}
-{% block extra_scripts %}{% if firebase_config and mode != 'recover' %}<script type="module" src="{{ url_for('static', filename='js/firebase-login.js', v='1') }}"></script>{% endif %}{% endblock %}
+{% block extra_scripts %}{% if config.RECAPTCHA_SITE_KEY %}<script src="https://www.google.com/recaptcha/enterprise.js?hl=es" async defer></script>{% endif %}{% if firebase_config and mode != 'recover' %}<script type="module" src="{{ url_for('static', filename='js/firebase-login.js', v='2') }}"></script>{% endif %}{% endblock %}
