@@ -60,3 +60,7 @@ html[data-home-theme='light'] .access-ui .access-story::after { background:rgba(
 
 .access-ui .access-back { display:inline-flex; align-items:center; gap:8px; }
 .access-ui .access-back svg { width:16px; height:16px; flex:none; fill:none; stroke:currentColor; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
+
+/* Google supplies its own theme; avoid native iframe borders in dark mode. */
+.access-ui .access-captcha { color-scheme:light; }
+.access-ui .access-captcha iframe { display:block; border:0; background:transparent; }
