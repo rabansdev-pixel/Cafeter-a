@@ -38,11 +38,28 @@ endblock %}
                         id="access-name" type="text" autocomplete="name" placeholder="Tu nombre"></label>{% endif %}
                 <label for="access-email">Correo electrónico<input name="email" required maxlength="254"
                         id="access-email" type="email" autocomplete="email" placeholder="tu@correo.com"></label>
-                {% if mode != 'recover' %}<label for="access-password">Contraseña<div class="password-field"><input
-                            name="password" required maxlength="256" {% if mode=="register" %}minlength="12" {% endif %}
-                            id="access-password" type="password"
+                {% if mode != 'recover' %}
+                <div class="access-password-group">
+                    <label for="access-password">Contraseña</label>
+                    <div class="password-field">
+                        <input name="password" required maxlength="256" id="access-password" type="password"
+                            {% if mode == 'register' %}minlength="12" aria-describedby="password-guidance"{% endif %}
                             autocomplete="{{ 'new-password' if mode == 'register' else 'current-password' }}"
-                            placeholder="Tu contraseña"><span aria-hidden="true">○</span></div></label>{% endif %}
+                            placeholder="Tu contraseña">
+                        <button class="password-toggle" type="button" aria-label="Mostrar contraseña" aria-controls="access-password" aria-pressed="false" hidden>
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/><path class="password-eye-slash" d="m3 3 18 18" hidden/></svg>
+                        </button>
+                    </div>
+                    {% if mode == 'register' %}
+                    <div class="password-guidance" id="password-guidance">
+                        <div class="password-meter" aria-hidden="true"><span></span><span></span><span></span></div>
+                        <p data-password-status role="status" aria-live="polite">Usa al menos 12 caracteres.</p>
+                        <p data-password-minimum>Mínimo obligatorio: 12 caracteres.</p>
+                        <p>Recomendación: una frase larga y única, de 16 caracteres o más. Evita tu nombre y correo.</p>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
                 {% if config.RECAPTCHA_SITE_KEY %}
                 <div class="g-recaptcha" data-sitekey="{{ config.RECAPTCHA_SITE_KEY }}" data-size="compact"></div>
                 {% endif %}
@@ -59,4 +76,4 @@ endblock %}
     </section>
 </main>
 {% endblock %}
-{% block extra_scripts %}{% if config.RECAPTCHA_SITE_KEY %}<script src="https://www.google.com/recaptcha/enterprise.js?hl=es" async defer></script>{% endif %}{% if firebase_config and mode != 'recover' %}<script type="module" src="{{ url_for('static', filename='js/firebase-login.js', v='2') }}"></script>{% endif %}{% endblock %}
+{% block extra_scripts %}<script src="{{ url_for('static', filename='js/password-field.js', v='1') }}" defer></script>{% if config.RECAPTCHA_SITE_KEY %}<script src="https://www.google.com/recaptcha/enterprise.js?hl=es" async defer></script>{% endif %}{% if firebase_config and mode != 'recover' %}<script type="module" src="{{ url_for('static', filename='js/firebase-login.js', v='2') }}"></script>{% endif %}{% endblock %}

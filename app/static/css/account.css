@@ -149,3 +149,18 @@ td { font-size:13px; }
 .firebase-access [role=status]:not(:empty) { font-size:13px; margin:12px 0; }
 .access-divider { display:flex; align-items:center; gap:12px; margin:20px 0 0; font-size:12px; }
 .access-divider::before,.access-divider::after { content:''; flex:1; border-top:1px solid var(--line); }
+
+/* Password controls inherit the account form's typography and surfaces. */
+.access-password-group { margin-bottom:20px; }
+.access-panel .access-password-group label { margin-bottom:8px; }
+.access-password-group input { padding-right:52px; }
+.password-toggle { position:absolute; right:2px; top:1px; width:44px; height:44px; display:grid; place-items:center; padding:0; border:0; border-radius:5px; background:transparent; color:var(--muted); cursor:pointer; }
+.password-toggle:hover { background:var(--soft); color:var(--ink); }
+.password-toggle svg { width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
+.password-guidance { margin-top:12px; font-size:12px; line-height:1.55; }
+.password-guidance p + p { margin-top:5px; }
+.password-guidance [data-password-status] { color:var(--ink); }
+.password-meter { display:flex; gap:5px; margin-bottom:8px; }
+.password-meter span { height:3px; flex:1; border-radius:4px; background:var(--line); }
+.password-meter span.is-filled { background:var(--accent); }
+.password-guidance [data-met="true"] { color:var(--ink); }
