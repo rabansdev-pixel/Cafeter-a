@@ -6,3 +6,6 @@ from flask_wtf.csrf import CSRFProtect
 db = SQLAlchemy()
 ma = Marshmallow()
 csrf = CSRFProtect()
+
+from flask_migrate import Migrate
+migrate = Migrate()

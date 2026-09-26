@@ -6,7 +6,7 @@ class TastingProfile(db.Model):
     Modelo para el perfil de cata, notas sensoriales y niveles en escala del 1 al 10.
     """
 
-    __tablename__ = "tasting_profiles"
+    __tablename__ = "perfiles_cata"
 
     id = db.Column(db.Integer, primary_key=True)
     roast_level = db.Column(

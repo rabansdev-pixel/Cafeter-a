@@ -23,28 +23,21 @@ def methods():
     return redirect(url_for("cafe.experience", _anchor="metodos"), code=301)
 
 
-@main_bp.route('/login', endpoint='login')
-@main_bp.route('/registro', endpoint='register')
-@main_bp.route('/recuperar-acceso', endpoint='recover')
-def access_preview():
-    """Presentation only: no credentials, accounts or sessions are processed."""
-    from flask import request
-    mode = {'/registro': 'register', '/recuperar-acceso': 'recover'}.get(request.path, 'login')
-    return render_template('pages/access.html', mode=mode)
+from app.controllers.web.account_controller import (
+    access, account, admin, logout, product_edit, product_delete, user_update, firebase_session,
+)
 
+main_bp.add_url_rule('/login', 'login', access, methods=['GET', 'POST'])
+main_bp.add_url_rule('/registro', 'register', access, methods=['GET', 'POST'])
+main_bp.add_url_rule('/recuperar-acceso', 'recover', access, methods=['GET', 'POST'])
+main_bp.add_url_rule('/cuenta', 'account_preview', account)
+main_bp.add_url_rule('/cuenta/vista-previa', 'account_preview', account)
+main_bp.add_url_rule('/admin', 'admin_preview', admin)
+main_bp.add_url_rule('/admin/vista-previa', 'admin_preview', admin)
+main_bp.add_url_rule('/logout', 'logout', logout, methods=['POST'])
+main_bp.add_url_rule('/admin/productos/nuevo', 'product_create', product_edit, methods=['GET', 'POST'])
+main_bp.add_url_rule('/admin/productos/<int:product_id>', 'product_edit', product_edit, methods=['GET', 'POST'])
+main_bp.add_url_rule('/admin/productos/<int:product_id>/desactivar', 'product_delete', product_delete, methods=['POST'])
+main_bp.add_url_rule('/admin/usuarios/<int:user_id>', 'user_update', user_update, methods=['POST'])
 
-@main_bp.route('/cuenta/vista-previa')
-def account_preview():
-    return render_template('pages/account_preview.html')
-
-
-@main_bp.route('/admin/vista-previa')
-def admin_preview():
-    """Public read-only mockup using only already-public menu information."""
-    from flask import request, abort
-    from app.services.menu_service import MenuService
-    section = request.args.get('section', 'products')
-    if section not in {'products', 'categories', 'inventory', 'users', 'activity'}:
-        abort(404)
-    return render_template('pages/admin_preview.html', section=section,
-                           categories=MenuService.categories())
+main_bp.add_url_rule('/api/auth/firebase/session', 'firebase_session', firebase_session, methods=['POST'])

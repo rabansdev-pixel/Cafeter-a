@@ -119,7 +119,7 @@ function initCart() {
         const media = el('div', 'cart-line-media');
         if (row.image) {
             const image = el('img');
-            image.src = row.slug === 'cold-brew' ? '/static/img/home/cold-brew-800.webp' : row.image;
+            image.src = row.image;
             image.alt = ''; image.width = 160; image.height = 160; image.loading = 'lazy'; image.decoding = 'async';
             image.addEventListener('error', () => { image.remove(); media.textContent = 'ZD'; }, { once: true });
             media.append(image);

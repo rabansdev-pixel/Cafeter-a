@@ -1,30 +1,35 @@
 {% extends 'layouts/account.html' %}
-{% set sections = [('products','Productos'),('categories','Categorías'),('inventory','Inventario'),('users','Usuarios y roles'),('activity','Actividad')] %}
-{% block title %}Administración · Vista previa{% endblock %}
+{% set sections = [('dashboard','Resumen'),('products','Productos'),('categories','Categorías'),('inventory','Inventario'),('users','Usuarios y roles'),('activity','Actividad')] %}
+{% block title %}Administración{% endblock %}
 {% block body_class %}admin-preview{% endblock %}
 {% block content %}
 <div class="admin-shell">
-    <aside class="admin-sidebar"><div class="workspace-name"><span class="workspace-mark">ZD</span><div>ZERO DAY<small>Administración</small></div></div>
-        <nav aria-label="Administración">{% for key,label in sections %}<a href="{{ url_for('main.admin_preview', section=key) }}" {% if section == key %}aria-current="page"{% endif %}>{{ label }}</a>{% endfor %}</nav>
-        <div class="sidebar-note"><span class="preview-badge">Solo lectura</span><p>Vista pública del diseño. No permite administrar cuentas ni modificar la tienda.</p><a href="{{ url_for('main.login') }}">Volver al acceso ↗</a></div>
+    <aside class="admin-sidebar" id="admin-sidebar-root" data-dashboard="{{ dashboard|tojson|forceescape }}"><div class="workspace-name"><span class="workspace-mark">ZD</span><div>ZERO DAY<small>Administración</small></div></div>
+        <nav aria-label="Administración">{% for key,label in sections %}{% if current_user.role == 'admin' or key not in ['users','activity'] %}<a href="{{ url_for('main.admin_preview', section=key) }}" {% if section == key %}aria-current="page"{% endif %}>{{ label }}</a>{% endif %}{% endfor %}</nav>
+        <div class="sidebar-note"><p>{{ current_user.name }}</p><a href="{{ url_for('main.account_preview') }}">Mi cuenta ↗</a><form method="post" action="{{ url_for('main.logout') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="account-button" type="submit">Cerrar sesión</button></form></div>
     </aside>
     <main class="admin-main" id="account-main" tabindex="-1">
-        <div class="admin-heading"><div><p class="section-label">ZERO DAY / Administración</p><h1>{{ dict(sections)[section] }}</h1></div><span class="preview-badge">Vista previa</span></div>
-        <p class="preview-notice">El panel aún no está conectado a cuentas ni guardado de cambios. Los productos mostrados son los de la carta actual.</p>
-        {% if section == 'products' %}
-        <div class="admin-toolbar"><div><h2>La carta de ZERO DAY</h2><p>{{ menu_count }} productos en {{ categories|length }} categorías</p></div><button class="account-button primary" disabled title="Disponible cuando se conecte la administración">Añadir producto</button></div>
+        <div class="admin-heading"><div><p class="section-label">ZERO DAY / Administración</p><h1>{{ dict(sections)[section] }}</h1></div></div>
+        {% if section == 'dashboard' %}
+        <div id="admin-overview-root"><div class="category-grid">{% for stat in dashboard.stats %}<section class="account-card"><p>{{ stat.label }}</p><h2>{{ stat.value }}</h2><p>{{ stat.note }}</p></section>{% endfor %}</div></div>
+        {% elif section in ['products', 'inventory'] %}
+        <div class="admin-toolbar"><div><h2>La carta de ZERO DAY</h2><p>{{ products|length }} productos · Stock vacío significa sin registrar.</p></div><a class="account-button primary" href="{{ url_for('main.product_create') }}">Añadir producto</a></div>
         <div class="admin-filters"><label>Buscar producto<input type="search" data-admin-search placeholder="Nombre o categoría…" autocomplete="off"></label><label>Categoría<select data-admin-category><option value="">Todas las categorías</option>{% for category in categories %}<option value="{{ category.name }}">{{ category.name }}</option>{% endfor %}</select></label></div>
-        <p class="result-count" data-admin-count role="status" aria-live="polite">{{ menu_count }} productos</p>
-        <div class="table-wrap" role="region" aria-label="Productos de la carta" tabindex="0"><table><caption class="sr-only">Productos y precios actuales, solo lectura</caption><thead><tr><th scope="col">Producto</th><th scope="col">Categoría</th><th scope="col">Precio</th><th scope="col">Disponibilidad</th><th scope="col"><span class="sr-only">Detalle</span></th></tr></thead><tbody>
-        {% for category in categories %}{% for item in category['items'] %}<tr data-admin-row data-category="{{ category.name }}" data-search="{{ item.name }} {{ category.name }}"><td><div class="table-product">{% if item.image %}<img src="{{ url_for('static', filename='img/home/cold-brew-800.webp') if item.slug == 'cold-brew' else (item.image_small or item.image) }}" alt="" width="44" height="44" loading="lazy" decoding="async">{% endif %}<div>{{ item.name }}<small>{{ item.portion }}</small></div></div></td><td>{{ category.name }}</td><td class="price-cell">{{ item.formatted_price or 'Sin precio' }}</td><td><span class="availability {{ 'available' if item.orderable else '' }}">{{ 'Disponible' if item.orderable else 'No disponible' }}</span></td><td><a class="table-link" href="{{ url_for('cafe.product', slug=item.slug) }}" aria-label="Ver ficha de {{ item.name }}">Ver ficha ↗</a></td></tr>{% endfor %}{% endfor %}
-        </tbody></table></div><p class="empty-search" data-admin-empty hidden>No hay coincidencias. Prueba otro nombre o categoría.</p>
+        <p class="result-count" data-admin-count role="status" aria-live="polite">{{ products|length }} productos</p>
+        <div class="table-wrap" role="region" aria-label="Productos" tabindex="0"><table><thead><tr><th>Producto</th><th>Categoría</th><th>Precio</th><th>Stock</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>
+        {% for item in products %}<tr data-admin-row data-category="{{ item.category }}" data-search="{{ item.name }} {{ item.category }}"><td><div class="table-product"><img src="{{ item.image }}" alt="" width="44" height="44" loading="lazy"><div>{{ item.name }}</div></div></td><td>{{ item.category }}</td><td class="price-cell">{{ '%.2f'|format(item.price) }} USD</td><td>{{ item.stock if item.stock is not none else 'Sin registrar' }}</td><td>{{ 'Inactivo' if not item.is_active else ('Agotado' if item.stock == 0 else 'Activo') }}</td><td><a class="table-link" href="{{ url_for('main.product_edit', product_id=item.id) }}">Editar</a>{% if item.is_active %}<form method="post" action="{{ url_for('main.product_delete', product_id=item.id) }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="account-button" type="submit">Desactivar</button></form>{% endif %}</td></tr>{% endfor %}
+        </tbody></table></div><p class="empty-search" data-admin-empty hidden>No hay coincidencias.</p>
         {% elif section == 'categories' %}
-        <div class="category-grid">{% for category in categories %}<section class="account-card"><span class="section-label">{{ category['items']|length }} productos</span><h2>{{ category.name }}</h2><p>{{ category.intro }}</p><a class="account-link" href="{{ url_for('cafe.menu', _anchor=category.anchor) }}">Ver en la tienda ↗</a></section>{% endfor %}</div>
-        {% else %}
-        {% set content = {'inventory':('Disponibilidad no es stock.', 'La carta indica qué productos están disponibles. Todavía no hay cantidades, ingredientes ni movimientos de inventario registrados.', 'Configurar inventario'), 'users':('Cada persona, su acceso.', 'Clientes, personal y administradores tendrán permisos distintos. Todavía no hay gestión de cuentas conectada a este panel.', 'Invitar al equipo'), 'activity':('Los cambios, con contexto.', 'Aquí se podrá consultar quién actualizó precios, disponibilidad o existencias. El registro de actividad aún no está habilitado.', 'Consultar actividad')}[section] %}
-        <section class="admin-empty"><span class="empty-symbol" aria-hidden="true">{{ {'inventory':'□','users':'◎','activity':'≡'}[section] }}</span><h2>{{ content[0] }}</h2><p>{{ content[1] }}</p><button class="account-button" disabled>{{ content[2] }}</button></section>
+        <div class="category-grid">{% for category in categories %}<section class="account-card"><h2>{{ category.name }}</h2><p>{{ category.intro }}</p></section>{% endfor %}</div>
+        {% elif section == 'users' %}
+        <div class="table-wrap" role="region" aria-label="Usuarios y permisos" tabindex="0"><table><thead><tr><th>Nombre</th><th>Correo</th><th>Permisos</th></tr></thead><tbody>{% for user in users %}<tr><td>{{ user.name }}</td><td>{{ user.email }}</td><td><form method="post" action="{{ url_for('main.user_update', user_id=user.id) }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><label>Rol de {{ user.name }}<select name="role">{% for role,label in [('customer','Cliente'),('staff','Personal'),('admin','Administrador')] %}<option value="{{ role }}" {% if user.role == role %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label><label><input type="checkbox" name="active" {% if user.active %}checked{% endif %}> Cuenta activa</label><button class="account-button" type="submit">Guardar permisos</button></form></td></tr>{% else %}<tr><td colspan="3">Todavía no hay usuarios.</td></tr>{% endfor %}</tbody></table></div><p>Se muestran hasta 200 usuarios. El registro público siempre crea clientes.</p>
+        {% elif section == 'activity' %}
+        <div class="table-wrap" role="region" aria-label="Actividad reciente" tabindex="0"><table><thead><tr><th>Fecha (UTC)</th><th>Persona</th><th>Acción</th><th>Registro</th></tr></thead><tbody>{% for event in activity %}<tr><td>{{ event.created_at.strftime('%Y-%m-%d %H:%M') }}</td><td>{{ event.actor.name if event.actor else 'Sistema' }}</td><td>{{ event.action }}</td><td>{{ event.entity }} {{ event.entity_id or '' }}</td></tr>{% else %}<tr><td colspan="4">Sin actividad registrada.</td></tr>{% endfor %}</tbody></table></div><p>Últimos 100 cambios.</p>
         {% endif %}
         <footer class="admin-footer">ZERO DAY <span>El arte de tomarse un momento.</span></footer>
     </main>
 </div>
 {% endblock %}
+
+{% block extra_head %}<link rel="stylesheet" href="{{ url_for('static', filename='admin/dashboard.css', v='1') }}">{% endblock %}
+{% block extra_scripts %}<script type="module" src="{{ url_for('static', filename='admin/dashboard.js', v='1') }}"></script>{% endblock %}

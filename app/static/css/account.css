@@ -130,3 +130,22 @@ td { font-size:13px; }
  .customer-orders { display:block; }
  .account-card { padding:24px; }
 }
+
+/* Real forms reuse the existing account design. */
+.account-messages { max-width: 76rem; margin: 1rem auto; padding: 0 1.5rem; }
+.product-editor { display: grid; gap: 1rem; max-width: 46rem; }
+.product-editor label { display: grid; gap: .5rem; }
+.product-editor input:not([type="checkbox"]), .product-editor textarea, .product-editor select { width: 100%; padding: .8rem; border: 1px solid var(--line, #777); border-radius: 4px; background: transparent; color: inherit; font: inherit; }
+.product-editor input[type="checkbox"] { width: auto; }
+.product-editor .account-button { justify-self: start; }
+.admin-main td form { margin-top: .5rem; }
+.product-photo-field { display:grid; gap:12px; padding:20px; border:1px solid var(--line); border-radius:8px; }
+.product-photo-field img { width:min(100%,240px); height:240px; object-fit:cover; border-radius:6px; }
+.product-photo-field input[type=file] { max-width:100%; padding:12px; }
+.product-photo-field input::file-selector-button { border:0; border-radius:4px; padding:10px 14px; margin-right:12px; background:var(--accent); color:white; cursor:pointer; }
+
+.firebase-access { margin-bottom:20px; }
+.google-login { display:flex; align-items:center; justify-content:center; gap:12px; }
+.firebase-access [role=status]:not(:empty) { font-size:13px; margin:12px 0; }
+.access-divider { display:flex; align-items:center; gap:12px; margin:20px 0 0; font-size:12px; }
+.access-divider::before,.access-divider::after { content:''; flex:1; border-top:1px solid var(--line); }

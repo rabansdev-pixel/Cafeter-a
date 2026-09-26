@@ -6,7 +6,7 @@
             {% for endpoint, label in [('main.home', 'Nuestro café'), ('cafe.space', 'Espacio'), ('cafe.menu', 'Tienda'), ('cafe.experience', 'Experiencia'), ('cafe.visit', 'Visítanos')] %}
             <li><a href="{{ url_for(endpoint, _anchor='cafe') if endpoint == 'main.home' else url_for(endpoint) }}" {% if request.endpoint == endpoint or (endpoint == 'cafe.menu' and request.endpoint == 'cafe.product') %}aria-current="page"{% endif %}>{{ label }}</a></li>
             {% endfor %}
-            <li><a href="{{ url_for('main.login') }}">Mi cuenta</a></li>
+            <li><a href="{{ url_for('main.account_preview' if current_user else 'main.login') }}">Mi cuenta</a></li>
             <li class="nav-selection" {% if request.endpoint not in ['cafe.menu', 'cafe.product', 'cafe.cart'] %}data-cart-nav hidden{% endif %}><a href="{{ url_for('cafe.cart') }}" {% if request.endpoint == 'cafe.cart' %}aria-current="page"{% endif %}>Carrito <span data-cart-count>0</span></a></li>
         </ul>
     </nav>

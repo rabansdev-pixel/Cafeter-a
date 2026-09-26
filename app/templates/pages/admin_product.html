@@ -1,0 +1,46 @@
+{% extends 'layouts/account.html' %}
+{% block title %}{{ 'Editar' if product else 'Crear' }} producto{% endblock %}
+{% block content %}
+<main class="customer-main" id="account-main" tabindex="-1">
+    <a class="account-link" href="{{ url_for('main.admin_preview') }}">← Productos</a>
+    <h1>{{ 'Editar' if product else 'Crear' }} producto</h1>
+    {% set values = request.form if request.method == 'POST' else {} %}
+    <form class="account-card product-editor" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <label>Nombre<input name="name" required maxlength="120"
+                value="{{ values.get('name', product.name if product else '') }}"></label>
+        <label>Slug<input name="slug" required maxlength="140" pattern="[a-z0-9]+(-[a-z0-9]+)*"
+                value="{{ values.get('slug', product.slug if product else '') }}"></label>
+        <label>Descripción breve<input name="tagline" maxlength="200"
+                value="{{ values.get('tagline', product.tagline if product else '') }}"></label>
+        <label>Descripción<textarea name="description" rows="5"
+                maxlength="10000">{{ values.get('description', product.description if product else '') }}</textarea></label>
+        <label>Precio (USD)<input name="price" type="number" min="0" max="100000" step="0.01" required
+                value="{{ values.get('price', product.price if product else '') }}"></label>
+        <label>Categoría<select name="category_id" required>{% for category in categories %}<option
+                    value="{{ category.id }}" {% if values.get('category_id', product.category_id if product else ''
+                    )|string==category.id|string %}selected{% endif %}>{{ category.name }}</option>{% endfor
+                %}</select></label>
+        <section class="product-photo-field">
+            <h2>Fotografía del producto</h2>
+            <img data-photo-preview {% if product %}src="{{ product.image }}" {% else %}hidden{% endif %}
+                alt="Vista previa del producto" width="240" height="240">
+            <label>Seleccionar imagen<input name="image_file" type="file" accept="image/jpeg,image/png,image/webp"
+                    data-product-photo aria-describedby="photo-help"></label>
+            <small id="photo-help">JPG, PNG o WebP · Máximo 8 MB y 24 megapíxeles. La foto se guarda al guardar el
+                producto.</small>
+            <p data-photo-status role="status"></p>
+        </section>
+        <label>O usar una imagen por URL<input name="image" maxlength="255"
+                value="{{ values.get('image', product.image if product else '') }}"></label>
+        <label>Stock<input name="stock" type="number" min="0" max="2147483647" step="1" aria-describedby="stock-help"
+                value="{{ values.get('stock', product.stock if product and product.stock is not none else '') }}"></label>
+        <small id="stock-help">Vacío: sin registrar. Cero: agotado. El carrito consulta estas existencias, pero no las
+            reserva.</small>
+        <label><input type="checkbox" name="active" {% if (request.method=='POST' and values.get('active')=='on' ) or
+                (request.method !='POST' and (not product or product.is_active)) %}checked{% endif %}> Publicado en la
+            tienda</label>
+        <button class="account-button primary" type="submit">Guardar producto</button>
+    </form>
+</main>
+{% endblock %}

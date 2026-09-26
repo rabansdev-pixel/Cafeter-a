@@ -1,0 +1,3 @@
+{% extends 'layouts/account.html' %}
+{% block title %}Imagen demasiado grande{% endblock %}
+{% block content %}<main class="customer-main" id="account-main"><h1>La imagen es demasiado grande.</h1><p>Selecciona una foto JPG, PNG o WebP de hasta 8 MB y vuelve a guardar el producto.</p><a class="account-button" href="{{ url_for('main.admin_preview', section='products') }}">Volver a productos</a></main>{% endblock %}

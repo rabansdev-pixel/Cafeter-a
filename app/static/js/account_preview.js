@@ -19,7 +19,3 @@ if (search && category) {
     search.addEventListener('input', update);
     category.addEventListener('change', update);
 }
-// Disabled forms stay non-submitting even if Enter is pressed in a future layout edit.
-document.querySelectorAll('.access-panel form').forEach(form => {
-    form.addEventListener('submit', event => event.preventDefault());
-});

@@ -4,7 +4,7 @@ from flask_wtf.csrf import CSRFError
 from dotenv import load_dotenv
 
 from app.core.config import config_by_name
-from app.core.extensions import csrf, db, ma
+from app.core.extensions import csrf, db, ma, migrate
 from app.core.security import setup_security_headers
 from app.controllers import (
     main_bp,
@@ -38,6 +38,12 @@ def create_app(env_name=None):
     db.init_app(app)
     ma.init_app(app)
     csrf.init_app(app)
+    from app import models
+    migrate.init_app(app, db)
+    from app.services.auth_service import init_auth
+    from app.cli import register_commands
+    init_auth(app)
+    register_commands(app)
 
     # Configurar cabeceras de seguridad (SonarQube & Snyk)
     setup_security_headers(app)
@@ -45,6 +51,8 @@ def create_app(env_name=None):
     # Registrar Blueprints
     from app.controllers.web.cafe_controller import cafe_bp
 
+    from app.controllers.web.media_controller import media_bp
+    app.register_blueprint(media_bp)
     app.register_blueprint(cafe_bp)
     app.register_blueprint(main_bp)
     app.register_blueprint(catalog_bp)
@@ -64,6 +72,12 @@ def create_app(env_name=None):
             response = error.get_response()
         return response, 400
 
+    @app.errorhandler(413)
+    def upload_too_large(error):
+        if request.path.startswith('/api/'):
+            return jsonify(message='La foto no puede superar los 8 MB.'), 413
+        return render_template('pages/upload_error.html'), 413
+
     @app.errorhandler(404)
     def not_found_error(error):
         return render_template("pages/404.html"), 404
@@ -72,14 +86,5 @@ def create_app(env_name=None):
     def internal_error(error):
         db.session.rollback()
         return render_template("pages/500.html"), 500
-
-    # Inicialización de tablas y datos semilla
-    with app.app_context():
-        db.create_all()
-        # Sembrar cafés en desarrollo o en la primera ejecución de producción.
-        if env_name != "testing":
-            from app.services.product_service import ProductService
-
-            ProductService().seed_initial_data()
 
     return app
