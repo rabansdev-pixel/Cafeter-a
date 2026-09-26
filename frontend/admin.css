@@ -1,0 +1,77 @@
+@layer theme, utilities;
+@import "tailwindcss/theme.css" layer(theme) prefix(tw);
+@import "tailwindcss/utilities.css" layer(utilities) source(none);
+@source "../components/ui/dashboard-with-collapsible-sidebar.tsx";
+/* Reference lock: supplied collapsible dashboard structure; ZERO DAY palette/type;
+   craft-details: visible focus, 44px targets, real forms and honest empty states. */
+.admin-preview .admin-shell { grid-template-columns:248px minmax(0,1fr); transition:grid-template-columns .2s ease; }
+.admin-preview .admin-shell[data-collapsed=true] { grid-template-columns:76px minmax(0,1fr); }
+.admin-preview .admin-sidebar { display:block; position:sticky; top:0; height:100svh; padding:0; z-index:5; overflow-y:auto; }
+.zd-sidebar { display:flex; flex-direction:column; min-height:100%; padding:20px 12px; }
+.zd-workspace { display:flex; gap:12px; align-items:center; padding:4px 6px 24px; border-bottom:1px solid var(--line); margin-bottom:20px; }
+.zd-mark { flex-shrink:0; width:38px; height:38px; display:grid; place-content:center; position:relative; background:var(--ink); color:var(--canvas); border-radius:8px; font-size:14px; font-weight:700; }
+.zd-mark span { position:absolute; right:3px; top:-3px; color:var(--accent); font-size:24px; }
+.zd-workspace strong,.zd-person strong { display:block; font-size:13px; font-weight:700; }
+.zd-workspace small,.zd-person small { display:block; font-size:11px; color:var(--muted); }
+.zd-sidebar nav { display:grid; gap:5px; }
+.admin-preview .zd-sidebar nav a,.zd-nav-secondary a,.zd-sidebar button { display:flex; align-items:center; gap:12px; min-height:44px; width:100%; padding:10px 12px; color:var(--muted); background:transparent; border:0; border-radius:6px; font:inherit; font-size:13px; text-align:left; white-space:nowrap; cursor:pointer; }
+.admin-preview .zd-sidebar nav a[aria-current] { color:var(--ink); background:var(--accent-soft); box-shadow:inset 2px 0 var(--accent); }
+.zd-sidebar a:hover,.zd-sidebar button:hover { background:var(--soft); color:var(--ink); text-decoration:none; }
+.zd-sidebar svg { flex-shrink:0; }
+.zd-nav-secondary { margin-top:24px; padding-top:16px; border-top:1px solid var(--line); }
+.zd-sidebar-bottom { margin-top:auto; padding-top:32px; }
+.zd-person { padding:16px 12px; overflow-wrap:anywhere; }
+.zd-sidebar-bottom>button { margin-top:14px; border-top:1px solid var(--line); border-radius:0; }
+.zd-sidebar.is-collapsed .zd-nav-label { display:none; }
+.zd-sidebar.is-collapsed .zd-workspace { padding-inline:6px; }
+.zd-overview-intro { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; margin:18px 0 28px; }
+.zd-primary,.zd-secondary { display:inline-flex; gap:8px; align-items:center; justify-content:center; min-height:44px; padding:10px 16px; border-radius:6px; font-size:13px; }
+.zd-primary { background:var(--accent); color:white; }
+.zd-secondary { border:1px solid var(--line); width:100%; }
+.zd-stats { grid-template-columns:repeat(4,minmax(0,1fr)); margin-bottom:28px; }
+.zd-stat { padding:22px; background:var(--panel); border:1px solid var(--line); border-radius:10px; min-width:0; }
+.zd-stat:hover { border-color:var(--accent); text-decoration:none; }
+.zd-stat-top { display:flex; align-items:center; justify-content:space-between; color:var(--accent); margin-bottom:22px; }
+.zd-stat-top>svg:last-child { color:var(--muted); }
+.zd-stat h2 { font-size:12px; letter-spacing:0; color:var(--muted); }
+.zd-stat strong { display:block; font-size:34px; line-height:1.4; font-weight:400; font-variant-numeric:tabular-nums; }
+.zd-stat p { margin-top:8px; font-size:11px; line-height:1.6; }
+.zd-content-grid { display:grid; grid-template-columns:minmax(0,1.5fr) minmax(260px,1fr); gap:24px; align-items:start; }
+.zd-panel { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:24px; min-width:0; }
+.zd-panel header { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:20px; }
+.zd-panel header>a { display:flex; gap:5px; align-items:center; font-size:12px; min-height:44px; color:var(--accent); white-space:nowrap; }
+.zd-panel h2 { font-size:19px; }
+.zd-eyebrow { display:block; color:var(--muted); font-size:9px; letter-spacing:.1em; margin-bottom:8px; }
+.zd-activity article { display:flex; align-items:start; gap:14px; padding:18px 0; border-bottom:1px solid var(--line); }
+.zd-activity article:last-child { border:0; padding-bottom:0; }
+.zd-event-icon { width:34px; height:34px; display:grid; place-items:center; flex-shrink:0; background:var(--soft); border-radius:6px; color:var(--accent); }
+.zd-activity h3 { font-size:13px; font-weight:400; margin:0 0 3px; }
+.zd-activity p,.zd-activity time { font-size:11px; color:var(--muted); overflow-wrap:anywhere; }
+.zd-activity time { display:block; margin-top:7px; }
+.zd-right-column { display:grid; gap:24px; }
+.zd-inventory dl { margin:0 0 20px; }
+.zd-inventory dl>div { display:flex; justify-content:space-between; gap:16px; padding:12px 0; }
+.zd-inventory dt { color:var(--muted); font-size:13px; }
+.zd-inventory dd { margin:0; font-variant-numeric:tabular-nums; }
+.zd-recent-products>a { display:flex; gap:12px; align-items:center; padding:12px 0; border-bottom:1px solid var(--line); }
+.zd-recent-products>a:last-child { border:0; }
+.zd-recent-products img { width:48px; height:48px; object-fit:cover; border-radius:6px; }
+.zd-recent-products span { flex:1; min-width:0; font-size:12px; }
+.zd-recent-products small { display:block; color:var(--muted); font-size:11px; }
+.zd-empty { padding:24px 0; font-size:13px; }
+@media(max-width:1200px) { .zd-stats { grid-template-columns:repeat(2,minmax(0,1fr)); } .zd-content-grid { grid-template-columns:1fr; } }
+@media(max-width:767px) {
+ .admin-preview .admin-shell,.admin-preview .admin-shell[data-collapsed=true] { grid-template-columns:64px minmax(0,1fr); position:relative; }
+ .admin-preview .admin-sidebar { height:calc(100svh - 80px); width:64px; }
+ .admin-preview .admin-shell[data-collapsed=false] .admin-sidebar { width:248px; box-shadow:10px 0 24px #0003; }
+ .zd-sidebar { padding:16px 6px; }
+ .admin-preview .zd-sidebar nav { display:grid; overflow:visible; }
+ .admin-preview .zd-sidebar nav a { border:0; }
+ .admin-preview .admin-main { padding:24px 14px; }
+ .admin-preview .admin-heading h1 { font-size:28px; }
+ .zd-stats { gap:10px; } .zd-stat { padding:14px; } .zd-stat strong { font-size:28px; }
+ .zd-panel { padding:18px; } .zd-overview-intro p { font-size:12px; }
+ .zd-content-grid { gap:16px; } .zd-activity article { gap:10px; }
+}
+@media(max-width:390px) { .zd-stats { grid-template-columns:1fr; } }
+@media(prefers-reduced-motion:reduce) { .admin-preview .admin-shell { transition:none; } }

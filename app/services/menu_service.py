@@ -1,13 +1,13 @@
 """Confirmed café menu and authoritative quotes, independent of legacy bean seeds.
 
 Prices in content are decimal strings; arithmetic and API amounts use integer cents.
-The existing CAFE menu is the sole source. Example content is never orderable.
+PostgreSQL supplies products; CAFE supplies business metadata only.
 """
 
 from decimal import Decimal, InvalidOperation
 import re
 from urllib.parse import urlsplit
-from flask import current_app
+from flask import current_app, g, has_request_context
 from app.cafe_content import CAFE
 
 
@@ -52,6 +52,22 @@ class MenuService:
         return current_app.config.get("CAFE_CONTENT", CAFE)
 
     @classmethod
+    def stored_categories(cls):
+        if has_request_context() and hasattr(g, 'stored_menu_categories'):
+            return g.stored_menu_categories
+        from app.models import Category, Product
+        from app.core.extensions import db
+        groups = []
+        categories = db.session.execute(db.select(Category).order_by(Category.position, Category.id)).scalars().all()
+        products = db.session.execute(db.select(Product).where(Product.menu_id.isnot(None), Product.is_active.is_(True)).order_by(Product.position, Product.id)).scalars().all()
+        for category in categories:
+            groups.append(dict(name=category.name, intro=category.intro,
+                               items=[p.menu_data() for p in products if p.category_id == category.id]))
+        if has_request_context():
+            g.stored_menu_categories = groups
+        return groups
+
+    @classmethod
     def products(cls):
         content = cls.content()
         if content.get("menu_is_example", True):
@@ -60,7 +76,7 @@ class MenuService:
         if not isinstance(currency, str) or not re.fullmatch(r"[A-Z]{3}", currency):
             currency = None
         result, ids, slugs = [], set(), set()
-        for category in content.get("menu", []):
+        for category in cls.stored_categories():
             for raw in category.get("items", []):
                 if raw.get("published") is not True:
                     continue
@@ -118,7 +134,7 @@ class MenuService:
                 group = dict(
                     name=item["category"],
                     anchor=f"categoria-{len(categories) + 1}",
-                    intro=next((c.get("intro", "") for c in cls.content().get("menu", [])
+                    intro=next((c.get("intro", "") for c in cls.stored_categories()
                                 if c.get("name") == item["category"]), ""),
                     items=[],
                 )
@@ -136,6 +152,11 @@ class MenuService:
             raise MenuError("El carrito admite hasta 50 selecciones.")
         products = {p["id"]: p for p in cls.products()}
         output, subtotal, count, has_errors = [], 0, 0, False
+        requested = {}
+        for line in lines:
+            if isinstance(line, dict) and isinstance(line.get("product_id"), str) and type(line.get("quantity")) is int:
+                key = line["product_id"]
+                requested[key] = requested.get(key, 0) + line["quantity"]
         for line in lines:
             if not isinstance(line, dict) or not isinstance(
                 line.get("product_id"), str
@@ -158,6 +179,8 @@ class MenuService:
             try:
                 if not item or not item["orderable"]:
                     raise MenuError("Esta selección no está disponible para pedidos.")
+                if item.get("stock") is not None and requested[item["id"]] > item["stock"]:
+                    raise MenuError("La cantidad supera las existencias disponibles.")
                 total = item["price_cents"]
                 for kind in ("options", "modifiers"):
                     selected = line.get(kind, {})

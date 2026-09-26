@@ -5,15 +5,15 @@ from app.core.extensions import db
 class Product(db.Model):
     """Modelo principal de producto de café de especialidad."""
 
-    __tablename__ = "products"
+    __tablename__ = "productos"
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), nullable=False)
     slug = db.Column(db.String(140), unique=True, nullable=False, index=True)
     tagline = db.Column(db.String(200), nullable=False)
     description = db.Column(db.Text, nullable=False)
-    price = db.Column(db.Float, nullable=False)
-    stock = db.Column(db.Integer, nullable=False, default=25)
+    price = db.Column(db.Numeric(12, 2), nullable=False)
+    stock = db.Column(db.Integer, nullable=True)
     weight_grams = db.Column(
         db.Integer, nullable=False, default=340
     )  # Bolsa de 340g / 12oz
@@ -24,10 +24,40 @@ class Product(db.Model):
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
     # Relaciones de clave foránea
-    origin_id = db.Column(db.Integer, db.ForeignKey("origins.id"), nullable=False)
+    origin_id = db.Column(db.Integer, db.ForeignKey("origenes.id"), nullable=True)
     tasting_profile_id = db.Column(
-        db.Integer, db.ForeignKey("tasting_profiles.id"), nullable=False
+        db.Integer, db.ForeignKey("perfiles_cata.id"), nullable=True
     )
+
+    category_id = db.Column(db.Integer, db.ForeignKey("categorias.id"), index=True)
+    category_record = db.relationship("Category")
+    menu_id = db.Column(db.String(160), unique=True)
+    position = db.Column(db.Integer, nullable=False, default=0)
+    details = db.Column(db.JSON, nullable=False, default=dict)
+    updated_at = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
+    __table_args__ = (
+        db.CheckConstraint("price >= 0", name="products_price_nonnegative"),
+        db.CheckConstraint("stock IS NULL OR stock >= 0", name="products_stock_nonnegative"),
+    )
+
+    @property
+    def category(self):
+        return self.category_record.name if self.category_record else None
+
+    @property
+    def image(self):
+        return self.display_image_url
+
+    @property
+    def active(self):
+        return self.is_active
+
+    def menu_data(self):
+        return dict(self.details or {}, id=self.menu_id, slug=self.slug, name=self.name,
+                    price=str(self.price), published=self.is_active,
+                    short_description=self.tagline, long_description=self.description,
+                    image=self.image, featured=self.is_featured, stock=self.stock,
+                    availability="unavailable" if self.stock == 0 else (self.details or {}).get("availability", "available"))
 
     @property
     def display_image_url(self):

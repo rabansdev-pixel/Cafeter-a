@@ -31,3 +31,10 @@ y compartida entre los workers. No uses las claves de ejemplo de Docker/.env.
 Un token caducado o inválido devuelve HTTP 400; el carrito indica que se recargue
 la página. Tras estos cambios, revisa el flujo del carrito también en el navegador
 con HTTPS y la configuración real del proxy.
+
+## PostgreSQL y acceso
+
+La aplicación requiere `DATABASE_URL` de PostgreSQL y `SECRET_KEY` estable.
+Consulta [migraciones, productos y administración](docs/postgresql-accounts.md)
+para la instalación y los comandos. No ejecutes las fixtures de pruebas contra
+la base de Railway: crean y eliminan tablas; usa una base desechable separada.

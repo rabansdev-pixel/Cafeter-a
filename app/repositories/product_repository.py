@@ -15,10 +15,10 @@ class ProductRepository(BaseRepository[Product]):
         return Product.query.filter_by(slug=slug, is_active=True).first()
 
     def get_featured(self) -> List[Product]:
-        return Product.query.filter_by(is_featured=True, is_active=True).all()
+        return Product.query.filter_by(is_featured=True, is_active=True, menu_id=None).all()
 
     def get_all_active(self) -> List[Product]:
-        return Product.query.filter_by(is_active=True).all()
+        return Product.query.filter_by(is_active=True, menu_id=None).all()
 
     def filter_products(
         self, roast: Optional[str] = None, country: Optional[str] = None

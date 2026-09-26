@@ -4,7 +4,7 @@ from app.core.extensions import db
 class Origin(db.Model):
     """Modelo de origen y terroir del grano de café."""
 
-    __tablename__ = "origins"
+    __tablename__ = "origenes"
 
     id = db.Column(db.Integer, primary_key=True)
     country = db.Column(db.String(80), nullable=False)

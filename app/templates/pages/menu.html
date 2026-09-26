@@ -11,7 +11,7 @@
 <div class="product-breadcrumb"><a href="{{ url_for('cafe.menu') }}">← Volver a la tienda</a><span>{{ item.category }}</span></div>
 <section class="menu-product-layout">
     <div class="product-media {{ 'typographic-product' if not item.image else '' }}">
-        {% if item.image %}<img src="{{ url_for('static', filename='img/home/cold-brew-1600.webp') if item.slug == 'cold-brew' else item.image }}" {% if item.image_small %}srcset="{{ url_for('static', filename='img/home/cold-brew-800.webp') if item.slug == 'cold-brew' else item.image_small }} 800w, {{ url_for('static', filename='img/home/cold-brew-1600.webp') if item.slug == 'cold-brew' else item.image }} 1600w" sizes="(max-width: 767px) 90vw, 48vw"{% endif %} alt="{{ item.name }}" width="1000" height="1200" fetchpriority="high" decoding="async">{% else %}<span class="eyebrow">ZERO DAY / {{ item.category }}</span><span class="product-letter" aria-hidden="true">{{ item.name[:1] }}</span><p>El tiempo de<br><em>tu elección.</em></p>{% endif %}
+        {% if item.image %}<img src="{{ item.image }}" {% if item.image_small %}srcset="{{ item.image_small }} 800w, {{ item.image }} 1600w" sizes="(max-width: 767px) 90vw, 48vw"{% endif %} alt="{{ item.name }}" width="1000" height="1200" fetchpriority="high" decoding="async">{% else %}<span class="eyebrow">ZERO DAY / {{ item.category }}</span><span class="product-letter" aria-hidden="true">{{ item.name[:1] }}</span><p>El tiempo de<br><em>tu elección.</em></p>{% endif %}
     </div>
     <div class="menu-product-copy"><p class="eyebrow">{{ item.category }}</p><h1>{{ item.name }}</h1><p class="product-description">{{ item.short_description }}</p>{% if item.long_description %}<p>{{ item.long_description }}</p>{% endif %}
         <p class="product-price-line" data-product-price>{{ item.formatted_price or 'Consulta en el café' }}</p>
@@ -38,7 +38,7 @@
     {% if categories %}<div class="shop-constellation" aria-label="Descubre la selección">
         {% for category in categories[:4] %}{% if category['items'] %}{% set pick = category['items'][0] %}
         <a class="shop-float" href="{{ url_for('cafe.product', slug=pick.slug) }}">
-            <img src="{{ url_for('static', filename='img/home/cold-brew-800.webp') if pick.slug == 'cold-brew' else (pick.image_small or pick.image) }}" alt="" width="800" height="800" decoding="async">
+            <img src="{{ (pick.image_small or pick.image) }}" alt="" width="800" height="800" decoding="async">
             <span>{{ pick.name }}</span><small>{{ pick.formatted_price or 'Consulta en el café' }}</small>
         </a>{% endif %}{% endfor %}
     </div>{% endif %}
@@ -80,8 +80,8 @@
                 <div class="shop-product-visual">
                     <a class="menu-entry-image" href="{{ url_for('cafe.product', slug=item.slug) }}" tabindex="-1" aria-hidden="true">
                         {% if item.image %}
-                        <img src="{{ url_for('static', filename='img/home/cold-brew-800.webp') if item.slug == 'cold-brew' else (item.image_small or item.image) }}"
-                             {% if item.image_small %}srcset="{{ url_for('static', filename='img/home/cold-brew-800.webp') if item.slug == 'cold-brew' else item.image_small }} 800w, {{ url_for('static', filename='img/home/cold-brew-1600.webp') if item.slug == 'cold-brew' else item.image }} 1600w" sizes="(max-width: 599px) 46vw, (max-width: 899px) 44vw, (max-width: 1279px) 30vw, 320px"{% endif %}
+                        <img src="{{ (item.image_small or item.image) }}"
+                             {% if item.image_small %}srcset="{{ item.image_small }} 800w, {{ item.image }} 1600w" sizes="(max-width: 599px) 46vw, (max-width: 899px) 44vw, (max-width: 1279px) 30vw, 320px"{% endif %}
                              alt="" width="800" height="800" loading="{{ 'eager' if initial_category and loop.index <= 2 else 'lazy' }}" decoding="async">
                         {% else %}<span class="shop-image-fallback">{{ item.name }}</span>{% endif %}
                     </a>
