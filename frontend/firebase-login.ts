@@ -1,40 +1,43 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, GoogleAuthProvider, inMemoryPersistence, setPersistence, signInWithPopup, signOut } from 'firebase/auth';
+import { getAuth, FacebookAuthProvider, GoogleAuthProvider, inMemoryPersistence, setPersistence, signInWithPopup, signOut } from 'firebase/auth';
 
 const root = document.querySelector<HTMLElement>('[data-firebase-login]');
 if (root) {
-  const button = root.querySelector<HTMLButtonElement>('[data-google-login]')!;
+  const buttons = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-google-login], [data-facebook-login]')); 
   const message = root.querySelector<HTMLElement>('[data-firebase-message]')!;
   const labels: Record<string,string> = {
     'auth/unauthorized-domain': 'Este dominio no está autorizado en Firebase. Añádelo en Authentication → Configuración → Dominios autorizados.',
-    'auth/operation-not-allowed': 'El acceso con Google todavía no está habilitado en Firebase.',
+    'auth/operation-not-allowed': 'Este proveedor todavía no está habilitado en Firebase.',
     'auth/popup-blocked': 'Permite las ventanas emergentes de esta página y vuelve a intentarlo.',
-    'auth/popup-closed-by-user': 'Se cerró la ventana de Google. Puedes volver a intentarlo.',
+    'auth/popup-closed-by-user': 'Se cerró la ventana de acceso. Puedes volver a intentarlo.',
     'auth/cancelled-popup-request': 'Ya hay una ventana de acceso abierta.',
-    'auth/network-request-failed': 'No se pudo conectar con Google. Revisa tu conexión.',
+    'auth/network-request-failed': 'No se pudo conectar con el proveedor. Revisa tu conexión.',
     'auth/invalid-api-key': 'La configuración de Firebase necesita revisión.',
-    'auth/account-exists-with-different-credential': 'Ese correo utiliza otro método de acceso. Inicia sesión con tu contraseña.',
+    'auth/account-exists-with-different-credential': 'Ese correo utiliza otro método de acceso. Usa el método con el que creaste tu cuenta.',
   };
   try {
     const config = JSON.parse(root.dataset.firebaseLogin!);
     const auth = getAuth(initializeApp(config));
     auth.languageCode = 'es';
-    const provider = new GoogleAuthProvider();
-    provider.setCustomParameters({prompt: 'select_account'});
-    setPersistence(auth, inMemoryPersistence).then(() => { button.disabled = false; }).catch(() => {
-      message.textContent = 'No se pudo preparar el acceso con Google. Recarga la página.';
+
+    setPersistence(auth, inMemoryPersistence).then(() => { buttons.forEach(item => { item.disabled = false; }); }).catch(() => {
+      message.textContent = 'No se pudo preparar el acceso social. Recarga la página.';
     });
-    button.addEventListener('click', async () => {
+    buttons.forEach(button => button.addEventListener('click', async () => {
+      const isFacebook = button.hasAttribute('data-facebook-login');
+      const provider = isFacebook ? new FacebookAuthProvider() : new GoogleAuthProvider();
+      if (isFacebook) provider.addScope('email');
+      else provider.setCustomParameters({prompt: 'select_account'});
       const captcha = document.querySelector<HTMLTextAreaElement>('[name="g-recaptcha-response"]');
       const captchaToken = captcha?.value || '';
       if (document.querySelector('.g-recaptcha') && !captchaToken) {
-        message.textContent = 'Completa el captcha antes de continuar con Google.';
+        message.textContent = 'Completa el captcha antes de continuar.';
         document.querySelector<HTMLElement>('.g-recaptcha')?.scrollIntoView({block: 'center'});
         return;
       }
-      button.disabled = true;
+      buttons.forEach(item => { item.disabled = true; });
       button.setAttribute('aria-busy', 'true');
-      message.textContent = 'Abriendo Google…';
+      message.textContent = isFacebook ? 'Abriendo Facebook…' : 'Abriendo Google…';
       try {
         const credential = await signInWithPopup(auth, provider);
         message.textContent = 'Comprobando tu cuenta…';
@@ -58,16 +61,16 @@ if (root) {
         window.location.assign(target.href);
       } catch (error) {
         const code = (error as {code?:string}).code || '';
-        message.textContent = labels[code] || 'No se pudo completar el acceso con Google. Inténtalo otra vez.';
+        message.textContent = labels[code] || 'No se pudo completar el acceso social. Inténtalo otra vez.';
       } finally {
         // Firebase credentials live only in memory; PostgreSQL owns the website session.
         await signOut(auth).catch(() => {});
         const recaptcha = (window as unknown as {grecaptcha?: {enterprise?: {reset: () => void}}}).grecaptcha;
         recaptcha?.enterprise?.reset();
-        button.disabled = false;
+        buttons.forEach(item => { item.disabled = false; });
         button.removeAttribute('aria-busy');
       }
-    });
+    }));
   } catch {
     message.textContent = 'La configuración de Firebase necesita revisión.';
   }

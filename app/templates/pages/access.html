@@ -1,4 +1,6 @@
 {% extends 'layouts/account.html' %}
+{% block body_class %}access-ui{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/access.css', v='1') }}">{% endblock %}
 {% block title %}{{ {'login':'Iniciar sesión', 'register':'Crear cuenta', 'recover':'Recuperar acceso'}[mode] }}{%
 endblock %}
 {% block content %}
@@ -12,10 +14,10 @@ endblock %}
         </div>
     </aside>
     <section class="access-panel">
-        <div class="access-heading"><span class="preview-badge">ZERO DAY / Tu cuenta</span>
+        <div class="access-heading"><span class="preview-badge">Tu cuenta ZERO DAY</span>
             <h1>{{ {'login':'Qué bueno verte.', 'register':'Tu próxima pausa empieza aquí.', 'recover':'Recupera tu
                 acceso.'}[mode] }}</h1>
-            <p>{{ {'login':'Un mismo acceso para clientes y equipo de ZERO DAY.', 'register':'Un espacio para tu cuenta
+            <p>{{ {'login':'Tu café, tu cuenta, tu momento.', 'register':'Un espacio para tu cuenta
                 en ZERO DAY.', 'recover':'El acceso a tu cuenta, de nuevo en tus manos.'}[mode] }}</p>
         </div>
         {% if mode == "recover" and not firebase_config %}<p class="preview-notice" id="access-notice">La recuperación por correo todavía no
@@ -25,6 +27,10 @@ endblock %}
             <button class="account-button google-login" type="button" data-google-login disabled>
                 <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285f4" d="M21.6 12.23c0-.71-.06-1.39-.18-2.05H12v3.88h5.38a4.6 4.6 0 0 1-1.99 3.02v2.51h3.22c1.88-1.73 2.99-4.28 2.99-7.36Z"/><path fill="#34a853" d="M12 22c2.7 0 4.96-.9 6.61-2.41l-3.22-2.51c-.9.6-2.04.96-3.39.96-2.6 0-4.81-1.76-5.6-4.12H3.08v2.59A10 10 0 0 0 12 22Z"/><path fill="#fbbc05" d="M6.4 13.92A6 6 0 0 1 6.08 12c0-.67.11-1.32.32-1.92V7.49H3.08A10 10 0 0 0 2 12c0 1.61.39 3.14 1.08 4.51l3.32-2.59Z"/><path fill="#ea4335" d="M12 5.96c1.47 0 2.79.5 3.83 1.5l2.88-2.88A9.62 9.62 0 0 0 12 2a10 10 0 0 0-8.92 5.49l3.32 2.59c.79-2.36 3-4.12 5.6-4.12Z"/></svg>
                 Continuar con Google
+            </button>
+            <button class="account-button facebook-login" type="button" data-facebook-login disabled>
+                <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill="#1877f2" d="M24 12a12 12 0 1 0-13.875 11.854v-8.385H7.078V12h3.047V9.356c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.49 0-1.955.925-1.955 1.874V12h3.328l-.532 3.469h-2.796v8.385A12.003 12.003 0 0 0 24 12Z"/></svg>
+                Continuar con Facebook
             </button>
             <p data-firebase-message role="status" aria-live="polite"></p>
             <p class="access-divider">o con tu correo</p>
@@ -61,7 +67,7 @@ endblock %}
                 </div>
                 {% endif %}
                 {% if config.RECAPTCHA_SITE_KEY %}
-                <div class="g-recaptcha" data-sitekey="{{ config.RECAPTCHA_SITE_KEY }}" data-size="compact"></div>
+                <div class="access-captcha"><div class="g-recaptcha" data-sitekey="{{ config.RECAPTCHA_SITE_KEY }}" data-size="normal" data-theme="dark"></div></div>
                 {% endif %}
                 <button class="account-button primary" type="submit">{{ {'login':'Iniciar sesión', 'register':'Crear
                     cuenta', 'recover':'Enviar enlace de recuperación'}[mode] }}</button>
@@ -76,4 +82,4 @@ endblock %}
     </section>
 </main>
 {% endblock %}
-{% block extra_scripts %}<script src="{{ url_for('static', filename='js/password-field.js', v='1') }}" defer></script>{% if config.RECAPTCHA_SITE_KEY %}<script src="https://www.google.com/recaptcha/enterprise.js?hl=es" async defer></script>{% endif %}{% if firebase_config and mode != 'recover' %}<script type="module" src="{{ url_for('static', filename='js/firebase-login.js', v='2') }}"></script>{% endif %}{% endblock %}
+{% block extra_scripts %}<script src="{{ url_for('static', filename='js/password-field.js', v='1') }}" defer></script>{% if config.RECAPTCHA_SITE_KEY %}<script src="{{ url_for('static', filename='js/captcha-theme.js', v='1') }}"></script><script src="https://www.google.com/recaptcha/enterprise.js?hl=es" async defer></script>{% endif %}{% if firebase_config and mode != 'recover' %}<script type="module" src="{{ url_for('static', filename='js/firebase-login.js', v='3') }}"></script>{% endif %}{% endblock %}
