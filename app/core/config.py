@@ -38,6 +38,10 @@ class BaseConfig:
         self.FIREBASE_API_KEY = os.getenv('FIREBASE_API_KEY', '').strip()
         self.FIREBASE_PROJECT_ID = os.getenv('FIREBASE_PROJECT_ID', '').strip()
         self.FIREBASE_AUTH_DOMAIN = os.getenv('FIREBASE_AUTH_DOMAIN', f'{self.FIREBASE_PROJECT_ID}.firebaseapp.com').strip()
+        self.RECAPTCHA_SITE_KEY = os.getenv('RECAPTCHA_SITE_KEY', '').strip()
+        self.RECAPTCHA_PROJECT_ID = os.getenv('RECAPTCHA_PROJECT_ID', self.FIREBASE_PROJECT_ID).strip()
+        self.RECAPTCHA_API_KEY = os.getenv('RECAPTCHA_API_KEY', '').strip()
+        self.RECAPTCHA_ALLOWED_HOSTS = [host.strip() for host in os.getenv('RECAPTCHA_ALLOWED_HOSTS', '').split(',') if host.strip()]
         self.FIREBASE_APP_ID = os.getenv('FIREBASE_APP_ID', '').strip()
         if self.AUTH_PROVIDER not in {'local', 'firebase'}:
             raise ValueError('AUTH_PROVIDER debe ser local o firebase.')

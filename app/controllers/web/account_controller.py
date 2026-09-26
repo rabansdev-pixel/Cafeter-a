@@ -9,6 +9,7 @@ from app.services.auth_service import require_user, identity_fields, authenticat
 from app.services.store_service import save_product, deactivate_product
 from app.services.image_service import store_image
 from app.services import firebase_service as firebase
+from app.services.captcha_service import verify as verify_captcha
 
 
 def access():
@@ -25,6 +26,7 @@ def access():
             if not firebase.enabled():
                 flash('La recuperación por correo todavía no está configurada.', 'error')
                 return render_template('pages/access.html', mode=mode), 503
+            verify_captcha(request.form.get('g-recaptcha-response'))
             firebase.send_reset(email)
             flash('Si el correo tiene una cuenta en Firebase, recibirás un enlace para recuperar el acceso.', 'success')
             return redirect(url_for('main.login'), code=303)
@@ -40,6 +42,7 @@ def access():
             if not throttle('access-ip', request.remote_addr or '', 40) or not throttle('access-email', email, 10):
                 flash('Demasiados intentos. Espera 15 minutos.', 'error')
                 return render_template('pages/access.html', mode=mode), 429
+            verify_captcha(request.form.get('g-recaptcha-response'))
             if firebase.enabled():
                 if mode == 'register':
                     firebase.register(name, email, password)
@@ -179,6 +182,7 @@ def firebase_session():
     if not throttle('firebase-ip', request.remote_addr or '', 30):
         return jsonify(message='Demasiados intentos. Espera 15 minutos.'), 429
     try:
+        verify_captcha(data.get('captcha_token'))
         user = firebase.establish_session(data.get('id_token'), password)
         target = 'main.admin_preview' if user.role in ('admin', 'staff') else 'main.account_preview'
         return jsonify(redirect=url_for(target))
