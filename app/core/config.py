@@ -34,15 +34,22 @@ class BaseConfig:
     def __init__(self):
         # Leer después de .env; los workers comparten la clave configurada.
         self.SECRET_KEY = _resolve_secret_key()
-        self.AUTH_PROVIDER = os.getenv('AUTH_PROVIDER', 'local').strip().lower()
-        self.FIREBASE_API_KEY = os.getenv('FIREBASE_API_KEY', '').strip()
-        self.FIREBASE_PROJECT_ID = os.getenv('FIREBASE_PROJECT_ID', '').strip()
-        self.FIREBASE_AUTH_DOMAIN = os.getenv('FIREBASE_AUTH_DOMAIN', f'{self.FIREBASE_PROJECT_ID}.firebaseapp.com').strip()
-        self.RECAPTCHA_SITE_KEY = os.getenv('RECAPTCHA_SITE_KEY', '').strip()
-        self.RECAPTCHA_PROJECT_ID = os.getenv('RECAPTCHA_PROJECT_ID', self.FIREBASE_PROJECT_ID).strip()
-        self.RECAPTCHA_API_KEY = os.getenv('RECAPTCHA_API_KEY', '').strip()
-        self.RECAPTCHA_ALLOWED_HOSTS = [host.strip() for host in os.getenv('RECAPTCHA_ALLOWED_HOSTS', '').split(',') if host.strip()]
-        self.FIREBASE_APP_ID = os.getenv('FIREBASE_APP_ID', '').strip()
+        self.AUTH_PROVIDER = os.getenv('AUTH_PROVIDER', 'local').strip().strip("'\"").lower()
+        self.FIREBASE_API_KEY = os.getenv('FIREBASE_API_KEY', '').strip().strip("'\"")
+        self.FIREBASE_PROJECT_ID = os.getenv('FIREBASE_PROJECT_ID', '').strip().strip("'\"")
+        self.FIREBASE_AUTH_DOMAIN = os.getenv('FIREBASE_AUTH_DOMAIN', f'{self.FIREBASE_PROJECT_ID}.firebaseapp.com').strip().strip("'\"")
+        self.RECAPTCHA_SITE_KEY = os.getenv('RECAPTCHA_SITE_KEY', '').strip().strip("'\"")
+        self.RECAPTCHA_PROJECT_ID = os.getenv('RECAPTCHA_PROJECT_ID', self.FIREBASE_PROJECT_ID).strip().strip("'\"")
+        self.RECAPTCHA_API_KEY = os.getenv('RECAPTCHA_API_KEY', '').strip().strip("'\"")
+        allowed_hosts = [host.strip().strip("'\"") for host in os.getenv('RECAPTCHA_ALLOWED_HOSTS', '').split(',') if host.strip().strip("'\"")]
+        railway_domain = os.getenv('RAILWAY_PUBLIC_DOMAIN', '').strip().strip("'\"")
+        if railway_domain and railway_domain not in allowed_hosts:
+            allowed_hosts.append(railway_domain)
+        railway_static = os.getenv('RAILWAY_STATIC_URL', '').strip().strip("'\"")
+        if railway_static and railway_static not in allowed_hosts:
+            allowed_hosts.append(railway_static)
+        self.RECAPTCHA_ALLOWED_HOSTS = allowed_hosts
+        self.FIREBASE_APP_ID = os.getenv('FIREBASE_APP_ID', '').strip().strip("'\"")
         if self.AUTH_PROVIDER not in {'local', 'firebase'}:
             raise ValueError('AUTH_PROVIDER debe ser local o firebase.')
         if self.AUTH_PROVIDER == 'firebase' and not (self.FIREBASE_API_KEY and self.FIREBASE_PROJECT_ID):
