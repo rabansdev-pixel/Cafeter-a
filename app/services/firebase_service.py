@@ -89,7 +89,7 @@ def identity(token, fresh=True):
     try:
         claims = verify_firebase_token(token, _certificate_request, audience=project, clock_skew_in_seconds=30)
     except TransportError:
-        raise FirebaseError('No se pudo verificar el acceso con Google.', 'UNAVAILABLE', 503) from None
+        raise FirebaseError('No se pudo verificar el acceso con Firebase.', 'UNAVAILABLE', 503) from None
     except (ValueError, TypeError):
         raise FirebaseError('La sesión de Firebase no es válida o ha caducado.', status=401) from None
     timestamp = now().timestamp()
@@ -99,7 +99,7 @@ def identity(token, fresh=True):
     if (claims.get('iss') != f'https://securetoken.google.com/{project}' or
         not isinstance(uid, str) or not 1 <= len(uid) <= 128 or
         not isinstance(auth_time, (int, float)) or auth_time > timestamp + 30 or
-        (fresh and timestamp - auth_time > 300) or provider not in {'password', 'google.com'}):
+        (fresh and timestamp - auth_time > 300) or provider not in {'password', 'google.com', 'facebook.com'}):
         raise FirebaseError('Vuelve a iniciar sesión para continuar.', status=401)
     record = account_record(token, uid, auth_time)
     email = record.get('email', '').strip().lower()
@@ -143,7 +143,7 @@ def bind_user(profile, legacy_password='', name=''):
             raise FirebaseError('No se puede vincular esta cuenta.', status=403)
         # Matching an email is never enough to inherit staff/admin privileges.
         if not user.password_hash or not check_password_hash(user.password_hash, legacy_password):
-            raise FirebaseError('Escribe tu contraseña anterior de ZERO DAY y vuelve a pulsar Continuar con Google para vincular tu cuenta.', 'LINK_REQUIRED', 409)
+            raise FirebaseError('Escribe tu contraseña anterior de ZERO DAY y vuelve a pulsar el botón del proveedor para vincular tu cuenta.', 'LINK_REQUIRED', 409)
         user.firebase_uid = profile['uid']
         user.password_hash = None
         user.session_version += 1
@@ -227,7 +227,7 @@ def password_login(email, password):
             result = _api('signUp', {'email':email, 'password':password, 'returnSecureToken':True})
         except FirebaseError as signup_error:
             if signup_error.code == 'EMAIL_EXISTS':
-                raise FirebaseError('Ese correo ya tiene otro acceso en Firebase. Usa Google y tu contraseña anterior para vincularlo.', 'LINK_REQUIRED', 409) from None
+                raise FirebaseError('Ese correo ya tiene otro acceso en Firebase. Usa tu proveedor y tu contraseña anterior para vincularlo.', 'LINK_REQUIRED', 409) from None
             raise
     return establish_session(result.get('idToken'), password)
 

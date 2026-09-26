@@ -164,3 +164,10 @@ td { font-size:13px; }
 .password-meter span { height:3px; flex:1; border-radius:4px; background:var(--line); }
 .password-meter span.is-filled { background:var(--accent); }
 .password-guidance [data-met="true"] { color:var(--ink); }
+
+/* Give Google's native widget room without cropping its challenge or branding. */
+.access-captcha { display:flex; justify-content:center; width:100%; margin:24px 0; min-height:78px; }
+.access-captcha .g-recaptcha { flex:none; }
+@media (max-width:380px) {
+    .access-panel { padding-inline:16px; }
+}
