@@ -277,3 +277,8 @@ html[data-home-theme='dark'] .site-footer { background:#20242b; }
  .site-footer .asset-credits[open] { flex-basis:100%; }
  .zero-home .home-card-grid .home-visit-story { display:none; }
 }
+
+.space-liquid-video { display:block; width:100%; height:100%; object-fit:cover; }
+.ritual-video-frame { position:relative; width:100%; aspect-ratio:1; overflow:hidden; }
+.ritual-video-frame video { display:block; width:100%; height:100%; object-fit:cover; }
+.mood-main .media-toggle,.ritual-video-frame .media-toggle { top:auto; bottom:16px; right:16px; z-index:3; }

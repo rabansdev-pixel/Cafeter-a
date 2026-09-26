@@ -1,23 +1,27 @@
 {% extends 'layouts/account.html' %}
 {% block body_class %}access-ui{% endblock %}
-{% block extra_head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/access.css', v='1') }}">{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/access.css', v='4') }}">{% endblock %}
 {% block title %}{{ {'login':'Iniciar sesión', 'register':'Crear cuenta', 'recover':'Recuperar acceso'}[mode] }}{%
 endblock %}
+{% block account_header %}
+<header class="account-topbar">
+    <a class="account-logo" href="{{ url_for('main.home') }}">ZERO DAY<span aria-hidden="true">*</span></a>
+    <div><a href="{{ url_for('cafe.menu') }}" class="access-back"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m6-6-6 6 6 6"/></svg><span>Volver</span></a>
+    <button class="home-theme-toggle" type="button" aria-label="Tema claro" aria-pressed="false" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2"/></svg><span class="sr-only" data-theme-label>Cambiar tema</span></button></div>
+</header>
+{% endblock %}
 {% block content %}
 <main class="access-layout" id="account-main" tabindex="-1">
     <aside class="access-story" aria-label="El momento ZERO DAY">
-        <img src="{{ url_for('static', filename='img/home/cold-brew-800.webp') }}"
-            alt="Café frío sobre una mesa de madera" width="800" height="1000" decoding="async">
-        <div><span>Un café. Un momento.</span>
-            <h2>El arte de tomarse<br><em>un momento.</em></h2>
-            <p>Encuentra tu próxima pausa.</p>
-        </div>
+        <img src="{{ url_for('static', filename='img/products/cafee.jpeg') }}"
+            alt="Café ZERO DAY" width="673" height="1200" decoding="async">
+        <div><p>El arte de tomarse un momento.</p></div>
     </aside>
     <section class="access-panel">
-        <div class="access-heading"><span class="preview-badge">Tu cuenta ZERO DAY</span>
-            <h1>{{ {'login':'Qué bueno verte.', 'register':'Tu próxima pausa empieza aquí.', 'recover':'Recupera tu
+        <div class="access-heading">
+            <h1>{{ {'login':'Bienvenido de nuevo.', 'register':'Tu próxima pausa empieza aquí.', 'recover':'Recupera tu
                 acceso.'}[mode] }}</h1>
-            <p>{{ {'login':'Tu café, tu cuenta, tu momento.', 'register':'Un espacio para tu cuenta
+            <p>{{ {'login':'Tu próxima pausa empieza aquí.', 'register':'Un espacio para tu cuenta
                 en ZERO DAY.', 'recover':'El acceso a tu cuenta, de nuevo en tus manos.'}[mode] }}</p>
         </div>
         {% if mode == "recover" and not firebase_config %}<p class="preview-notice" id="access-notice">La recuperación por correo todavía no
@@ -33,10 +37,10 @@ endblock %}
                 Continuar con Facebook
             </button>
             <p data-firebase-message role="status" aria-live="polite"></p>
-            <p class="access-divider">o con tu correo</p>
+            <p class="access-divider">o continúa con email</p>
         </div>
         {% endif %}
-        <form method="post">
+        <form method="post" data-access-form>
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <fieldset {% if mode=="recover" and not firebase_config %}disabled{% endif %}>
                 <legend class="sr-only">{{ 'Datos de registro' if mode == 'register' else 'Datos de acceso' }}</legend>
@@ -46,7 +50,8 @@ endblock %}
                         id="access-email" type="email" autocomplete="email" placeholder="tu@correo.com"></label>
                 {% if mode != 'recover' %}
                 <div class="access-password-group">
-                    <label for="access-password">Contraseña</label>
+                    <div class="password-label-row"><label for="access-password">Contraseña</label>
+</div>
                     <div class="password-field">
                         <input name="password" required maxlength="256" id="access-password" type="password"
                             {% if mode == 'register' %}minlength="12" aria-describedby="password-guidance"{% endif %}
@@ -56,6 +61,7 @@ endblock %}
                             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/><path class="password-eye-slash" d="m3 3 18 18" hidden/></svg>
                         </button>
                     </div>
+                    {% if mode == 'login' %}<a class="account-link password-recovery" href="{{ url_for('main.recover') }}">¿Olvidaste tu contraseña?</a>{% endif %}
                     {% if mode == 'register' %}
                     <div class="password-guidance" id="password-guidance">
                         <div class="password-meter" aria-hidden="true"><span></span><span></span><span></span></div>
@@ -69,12 +75,11 @@ endblock %}
                 {% if config.RECAPTCHA_SITE_KEY %}
                 <div class="access-captcha"><div class="g-recaptcha" data-sitekey="{{ config.RECAPTCHA_SITE_KEY }}" data-size="normal" data-theme="dark"></div></div>
                 {% endif %}
-                <button class="account-button primary" type="submit">{{ {'login':'Iniciar sesión', 'register':'Crear
+                <button class="account-button primary" type="submit">{{ {'login':'Entrar', 'register':'Crear
                     cuenta', 'recover':'Enviar enlace de recuperación'}[mode] }}</button>
             </fieldset>
         </form>
-        {% if mode == 'login' %}<a class="account-link" href="{{ url_for('main.recover') }}">¿Olvidaste tu
-            contraseña?</a>
+        {% if mode == 'login' %}
         <p class="access-switch">¿Aún no tienes cuenta? <a href="{{ url_for('main.register') }}">Crear cuenta</a></p>
         {% else %}<p class="access-switch"><a href="{{ url_for('main.login') }}">Volver a iniciar sesión</a></p>{% endif
         %}
@@ -82,4 +87,4 @@ endblock %}
     </section>
 </main>
 {% endblock %}
-{% block extra_scripts %}<script src="{{ url_for('static', filename='js/password-field.js', v='1') }}" defer></script>{% if config.RECAPTCHA_SITE_KEY %}<script src="{{ url_for('static', filename='js/captcha-theme.js', v='1') }}"></script><script src="https://www.google.com/recaptcha/enterprise.js?hl=es" async defer></script>{% endif %}{% if firebase_config and mode != 'recover' %}<script type="module" src="{{ url_for('static', filename='js/firebase-login.js', v='3') }}"></script>{% endif %}{% endblock %}
+{% block extra_scripts %}<script src="{{ url_for('static', filename='js/access-form.js', v='1') }}" defer></script><script src="{{ url_for('static', filename='js/password-field.js', v='1') }}" defer></script>{% if config.RECAPTCHA_SITE_KEY %}<script src="{{ url_for('static', filename='js/captcha-theme.js', v='2') }}"></script><script src="https://www.google.com/recaptcha/enterprise.js?hl=es&amp;render=explicit&amp;onload=renderAccessCaptcha" async defer></script>{% endif %}{% if firebase_config and mode != 'recover' %}<script type="module" src="{{ url_for('static', filename='js/firebase-login.js', v='4') }}"></script>{% endif %}{% endblock %}
