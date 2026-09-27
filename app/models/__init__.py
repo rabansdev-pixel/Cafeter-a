@@ -9,3 +9,4 @@ from app.models.identity import Category, User, AuditLog, AccessAttempt
 from app.models.product_image import ProductImage
 
 from app.models.firebase_session import FirebaseSession
+from app.models.coupon import Coupon, CouponRedemption

@@ -6,10 +6,23 @@
 {% block content %}
 <header class="interior-heading"><p class="eyebrow">ZERO DAY / TU SELECCIÓN</p><div class="heading-grid"><h1>Tu carrito<span class="cart-heading-count" data-cart-count>—</span></h1><a class="cafe-link" href="{{ url_for('cafe.menu') }}">Seguir en la tienda ↗</a></div></header>
 <section class="cart-content paper" data-cart-page aria-label="Tu selección">
-    <div class="cart-empty" data-cart-empty hidden><figure class="cart-empty-photo">{{ photo('croissant', 'Un croissant para acompañar tu próxima taza') }}</figure><div><h2>Todo empieza<br>con una elección.</h2><p>Tu selección está vacía.</p><a class="cafe-link" href="{{ url_for('cafe.menu') }}">Explorar la tienda ↗</a></div></div>
-    <div class="cart-layout" data-cart-filled hidden><div><div data-cart-lines></div><button type="button" class="text-control" data-cart-clear>Vaciar mi selección</button></div><aside class="cart-summary" aria-labelledby="summary-title"><span class="eyebrow" id="summary-title">RESUMEN DE TU SELECCIÓN</span><div class="summary-total"><span>Subtotal</span><strong data-cart-subtotal>—</strong></div><p data-cart-quote-note></p><p class="checkout-note">Tu selección queda guardada en este dispositivo. Los pedidos en línea no están habilitados.</p><a class="cafe-link" href="{{ url_for('cafe.visit') }}">Cómo llegar ↗</a></aside></div>
-    <p class="form-feedback" role="status" aria-live="polite" data-cart-feedback></p><button class="text-control" type="button" data-cart-retry hidden>Volver a calcular ↗</button>
+    <div class="cart-empty" data-cart-empty hidden><div><h2>Todo empieza<br>con una elección.</h2><p>Tu selección está vacía.</p><a class="cafe-link" href="{{ url_for('cafe.menu') }}">Explorar la tienda ↗</a></div></div>
+    <div class="cart-layout" data-cart-filled hidden><div><div data-cart-lines></div><button type="button" class="text-control" data-cart-clear>Vaciar mi selección</button>
+<section class="cart-suggestions" data-cart-suggestions aria-labelledby="suggestions-title">
+<h2 id="suggestions-title">Para acompañar tu café</h2>
+<div class="cart-suggestion-grid">
+{% for category in menu_categories %}{% for item in category['items'] if item.orderable %}
+<article class="cart-suggestion" data-suggestion-id="{{ item.id }}" hidden>
+<a href="{{ url_for('cafe.product', slug=item.slug) }}" class="cart-suggestion-photo">{% if item.image %}<img src="{{ item.image_small or item.image }}" alt="{{ item.name }}" width="240" height="180" loading="lazy">{% else %}<span>{{ item.name }}</span>{% endif %}</a>
+<div class="cart-suggestion-copy"><h3><a href="{{ url_for('cafe.product', slug=item.slug) }}">{{ item.name }}</a></h3><p>{{ item.short_description }}</p><strong>{{ item.formatted_price }}</strong>
+{% if not item.customizable %}<button type="button" data-quick-add="{{ item.id }}" aria-label="Añadir {{ item.name }}">Añadir +</button>{% else %}<a class="cart-suggestion-choose" href="{{ url_for('cafe.product', slug=item.slug) }}">Elegir opciones ↗</a>{% endif %}</div>
+</article>
+{% endfor %}{% endfor %}
+</div><p data-commerce-feedback role="status" aria-live="polite"></p>
+</section></div><aside class="cart-summary" aria-labelledby="summary-title"><span class="eyebrow" id="summary-title">Resumen del carrito</span><p><span data-cart-count>0</span> unidades en tu selección</p><div class="summary-total"><span>Subtotal</span><strong data-cart-subtotal>—</strong></div><p data-cart-quote-note></p><div class="cart-coupon"><label for="coupon-code">¿Tienes un cupón?</label><input id="coupon-code" maxlength="40" autocomplete="off" placeholder="Código de promoción"><button type="button" data-coupon-preview>Aplicar</button><button type="button" data-coupon-redeem disabled>Canjear cupón</button><button type="button" data-coupon-recover>Recuperar canje</button><p data-coupon-feedback role="status" aria-live="polite"></p><p>Aplicar no reserva cupo. Canjear consume una existencia. Requiere iniciar sesión.</p><a data-coupon-send hidden target="_blank" rel="noopener noreferrer">Enviar canje por WhatsApp ↗</a></div><p class="checkout-note">Disponibilidad y total sujetos a confirmación por WhatsApp.</p><button type="button" class="cart-whatsapp" data-cart-whatsapp disabled>Consultar por WhatsApp ↗</button><a class="cart-continue" href="{{ url_for('cafe.menu') }}">Seguir comprando ↗</a></aside></div>
+    <p class="form-feedback" role="status" aria-live="polite" data-cart-feedback></p><button class="text-control" type="button" data-cart-undo hidden>Deshacer eliminación</button><button class="text-control" type="button" data-cart-retry hidden>Volver a calcular ↗</button>
     <noscript><p>Activa JavaScript para recuperar y editar tu selección guardada.</p></noscript>
 </section>
+<dialog class="cart-edit-dialog" data-cart-editor><button type="button" class="text-control" data-editor-close>Cerrar ×</button><div data-editor-content></div></dialog>
 {% endblock %}
-{% block extra_scripts %}<script type="module" src="{{ url_for('static', filename='js/commerce.js') }}"></script>{% endblock %}
+{% block extra_scripts %}<script type="module" src="{{ url_for('static', filename='js/commerce.js', v='cart-5') }}"></script>{% endblock %}

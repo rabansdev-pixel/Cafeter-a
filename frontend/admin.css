@@ -61,17 +61,28 @@
 .zd-empty { padding:24px 0; font-size:13px; }
 @media(max-width:1200px) { .zd-stats { grid-template-columns:repeat(2,minmax(0,1fr)); } .zd-content-grid { grid-template-columns:1fr; } }
 @media(max-width:767px) {
- .admin-preview .admin-shell,.admin-preview .admin-shell[data-collapsed=true] { grid-template-columns:64px minmax(0,1fr); position:relative; }
- .admin-preview .admin-sidebar { height:calc(100svh - 80px); width:64px; }
- .admin-preview .admin-shell[data-collapsed=false] .admin-sidebar { width:248px; box-shadow:10px 0 24px #0003; }
- .zd-sidebar { padding:16px 6px; }
+ .admin-preview .admin-shell,.admin-preview .admin-shell[data-collapsed=true] { display:block; min-height:0; }
+ .admin-preview .admin-sidebar,.admin-preview .admin-shell[data-collapsed=false] .admin-sidebar { position:static; width:100%; height:auto; padding:0; overflow:visible; box-shadow:none; border:0; }
+ .zd-mobile-toolbar { display:flex; align-items:center; justify-content:space-between; padding:12px 20px; border-bottom:1px solid var(--line); background:var(--panel); }
+ .zd-mobile-toolbar button { display:flex; gap:8px; align-items:center; min-height:44px; padding:10px; background:transparent; border:1px solid var(--line); border-radius:8px; color:var(--ink); font:inherit; }
+ .zd-drawer-backdrop { position:fixed; inset:0; z-index:2000; background:#0008; border:0; }
+ .admin-preview .zd-mobile-drawer { position:fixed; top:0; left:0; bottom:0; z-index:2001; width:min(310px,85vw); min-height:0; height:100dvh; overflow-y:auto; overscroll-behavior:contain; padding:16px 16px max(20px,env(safe-area-inset-bottom)); background:var(--panel); box-sizing:border-box; }
+ .zd-sidebar[hidden],.zd-sidebar button[hidden] { display:none!important; }
+ .zd-sidebar .zd-drawer-close { justify-content:flex-end; margin-bottom:8px; }
  .admin-preview .zd-sidebar nav { display:grid; overflow:visible; }
  .admin-preview .zd-sidebar nav a { border:0; }
- .admin-preview .admin-main { padding:24px 14px; }
+ .admin-preview .admin-main { padding:24px 20px; margin:0; min-width:0; width:100%; box-sizing:border-box; }
  .admin-preview .admin-heading h1 { font-size:28px; }
- .zd-stats { gap:10px; } .zd-stat { padding:14px; } .zd-stat strong { font-size:28px; }
- .zd-panel { padding:18px; } .zd-overview-intro p { font-size:12px; }
- .zd-content-grid { gap:16px; } .zd-activity article { gap:10px; }
+ .zd-stats,.zd-content-grid { grid-template-columns:minmax(0,1fr); gap:16px; }
+ .zd-stat,.zd-panel { padding:20px; }
+ .zd-stat strong { font-size:28px; }
+ .admin-preview .table-wrap { width:100%; max-width:100%; overflow-x:auto; }
+ .admin-preview .admin-filters,.admin-preview .category-grid { grid-template-columns:1fr; }
+ .admin-preview .admin-toolbar { flex-wrap:wrap; gap:14px; }
+ .admin-preview .account-topbar { padding:12px 16px; gap:12px; }
+ .admin-preview .account-logo { font-size:21px; }
+ .admin-preview .account-topbar>div { gap:10px; }
+ .admin-preview .account-topbar a { white-space:normal; }
+ .zd-sidebar-bottom { padding-top:20px; }
 }
-@media(max-width:390px) { .zd-stats { grid-template-columns:1fr; } }
 @media(prefers-reduced-motion:reduce) { .admin-preview .admin-shell { transition:none; } }

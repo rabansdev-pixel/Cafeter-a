@@ -1,0 +1,14 @@
+.coupon-admin { max-width:1100px; padding:40px 24px; margin:auto; }
+.coupon-admin-form { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:18px; }
+.coupon-admin label { display:grid; gap:8px; }
+.coupon-admin :is(input,select,button) { padding:12px; border:1px solid #8886; border-radius:6px; font:inherit; }
+.coupon-admin h2 { margin-top:36px; }
+.coupon-table { overflow:auto; }
+.coupon-table table { width:100%; border-collapse:collapse; }
+.coupon-table :is(th,td) { padding:14px; text-align:left; border-bottom:1px solid #8884; }
+.cart-coupon { margin:16px 0; padding:16px 0; border-block:1px solid var(--cart-rule); }
+.cart-coupon label { display:block; font-size:13px; margin-bottom:10px; }
+.cart-coupon input { width:100%; padding:12px; background:transparent; color:inherit; border:1px solid var(--cart-rule); border-radius:6px; }
+.cart-coupon button { margin-top:10px; padding:10px; background:transparent; color:inherit; border:1px solid var(--cart-rule); border-radius:6px; cursor:pointer; }
+.cart-coupon button:disabled { opacity:.5; }
+.cart-coupon p { overflow-wrap:anywhere; }

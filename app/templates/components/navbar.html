@@ -9,5 +9,6 @@
             {% endfor %}
             <li class="nav-selection" {% if request.endpoint not in ['cafe.menu', 'cafe.product', 'cafe.cart'] %}data-cart-nav hidden{% endif %}><a href="{{ url_for('cafe.cart') }}" {% if request.endpoint == 'cafe.cart' %}aria-current="page"{% endif %}>Carrito <span data-cart-count>0</span></a></li>
         </ul>
+        <div class="mobile-nav-status"><span class="status-text">{% for hours in cafe.hours %}{{ hours }}{% if not loop.last %} · {% endif %}{% endfor %}</span></div>
     </nav>
 </header>
