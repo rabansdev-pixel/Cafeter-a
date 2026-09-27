@@ -27,6 +27,8 @@ def setup_security_headers(app):
             firebase_scripts += ' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/'
             firebase_connect += ' https://www.google.com/recaptcha/'
             auth_frame = ('' if auth_frame == "'none'" else auth_frame + ' ') + 'https://www.google.com/recaptcha/ https://recaptcha.google.com/recaptcha/'
+        if app.config.get('GOOGLE_MAPS_API_KEY'):
+            auth_frame = ('' if auth_frame == "'none'" else auth_frame + ' ') + 'https://www.google.com/maps/'
         csp_directives = (
             "default-src 'self'; "
             f"script-src 'self'{firebase_scripts}; "

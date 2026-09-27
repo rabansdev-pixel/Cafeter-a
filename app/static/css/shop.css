@@ -41,16 +41,6 @@ html[data-home-theme='light'] .shop-page.digital-menu .menu-entry {
     color: var(--ink);
 }
 
-.shop-page .site-footer {
-    --ink: #fafafa;
-    --muted: #bfc1be;
-    --color-text-secondary: #bfc1be;
-}
-
-.shop-page .site-footer :is(p, address) {
-    color: #bfc1be;
-}
-
 .shop-page :is(button, a, input, summary) {
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;

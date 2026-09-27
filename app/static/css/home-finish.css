@@ -39,12 +39,5 @@ html[data-home-theme] .zero-home .site-menu a:hover { color:var(--finish-copy); 
 html[data-home-theme] .zero-home .site-menu a[aria-current] { text-decoration-color:var(--finish-action); }
 html[data-home-theme] .zero-home .header-account { background:var(--finish-action); color:var(--finish-on-action); border-color:var(--finish-action); }
 html[data-home-theme] .zero-home .header-actions .home-theme-toggle { background:var(--finish-page); color:var(--finish-ink); border-color:var(--finish-rule); }
-html[data-home-theme] .zero-home .site-footer { background:var(--finish-footer); color:var(--finish-ink); border-color:var(--finish-rule); }
-html[data-home-theme] .zero-home .site-footer :is(p,address,small,.footer-origin,.footer-location>span,.footer-bottom,.asset-credits,.footer-kicker) { color:var(--finish-copy); }
-html[data-home-theme] .zero-home .site-footer :is(a,.footer-brand) { color:var(--finish-ink); text-underline-offset:5px; transition:color .18s; }
-html[data-home-theme] .zero-home .site-footer a:hover { color:var(--finish-copy); }
-html[data-home-theme] .zero-home .site-footer :is(.footer-top,.footer-bottom,.home-footer-meta,.asset-credits) { border-color:var(--finish-rule); }
-html[data-home-theme] .zero-home :is(.site-nav,.header-actions,.home-about,.home-tastes,.home-ritual .editorial-copy,.home-menu-story,.home-selection-story,.home-visit-story,.site-footer) :focus-visible { outline:2px solid var(--finish-ink); outline-offset:4px; }
 @media(prefers-reduced-motion:reduce) {
- html[data-home-theme] .zero-home :is(.home-about-link,.home-card-link,.home-ritual .cafe-link,.home-tastes .editorial-heading>.cafe-link,.site-menu a,.site-footer a) { transition:none; }
 }

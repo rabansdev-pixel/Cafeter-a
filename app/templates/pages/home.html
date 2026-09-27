@@ -108,7 +108,7 @@
             <video autoplay muted loop playsinline preload="none" poster="{{ url_for('static', filename=cafe.coffee_poster) }}" data-video-src="{{ url_for('static', filename=cafe.coffee_video) }}" aria-label="Ambiente del café"></video>
             
             {% endif %}
-            <a class="home-film-caption" href="{{ url_for('cafe.space') }}"><span class="home-label">ESPACIO / EL ARTE DE ESTAR</span><strong>Un lugar<br>para <em>quedarse.</em></strong><span aria-hidden="true">↗</span></a>
+            <a class="home-film-caption" href="{{ url_for('cafe.experience', _anchor='espacio') }}"><span class="home-label">ESPACIO / EL ARTE DE ESTAR</span><strong>Un lugar<br>para <em>quedarse.</em></strong><span aria-hidden="true">↗</span></a>
         </article>
         <article class="home-card home-menu-story" id="menu" data-home-card>
             <div class="home-story-photo">{{ home_photo('coffee', 'Dos espressos en cerámica sobre una superficie de piedra', '(max-width: 767px) 90vw, 35vw') }}</div>

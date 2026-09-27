@@ -1,4 +1,4 @@
-from flask import Blueprint, abort, jsonify, render_template, request
+from flask import Blueprint, abort, jsonify, render_template, request, redirect, url_for
 from app.services.menu_service import MenuError, MenuService
 
 cafe_bp = Blueprint("cafe", __name__)
@@ -33,7 +33,7 @@ def cart():
 
 @cafe_bp.route("/espacio")
 def space():
-    return render_template("pages/space.html")
+    return redirect(url_for("cafe.experience"), code=301)
 
 
 @cafe_bp.route("/experiencia")

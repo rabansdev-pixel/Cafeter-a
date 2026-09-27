@@ -33,6 +33,7 @@ class BaseConfig:
 
     def __init__(self):
         # Leer después de .env; los workers comparten la clave configurada.
+        self.GOOGLE_MAPS_API_KEY = (os.getenv("GOOGLE_MAPS_API_KEY") or os.getenv("MAPS_API_KEY") or os.getenv("GOOGLE_API_KEY", "")).strip()
         self.SECRET_KEY = _resolve_secret_key()
         self.AUTH_PROVIDER = os.getenv('AUTH_PROVIDER', 'local').strip().strip("'\"").lower()
         self.FIREBASE_API_KEY = os.getenv('FIREBASE_API_KEY', '').strip().strip("'\"")
