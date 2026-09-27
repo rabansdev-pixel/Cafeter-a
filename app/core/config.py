@@ -42,14 +42,18 @@ class BaseConfig:
         self.RECAPTCHA_SITE_KEY = os.getenv('RECAPTCHA_SITE_KEY', '').strip().strip("'\"")
         self.RECAPTCHA_PROJECT_ID = os.getenv('RECAPTCHA_PROJECT_ID', self.FIREBASE_PROJECT_ID).strip().strip("'\"")
         self.RECAPTCHA_API_KEY = os.getenv('RECAPTCHA_API_KEY', '').strip().strip("'\"")
-        allowed_hosts = [host.strip().strip("'\"") for host in os.getenv('RECAPTCHA_ALLOWED_HOSTS', '').split(',') if host.strip().strip("'\"")]
-        railway_domain = os.getenv('RAILWAY_PUBLIC_DOMAIN', '').strip().strip("'\"")
-        if railway_domain and railway_domain not in allowed_hosts:
-            allowed_hosts.append(railway_domain)
-        railway_static = os.getenv('RAILWAY_STATIC_URL', '').strip().strip("'\"")
-        if railway_static and railway_static not in allowed_hosts:
-            allowed_hosts.append(railway_static)
-        self.RECAPTCHA_ALLOWED_HOSTS = allowed_hosts
+        def _clean_host(h):
+            h = h.lower().strip().strip("'\"")
+            if '://' in h:
+                h = h.split('://', 1)[1]
+            return h.split('/', 1)[0].split(':', 1)[0]
+
+        raw_hosts = [host for host in os.getenv('RECAPTCHA_ALLOWED_HOSTS', '').split(',') if host.strip()]
+        for env_key in ('RAILWAY_PUBLIC_DOMAIN', 'RAILWAY_STATIC_URL'):
+            val = os.getenv(env_key, '').strip()
+            if val:
+                raw_hosts.append(val)
+        self.RECAPTCHA_ALLOWED_HOSTS = list(dict.fromkeys(_clean_host(h) for h in raw_hosts if _clean_host(h)))
         self.FIREBASE_APP_ID = os.getenv('FIREBASE_APP_ID', '').strip().strip("'\"")
         if self.AUTH_PROVIDER not in {'local', 'firebase'}:
             raise ValueError('AUTH_PROVIDER debe ser local o firebase.')
