@@ -33,7 +33,9 @@
     {% if request.endpoint == 'main.home' %}<link rel="stylesheet" href="{{ url_for('static', filename='css/home-finish.css', v='2') }}">{% endif %}
     {% if request.endpoint in ['main.home', 'cafe.experience'] %}<link rel="stylesheet" href="{{ url_for('static', filename='css/experience.css', v='4') }}">{% endif %}
     {% if request.endpoint == 'cafe.visit' %}<link rel="stylesheet" href="{{ url_for('static', filename='css/visit.css', v='2') }}">{% endif %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/mobile-nav.css', v='3') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/mobile-nav.css', v='minimal-1') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/cart-refinement.css', v='3') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/coupons.css') }}">
 </head>
 <body class="{% block body_class %}{% endblock %}">
     <a class="skip-link" href="#main-content">Saltar al contenido</a>

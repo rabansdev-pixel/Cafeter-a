@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Home, Package, Tags, Boxes, Users, Activity, PanelLeftClose, PanelLeftOpen, ExternalLink, User, LogOut, ArrowUpRight, Plus, Clock3, CircleAlert } from 'lucide-react';
+import { Home, Package, Tags, Boxes, Users, Activity, PanelLeftClose, PanelLeftOpen, ExternalLink, User, LogOut, ArrowUpRight, Plus, Clock3, CircleAlert, Menu, X } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
 export type DashboardData = {
@@ -15,6 +15,36 @@ export type DashboardData = {
 const icons: Record<string, LucideIcon> = {dashboard: Home, products: Package, categories: Tags, inventory: Boxes, users: Users, activity: Activity};
 
 export function Sidebar({data}: {data: DashboardData}) {
+  const [mobile, setMobile] = useState(() => window.matchMedia('(max-width: 767px)').matches);
+  const [drawer, setDrawer] = useState(false);
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 767px)');
+    const update = () => { setMobile(media.matches); setDrawer(false); };
+    media.addEventListener('change', update);
+    return () => media.removeEventListener('change', update);
+  }, []);
+  useEffect(() => {
+    if (!mobile || !drawer) return;
+    const panel = document.getElementById('admin-drawer');
+    const main = document.querySelector<HTMLElement>('.admin-main');
+    const topbar = document.querySelector<HTMLElement>('.account-topbar');
+    const previous = document.activeElement as HTMLElement;
+    const overflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    if (main) main.inert = true;
+    if (topbar) topbar.inert = true;
+    panel?.querySelector<HTMLButtonElement>('button')?.focus();
+    const keydown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setDrawer(false);
+      if (event.key !== 'Tab') return;
+      const items = [...(panel?.querySelectorAll<HTMLElement>('a,button,input:not([type=hidden])') || [])].filter(el => el.getClientRects().length);
+      const first = items[0], last = items[items.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+    };
+    document.addEventListener('keydown', keydown);
+    return () => { document.body.style.overflow = overflow; if (main) main.inert = false; if (topbar) topbar.inert = false; document.removeEventListener('keydown', keydown); previous?.focus(); };
+  }, [mobile, drawer]);
   const [open, setOpen] = useState(() => {
     if (window.matchMedia('(max-width: 767px)').matches) return false;
     try { return localStorage.getItem('zd-admin-sidebar') !== 'collapsed'; } catch { return true; }
@@ -25,13 +55,17 @@ export function Sidebar({data}: {data: DashboardData}) {
     try { localStorage.setItem('zd-admin-sidebar', open ? 'expanded' : 'collapsed'); } catch { /* Storage is optional. */ }
   }, [open]);
   const csrf = document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content || '';
-  return <div className={`zd-sidebar ${open ? '' : 'is-collapsed'}`}>
+  return <>
+    {mobile && <div className="zd-mobile-toolbar"><strong>Administración</strong><button type="button" aria-expanded={drawer} aria-controls="admin-drawer" onClick={() => setDrawer(true)}><Menu size={20}/> Menú</button></div>}
+    {mobile && drawer && <button className="zd-drawer-backdrop" aria-label="Cerrar menú" onClick={() => setDrawer(false)} tabIndex={-1}/>}
+    <div id="admin-drawer" hidden={mobile && !drawer} role={mobile ? 'dialog' : undefined} aria-modal={mobile && drawer ? true : undefined} aria-label="Menú de administración" className={`zd-sidebar ${mobile ? 'zd-mobile-drawer' : open ? '' : 'is-collapsed'}`}>
+    {mobile && <button className="zd-drawer-close" onClick={() => setDrawer(false)} type="button"><X size={20}/> Cerrar menú</button>}
     <a className="zd-workspace" href={data.navigation[0].href} title="ZERO DAY · Administración">
       <span className="zd-mark">ZD<span>·</span></span>
       <span className="zd-nav-label"><strong>ZERO DAY</strong><small>Administración</small></span>
     </a>
     <nav id="admin-navigation" aria-label="Administración">
-      {data.navigation.map(item => {
+      {[...data.navigation, ...(data.canViewActivity ? [{key:'coupons',label:'Cupones',href:'/admin/cupones'}] : [])].map(item => {
         const Icon = icons[item.key] || Package;
         return <a key={item.key} href={item.href} aria-label={item.label} title={item.label} aria-current={data.section === item.key ? 'page' : undefined}>
           <Icon size={18} aria-hidden="true"/><span className="zd-nav-label">{item.label}</span>
@@ -45,11 +79,11 @@ export function Sidebar({data}: {data: DashboardData}) {
     <div className="zd-sidebar-bottom">
       <div className="zd-person zd-nav-label"><strong>{data.name}</strong><small>{data.role}</small></div>
       <form method="post" action={data.urls.logout}><input type="hidden" name="csrf_token" value={csrf}/><button type="submit" title="Cerrar sesión" aria-label="Cerrar sesión"><LogOut size={18} aria-hidden="true"/><span className="zd-nav-label">Cerrar sesión</span></button></form>
-      <button type="button" onClick={() => setOpen(!open)} aria-expanded={open} aria-controls="admin-navigation" aria-label={open ? 'Contraer menú' : 'Expandir menú'} title={open ? 'Contraer menú' : 'Expandir menú'}>
+      <button hidden={mobile} type="button" onClick={() => setOpen(!open)} aria-expanded={open} aria-controls="admin-navigation" aria-label={open ? 'Contraer menú' : 'Expandir menú'} title={open ? 'Contraer menú' : 'Expandir menú'}>
         {open ? <PanelLeftClose size={18} aria-hidden="true"/> : <PanelLeftOpen size={18} aria-hidden="true"/>}<span className="zd-nav-label">Contraer menú</span>
       </button>
     </div>
-  </div>;
+  </div></>;
 }
 
 export const Example = ({data}: {data: DashboardData}) => <div className="zd-dashboard">

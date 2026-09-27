@@ -1,0 +1,17 @@
+{% extends 'layouts/account.html' %}
+{% block title %}Cupones | Administración{% endblock %}
+{% block content %}
+<main class="coupon-admin"><a href="{{ url_for('main.admin_preview') }}">← Administración</a><h1>Cupones y promociones</h1>
+<form method="post" class="coupon-admin-form"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<label>Código (vacío para generar)<input name="code" maxlength="40" placeholder="CAFECITO20"></label>
+<label>Descuento<select name="kind"><option value="percent">Porcentaje</option><option value="bundle">Lleva X, paga Y</option></select></label>
+<label>Porcentaje<input type="number" name="percent" min="1" max="100" value="10" required></label>
+<label>Unidades que lleva<input type="number" name="take" min="2" max="99" value="3" required></label>
+<label>Unidades que paga<input type="number" name="pay" min="1" max="98" value="2" required></label>
+<label>Canjes disponibles<input type="number" name="capacity" min="1" max="100000" value="20" required></label>
+<label>Vence (UTC, opcional)<input type="datetime-local" name="expires"></label><button type="submit">Crear cupón</button>
+</form><p>Porcentaje usa únicamente el campo porcentaje. Lleva X, paga Y descuenta las unidades de menor precio del carrito. Un canje por cuenta; al anularlo se devuelve el cupo y la cuenta puede canjear otra vez.</p>
+<h2>Campañas</h2><div class="coupon-table"><table><thead><tr><th>Código</th><th>Promoción</th><th>Usados / cupos</th><th>Estado</th><th>Acción</th></tr></thead><tbody>{% for c in coupons %}<tr><td>{{ c.code }}</td><td>{% if c.kind == 'percent' %}{{ c.percent }}%{% else %}Lleva {{ c.take }}, paga {{ c.pay }}{% endif %}</td><td>{{ c.used }} / {{ c.capacity }}</td><td>{{ 'Activo' if c.active else 'Pausado' }}{% if c.expires %}<br>Vence {{ c.expires.strftime('%Y-%m-%d %H:%M') }} UTC{% endif %}</td><td><form method="post" action="{{ url_for('coupons.toggle', coupon_id=c.id) }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button>{{ 'Pausar' if c.active else 'Activar' }}</button></form></td></tr>{% endfor %}</tbody></table></div>
+<h2>Últimos 100 canjes</h2><div class="coupon-table"><table><thead><tr><th>Comprobante / cuenta</th><th>Cupón</th><th>Total</th><th>Estado</th></tr></thead><tbody>{% for r in redemptions %}<tr><td>{{ r.id }}<br>Usuario {{ r.user_id }}</td><td>{{ r.snapshot.code }}</td><td>{{ r.snapshot.total }}</td><td>{% if r.cancelled %}Anulado{% else %}<form method="post" action="{{ url_for('coupons.cancel', redemption_id=r.id) }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button>Anular y devolver cupo</button></form>{% endif %}</td></tr>{% endfor %}</tbody></table></div></main>
+{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/coupons.css') }}">{% endblock %}

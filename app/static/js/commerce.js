@@ -45,13 +45,13 @@ function initQuickAdd() {
     }));
     if (feedback && cartStore.warning()) feedback.textContent = cartStore.warning();
 }
-function initProduct() {
-    const form = document.querySelector('.product-order');
+function initProduct(scope = document, initialKey = null, onSaved = null) {
+    const form = scope.querySelector('.product-order');
     if (!form) return;
     const feedback = form.querySelector('[data-order-feedback]');
     const button = form.querySelector('[data-add-button]');
-    const price = document.querySelector('[data-product-price]');
-    let editKey = new URLSearchParams(location.search).get('line');
+    const price = scope.querySelector('[data-product-price]') || el('span');
+    let editKey = initialKey || new URLSearchParams(location.search).get('line');
     let pending = false, generation = 0;
     const stored = editKey && cartStore.get().find(line => lineKey(line) === editKey && line.product_id === form.dataset.productId);
     if (stored) {
@@ -90,6 +90,7 @@ function initProduct() {
             form.elements.quantity.disabled = true;
             const result = await quote([line]); validLine(result);
             cartStore.add(line, editKey); const edited = !!editKey; editKey = null;
+            if (onSaved) { onSaved(); return; }
             const url = new URL(location.href); url.searchParams.delete('line'); history.replaceState(null, '', url);
             feedback.textContent = `${edited ? 'Cambios guardados.' : 'Añadido a tu selección.'} ${cartStore.warning()}`;
             price.textContent = result.lines[0].formatted_total;
@@ -111,7 +112,74 @@ function initCart() {
     const feedback = root.querySelector('[data-cart-feedback]');
     const note = root.querySelector('[data-cart-quote-note]');
     const retry = root.querySelector('[data-cart-retry]');
+    const whatsapp = root.querySelector('[data-cart-whatsapp]');
+    const undo = root.querySelector('[data-cart-undo]');
+    const editor = document.querySelector('[data-cart-editor]');
+    let removed = null, message = '';
+    editor.querySelector('[data-editor-close]').addEventListener('click', () => editor.close());
+    list.addEventListener('click', async event => {
+        const edit = event.target.closest('.cart-edit');
+        if (!edit) return;
+        event.preventDefault();
+        const content = editor.querySelector('[data-editor-content]');
+        content.textContent = 'Cargando…';
+        editor.showModal();
+        try {
+            const response = await fetch(edit.href);
+            if (!response.ok) throw new Error('No pudimos abrir las opciones.');
+            const page = new DOMParser().parseFromString(await response.text(), 'text/html');
+            const form = page.querySelector('.product-order');
+            if (!form) throw new Error('Opciones no disponibles.');
+            content.replaceChildren(el('h2', '', edit.closest('.cart-line').querySelector('h2').textContent), form);
+            initProduct(content, new URL(edit.href).searchParams.get('line'), () => editor.close());
+        } catch (error) { content.textContent = errorText(error); }
+    });
+    whatsapp.addEventListener('click', () => {
+        if (message && !whatsapp.disabled) window.open('https://wa.me/593988357638?text=' + encodeURIComponent(message), '_blank', 'noopener,noreferrer');
+    });
+    undo.addEventListener('click', () => {
+        if (!removed) return;
+        try { cartStore.add(removed); removed = null; undo.hidden = true; }
+        catch (error) { feedback.textContent = errorText(error); }
+    });
     let controller, generation = 0;
+    const couponCode = root.querySelector('#coupon-code');
+    const couponFeedback = root.querySelector('[data-coupon-feedback]');
+    const redeem = root.querySelector('[data-coupon-redeem]');
+    const couponSend = root.querySelector('[data-coupon-send]');
+    let couponVersion = 0, couponPending = false;
+    function resetCoupon() {
+        couponVersion++; redeem.disabled = true;
+        couponFeedback.textContent = ''; couponSend.hidden = true;
+    }
+    couponCode.addEventListener('input', resetCoupon);
+    async function couponAction(action) {
+        if (couponPending) return;
+        const version = couponVersion;
+        couponPending = true;
+        root.querySelectorAll('.cart-coupon button').forEach(button => button.disabled = true);
+        try {
+            const response = await fetch('/api/coupons/' + action, { method:'POST', headers:{'Content-Type':'application/json','X-CSRFToken':document.querySelector('meta[name="csrf-token"]').content}, body:JSON.stringify({code:couponCode.value,items:cartStore.get()}) });
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.message || 'No se pudo aplicar el cupón.');
+            if (version !== couponVersion && !data.redemption) return;
+            couponFeedback.textContent = `${data.label}: −${data.discount}. Total: ${data.total}.`;
+            if (data.redemption) {
+                couponFeedback.textContent += ` Canje: ${data.redemption}. El comprobante corresponde al carrito guardado al canjear.`;
+                const text = ['Hola ZERO DAY, quiero consultar mi canje ' + data.redemption, ...data.lines.map(line => `${line.quantity} × ${line.name} (${line.options.join(', ')}) — ${line.total}`), `Cupón: ${data.code} · ${data.label}`, `Descuento: ${data.discount}`, `Total: ${data.total}`, 'Pendiente de confirmar disponibilidad.'].join('\n');
+                couponSend.href = 'https://wa.me/593988357638?text=' + encodeURIComponent(text);
+                couponSend.hidden = false;
+            } else redeem.disabled = false;
+        } catch (error) { couponFeedback.textContent = errorText(error); }
+        finally {
+            couponPending = false;
+            root.querySelector('[data-coupon-preview]').disabled = false;
+            root.querySelector('[data-coupon-recover]').disabled = false;
+        }
+    }
+    root.querySelector('[data-coupon-preview]').addEventListener('click', () => couponAction('preview'));
+    redeem.addEventListener('click', () => couponAction('redeem'));
+    root.querySelector('[data-coupon-recover]').addEventListener('click', () => couponAction('receipt'));
     const resolvedRows = new Map();
     function lineView(stored, row) {
         const key = lineKey(stored);
@@ -140,14 +208,29 @@ function initCart() {
         const plus = action('+', 'increase', key, `Aumentar cantidad de ${row.name}`); plus.disabled = stored.quantity >= 99;
         const input = el('input'); input.type = 'number'; input.min = '1'; input.max = '99'; input.inputMode = 'numeric'; input.value = stored.quantity;
         input.dataset.key = key; input.dataset.action = 'quantity'; input.setAttribute('aria-label', `Cantidad de ${row.name}`);
-        quantity.append(minus, input, plus); controls.append(quantity, action('Quitar', 'remove', key, `Quitar ${row.name}`));
+        quantity.append(minus, input, plus); controls.append(quantity);
+        const links = el('div', 'cart-line-actions');
+        const editLink = copy.querySelector('.cart-edit');
+        if (editLink) links.append(editLink);
+        links.append(action('× Quitar', 'remove', key, `Quitar ${row.name}`));
+        copy.append(links);
         const amount = el('div', 'cart-line-price', row.available ? row.formatted_total : '—');
         if (row.available) amount.append(el('small', '', `${row.formatted_unit} / unidad`));
         article.append(copy, controls, amount); return article;
     }
     async function render() {
+        resetCoupon();
+        message = ''; whatsapp.disabled = true;
         const ticket = ++generation; controller?.abort(); controller = new AbortController();
         const lines = cartStore.get();
+        const selectedIds = new Set(lines.map(line => String(line.product_id)));
+        let shown = 0;
+        root.querySelectorAll('[data-suggestion-id]').forEach(card => {
+            card.hidden = selectedIds.has(card.dataset.suggestionId) || shown >= 3;
+            if (!card.hidden) shown++;
+        });
+        const suggestions = root.querySelector('[data-cart-suggestions]');
+        if (suggestions) suggestions.hidden = shown === 0;
         root.querySelector('[data-cart-empty]').hidden = lines.length > 0;
         root.querySelector('[data-cart-filled]').hidden = lines.length === 0;
         retry.hidden = true; feedback.textContent = cartStore.warning(); subtotal.textContent = '—';
@@ -182,7 +265,11 @@ function initCart() {
             lines.forEach((line, i) => resolvedRows.set(lineKey(line), result.lines[i]));
             list.replaceChildren(...lines.map((line, i) => lineView(line, result.lines[i])));
             subtotal.textContent = result.formatted_subtotal || '—';
-            note.textContent = result.has_errors ? 'El subtotal incluye solo las selecciones disponibles. Revisa los elementos señalados.' : 'Opciones y cantidades incluidas.';
+            if (!result.has_errors && result.lines.every(row => row.available)) {
+                message = ['Hola ZERO DAY, quisiera consultar disponibilidad de:', ...result.lines.map((row, i) => `${lines[i].quantity} × ${row.name}${row.selection_labels?.length ? ' (' + row.selection_labels.join(', ') + ')' : ''} — ${row.formatted_total}`), `Subtotal estimado: ${result.formatted_subtotal}`, '¿Me confirman disponibilidad y total?'].join('\n');
+                whatsapp.disabled = false;
+            }
+            note.textContent = result.has_errors ? 'El subtotal incluye solo las selecciones disponibles. Revisa los elementos señalados.' : '';
             if (list.contains(document.activeElement) || document.activeElement === document.body) restoreFocus();
         } catch (error) {
             if (error.name !== 'AbortError' && ticket === generation) {
@@ -198,12 +285,12 @@ function initCart() {
         const key = control.dataset.key, line = cartStore.get().find(line => lineKey(line) === key);
         if (!line) return;
         try {
-            if (action === 'remove') cartStore.remove(key);
+            if (action === 'remove') { removed = line; undo.hidden = false; cartStore.remove(key); }
             else cartStore.quantity(key, action === 'quantity' ? Number(control.value) : line.quantity + (action === 'increase' ? 1 : -1));
         } catch (error) { feedback.textContent = errorText(error); if (action === 'quantity') control.value = line.quantity; }
     }
     list.addEventListener('click', change); list.addEventListener('change', change);
-    root.querySelector('[data-cart-clear]').addEventListener('click', () => { cartStore.clear(); root.querySelector('[data-cart-empty] a').focus(); });
+    root.querySelector('[data-cart-clear]').addEventListener('click', () => { if (!window.confirm('¿Vaciar todo tu carrito?')) return; removed = null; undo.hidden = true; cartStore.clear(); root.querySelector('[data-cart-empty] a').focus(); });
     retry.addEventListener('click', render);
     cartStore.subscribe(render); window.addEventListener('online', render);
     render();
