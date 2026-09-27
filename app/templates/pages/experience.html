@@ -5,25 +5,32 @@
 {% block body_class %}cafe-home interior-page experience-page{% endblock %}
 {% block extra_head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/interior.css') }}">{% endblock %}
 {% block content %}
-<header class="interior-heading"><p class="eyebrow">ZERO DAY / LA EXPERIENCIA</p><div class="heading-grid"><h1>El café es<br><em>el comienzo.</em></h1><p>El momento lo pones tú.</p></div></header>
-{% if cafe.experiences %}{% for experience in cafe.experiences %}<section class="experience-chapter"><div><span class="eyebrow">{{ '%02d'|format(loop.index) }} / ZERO DAY</span><h2>{{ experience.title }}</h2><p>{{ experience.description }}</p></div>{% if experience.image %}<img src="{{ url_for('static', filename=experience.image) }}" alt="{{ experience.alt }}" width="1200" height="1000" loading="lazy">{% endif %}</section>{% endfor %}
-{% else %}<section class="experience-chapter espresso-chapter"><div><p class="eyebrow">EL RITUAL / PREPARAR</p><h2>Cada detalle.<br><em>En su punto.</em></h2><p>Una molienda. Una extracción.<br>Una manera de descubrir el café.</p><a class="cafe-link" href="{{ url_for('cafe.experience', _anchor='metodos') }}">Una mirada a los métodos ↗</a></div><div class="editorial-film" data-video-container>
-<img src="{{ url_for('static', filename=cafe.coffee_poster) }}" alt="Preparación del café" width="1280" height="720" loading="lazy">
-<video autoplay muted loop playsinline preload="none" poster="{{ url_for('static', filename=cafe.coffee_poster) }}" data-video-src="{{ url_for('static', filename=cafe.coffee_video) }}" aria-label="Preparación del café"></video>
-
-</div></section>{% endif %}
-
-<section class="editorial-section"><div class="editorial-heading"><div><span class="eyebrow">UNA TAZA / MUCHOS MATICES</span><h2>No necesitas saber de café.<br><em>Solo sentir curiosidad.</em></h2></div><p>Hay más que intensidad. Prueba una taza sin prisas y fíjate en lo que cambia de un sorbo al siguiente.</p></div><div class="sensory-journal"><figure>{{ photo('beans', 'Detalle de granos de café tostados', 'journal') }}</figure><div class="sensory-list"><article><span>01</span><div><h3>Acércate al aroma.</h3><p>Antes de beber, acerca la taza. Busca recuerdos de cacao, frutos secos o fruta, sin preocuparte por encontrar una respuesta correcta.</p></div></article><article><span>02</span><div><h3>Descubre la textura.</h3><p>¿Se siente ligero o cremoso? El espresso concentra el cuerpo; un filtrado invita a explorar una sensación más limpia.</p></div></article><article><span>03</span><div><h3>Dale otro momento.</h3><p>Al enfriarse un poco aparecen otros matices. Deja pasar unos segundos y vuelve a probar.</p></div></article></div></div></section>
-<section class="pairing-section"><div class="editorial-heading"><div><span class="eyebrow">MEJOR EN COMPAÑÍA</span><h2>Pequeños encuentros.<br><em>Buenas combinaciones.</em></h2></div><p>Ideas para elegir dos sabores que se acompañan. Tú decides por dónde empezar.</p></div><div class="pairing-grid"><a href="{{ url_for('cafe.product', slug='croissant-mantequilla') }}">{{ photo('croissant', 'Croissant de mantequilla sobre un plato') }}<span>01 / SUAVE + CRUJIENTE</span><h3>Cappuccino<br>& croissant.</h3><p>La espuma suave del café y las capas de mantequilla.</p></a><a href="{{ url_for('cafe.product', slug='brownie') }}">{{ photo('brownie', 'Porciones de brownie de chocolate') }}<span>02 / FRESCO + INTENSO</span><h3>Cold brew<br>& brownie.</h3><p>Una bebida fría para acompañar el carácter del cacao.</p></a><a href="{{ url_for('cafe.product', slug='banana-pistacho') }}">{{ photo('banana-bread', 'Bizcocho de banano con pistacho') }}<span>03 / VERDE + DULCE</span><h3>Matcha latte<br>& banana bread.</h3><p>Notas vegetales, banano y un final de frutos secos.</p></a></div></section>
+<header class="interior-heading"><p class="eyebrow">ZERO DAY / EXPERIENCIA</p><div class="heading-grid"><h1>Un lugar para<br><em>bajar el ritmo.</em></h1><p>El espacio, el café y el tiempo.<br>La pausa la pones tú.</p></div></header>
+<section class="experience-arrival" id="espacio" aria-label="El universo ZERO DAY">
+ <figure><img src="{{ url_for('static', filename='img/products/espacio.jpg') }}" alt="Un desayuno con café, crema y frutos secos" width="5000" height="3337" fetchpriority="high"><figcaption>Una mesa. Algo rico. Ninguna prisa.</figcaption></figure>
+ <div class="experience-intro"><h2>El café es el comienzo.<br><em>El momento es tuyo.</em></h2><p>Contigo, con alguien o de paso. Hay muchas maneras de hacer una pausa.</p></div>
+</section>
+<section class="experience-details" aria-labelledby="details-title">
+ <div class="editorial-heading"><div><span class="eyebrow">LOS PEQUEÑOS DETALLES</span><h2 id="details-title">Una forma de estar.</h2></div><p>Una taza, buena compañía y el tiempo para disfrutarla.</p></div>
+ <div class="experience-photo-grid">
+ <figure><img src="{{ url_for('static', filename='img/products/espacio5.jpg') }}" alt="Café sobre una mesa junto a un pequeño florero" width="3648" height="5472" loading="lazy"><figcaption>Una pausa para compartir.</figcaption></figure>
+ <figure><img src="{{ url_for('static', filename='img/products/espacio2.jpg') }}" alt="Manos sosteniendo granos de café tostados" width="1920" height="1280" loading="lazy"><figcaption>Todo empieza con el café.</figcaption></figure>
+ </div>
+</section>
+<section class="experience-ritual" aria-labelledby="ritual-title">
+ <div><span class="eyebrow">EL RITUAL</span><h2 id="ritual-title">Cada detalle.<br><em>En su punto.</em></h2><p>Una molienda. Una extracción. El primer sorbo.</p><a class="cafe-link" href="#metodos">Descubre los métodos ↗</a></div>
+ <figure><div class="experience-video" data-video-container><video muted loop playsinline preload="none" width="2560" height="1440" poster="{{ url_for('static', filename='img/editorial/liquido-2-poster.webp') }}" data-video-src="{{ url_for('static', filename='img/products/liquido 2.mp4') }}" aria-label="Extracción del café"></video><button class="media-toggle" type="button" aria-pressed="false">Reproducir vídeo</button></div><figcaption>El agua, la molienda y el tiempo.</figcaption></figure>
+</section>
+{% for experience in cafe.experiences %}<section class="experience-chapter"><div><h2>{{ experience.title }}</h2><p>{{ experience.description }}</p></div>{% if experience.image %}<img src="{{ url_for('static', filename=experience.image) }}" alt="{{ experience.alt }}" loading="lazy">{% endif %}</section>{% endfor %}
 <section class="cafe-section paper reading-section" id="metodos" aria-labelledby="methods-title">
-    <p class="eyebrow">EL RITUAL / MÉTODOS</p>
+    <div class="experience-methods-intro"><p class="eyebrow">EL RITUAL / MÉTODOS</p>
     <h2 id="methods-title">Una molienda.<br><em>Otra expresión.</em></h2>
     <p>Cada método de preparación resalta facetas distintas del mismo grano. Estas recetas son un punto de partida para explorar el café.</p>
-    <figure class="methods-photo">{{ photo('pour-over', 'Preparación manual de café con filtro', 'journal', '100vw') }}<figcaption>EL AGUA, LA MOLIENDA Y EL TIEMPO CAMBIAN LA TAZA.</figcaption></figure><div class="reading-notes">
-        <details><summary>Hario V60 <span>01</span></summary><p>Su cono y sus estrías permiten una extracción rápida y limpia, con notas florales y acidez viva.</p><p>Molienda media-fina · ratio 1:16 (15 g / 240 g de agua) · 2:45 a 3:15 min.</p></details>
-        <details><summary>Chemex <span>02</span></summary><p>Sus filtros retienen aceites y sedimentos para una taza limpia y delicada.</p><p>Molienda media-gruesa · ratio 1:15 (30 g / 450 g de agua) · 4:00 a 4:30 min.</p></details>
-        <details><summary>AeroPress <span>03</span></summary><p>Inmersión asistida por presión manual para explorar el dulzor y el cuerpo del café.</p><p>Molienda media · ratio 1:13 (18 g / 230 g de agua) · 1:45 a 2:00 min.</p></details>
+    </div><div class="reading-notes">
+        <details><summary>Hario V60 <span aria-hidden="true" class="method-indicator"></span></summary><p>Su cono y sus estrías permiten una extracción rápida y limpia, con notas florales y acidez viva.</p><p>Molienda media-fina · ratio 1:16 (15 g / 240 g de agua) · 2:45 a 3:15 min.</p></details>
+        <details><summary>Chemex <span aria-hidden="true" class="method-indicator"></span></summary><p>Sus filtros retienen aceites y sedimentos para una taza limpia y delicada.</p><p>Molienda media-gruesa · ratio 1:15 (30 g / 450 g de agua) · 4:00 a 4:30 min.</p></details>
+        <details><summary>AeroPress <span aria-hidden="true" class="method-indicator"></span></summary><p>Inmersión asistida por presión manual para explorar el dulzor y el cuerpo del café.</p><p>Molienda media · ratio 1:13 (18 g / 230 g de agua) · 1:45 a 2:00 min.</p></details>
     </div>
 </section>
-<section class="experience-pause paper"><span class="eyebrow">EL PLACER / ESTAR</span><h2>No vienes<br>solo <em>por café.</em></h2><div><p>Una taza puede ser una manera de volver a ti. Quédate un rato.</p><a class="cafe-link" href="{{ url_for('cafe.space') }}">Descubre el espacio ↗</a><a class="cafe-link" href="{{ url_for('cafe.menu') }}">Explora la carta ↗</a></div></section>
+<section class="experience-pause paper"><span class="eyebrow">NOS VEMOS AQUÍ</span><h2>Tu próxima pausa,<br><em>aquí.</em></h2><div><p>Elige algo que te apetezca. Nosotros ponemos el café.</p><div class="experience-actions"><a class="cafe-link experience-visit" href="{{ url_for('cafe.visit') }}">Visítanos ↗</a><a class="cafe-link" href="{{ url_for('cafe.menu') }}">Ver la carta ↗</a></div></div></section>
 {% endblock %}

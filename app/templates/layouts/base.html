@@ -27,10 +27,12 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/unified.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/editorial-update.css') }}">
     {% if request.endpoint == 'main.home' %}<link rel="stylesheet" href="{{ url_for('static', filename='css/refinement.css') }}">{% endif %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/shared-refinement.css', v='footer-unified-2') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/shared-refinement.css', v='footer-black-3') }}">
     {% if request.endpoint in ['cafe.menu', 'cafe.product'] %}<link rel="stylesheet" href="{{ url_for('static', filename='css/shop.css') }}">{% endif %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/header-actions.css', v='1') }}">
-    {% if request.endpoint == 'main.home' %}<link rel="stylesheet" href="{{ url_for('static', filename='css/home-finish.css', v='1') }}">{% endif %}
+    {% if request.endpoint == 'main.home' %}<link rel="stylesheet" href="{{ url_for('static', filename='css/home-finish.css', v='2') }}">{% endif %}
+    {% if request.endpoint in ['main.home', 'cafe.experience'] %}<link rel="stylesheet" href="{{ url_for('static', filename='css/experience.css', v='4') }}">{% endif %}
+    {% if request.endpoint == 'cafe.visit' %}<link rel="stylesheet" href="{{ url_for('static', filename='css/visit.css', v='2') }}">{% endif %}
 </head>
 <body class="{% block body_class %}{% endblock %}">
     <a class="skip-link" href="#main-content">Saltar al contenido</a>

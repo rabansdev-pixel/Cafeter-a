@@ -226,12 +226,12 @@ body:not(.zero-home) .home-theme-toggle:is(:hover,:focus-visible) .theme-tooltip
 
 /* One shared footer definition for every public page. */
 .site-footer {
- --footer-muted:#bfc4cc;
+ --footer-muted:#bfc1be; --ink:#fafaf7; --muted:#bfc1be; --rule:#ffffff24; --color-text-secondary:#bfc1be; color-scheme:dark;
  background:#141614; color:#fafaf7; border-top:1px solid #ffffff24;
  padding:44px clamp(20px,4.5vw,96px) 16px;
  font-family:'Almarai',sans-serif; letter-spacing:normal;
 }
-html[data-home-theme='dark'] .site-footer { background:#20242b; }
+
 .site-footer .footer-top { max-width:1440px; margin:auto; display:grid; grid-template-columns:1.4fr 1.2fr .8fr 1fr; gap:36px; padding-bottom:32px; align-items:start; }
 .site-footer .footer-brand { display:inline-flex; gap:8px; font-size:38px; line-height:1.1; letter-spacing:-.06em; color:inherit; }
 .site-footer .footer-brand>span { font-size:24px; }
@@ -282,3 +282,22 @@ html[data-home-theme='dark'] .site-footer { background:#20242b; }
 .ritual-video-frame { position:relative; width:100%; aspect-ratio:1; overflow:hidden; }
 .ritual-video-frame video { display:block; width:100%; height:100%; object-fit:cover; }
 .mood-main .media-toggle,.ritual-video-frame .media-toggle { top:auto; bottom:16px; right:16px; z-index:3; }
+
+/* One fixed footer palette, independent of page and theme. */
+body .site-footer { background:#141614; color:#fafaf7; }
+body .site-footer :is(a,h2,.footer-brand) { color:#fafaf7; }
+body .site-footer :is(p,address,small,.footer-origin,.footer-kicker,.footer-location>span,.footer-bottom,.asset-credits) { color:#bfc1be; }
+body .site-footer :is(.footer-top,.home-footer-meta,.footer-bottom) { border-color:#ffffff24; }
+
+/* Navigation card, shared by both themes. */
+html[data-home-theme] body .site-header .site-nav {
+    background: #222521;
+    border: 1px solid #ffffff20;
+    border-radius: 20px;
+    box-shadow: 0 6px 20px #00000026;
+}
+html[data-home-theme='light'] body .site-header .site-nav {
+    background: #faf8f1;
+    border-color: #302b201a;
+    box-shadow: 0 6px 20px #302b200d;
+}

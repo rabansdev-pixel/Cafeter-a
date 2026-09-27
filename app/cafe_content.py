@@ -8,9 +8,9 @@ from app.menu_content import MENU
 
 CAFE = {
     'address': 'Ayacucho y 8va Norte, Machala, Ecuador', 'hours': ['8:00 a. m. — 8:00 p. m.'],
-    'maps_url': 'https://www.google.com/maps/search/?api=1&query=Ayacucho+y+8va+Norte+Machala+Ecuador', 'instagram_url': None,
+    'maps_url': 'https://www.google.com/maps/dir/?api=1&destination=-3.2519678,-79.9551332', 'instagram_url': None,
     'social_is_example': True, 'menu_is_example': False,
-    'email': None, 'phone': None, 'menu_url': '/menu', 'currency': 'USD',
+    'email': 'oservs86@gmail.com', 'phone': '+593988357638', 'menu_url': '/menu', 'currency': 'USD',
     'space_gallery': [], 'policies': [], 'space_image': None, 'space_alt': '', 'hero_video': 'img/products/hero-v2-web.mp4',
     'coffee_video': 'img/products/coffe.mp4',
     'coffee_poster': 'img/editorial/coffee-current-poster.webp',
