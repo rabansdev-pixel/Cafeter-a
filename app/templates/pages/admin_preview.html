@@ -9,7 +9,7 @@
         <div class="sidebar-note"><p>{{ current_user.name }}</p><a href="{{ url_for('main.account_preview') }}">Mi cuenta ↗</a><form method="post" action="{{ url_for('main.logout') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="account-button" type="submit">Cerrar sesión</button></form></div>
     </aside>
     <main class="admin-main" id="account-main" tabindex="-1">
-        <div>{% if current_user.role == 'admin' %}<a class="account-button" href="{{ url_for('coupons.admin') }}">Cupones y promociones ↗</a>{% endif %}</div><div class="admin-heading"><div><p class="section-label">ZERO DAY / Administración</p><h1>{{ dict(sections)[section] }}</h1></div></div>
+        <div class="admin-heading"><div><p class="section-label">ZERO DAY / Administración</p><h1>{{ dict(sections)[section] }}</h1></div></div>
         {% if section == 'dashboard' %}
         <div id="admin-overview-root"><div class="category-grid">{% for stat in dashboard.stats %}<section class="account-card"><p>{{ stat.label }}</p><h2>{{ stat.value }}</h2><p>{{ stat.note }}</p></section>{% endfor %}</div></div>
         {% elif section in ['products', 'inventory'] %}
