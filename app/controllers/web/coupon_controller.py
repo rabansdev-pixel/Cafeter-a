@@ -34,7 +34,7 @@ def offer(coupon, items):
     if discount <= 0:
         raise ValueError('Tu carrito todavía no cumple esta promoción.')
     currency = MenuService.content().get('currency', 'USD')
-    return dict(code=coupon.code, label=label, discount=money(discount, currency), total=money(subtotal-discount, currency), subtotal=result['formatted_subtotal'], lines=[dict(name=row['name'], quantity=item['quantity'], options=row['selection_labels'], total=row['formatted_total']) for row, item in zip(result['lines'], items)])
+    return dict(code=coupon.code, label=label, discount=money(discount, currency), total=money(subtotal-discount, currency), subtotal=result['formatted_subtotal'], lines=[dict(name=row['name'], quantity=item['quantity'], options=row['selection_labels'], unit=row['formatted_unit'], total=row['formatted_total']) for row, item in zip(result['lines'], items)])
 
 
 @coupon_bp.post('/api/coupons/<action>')

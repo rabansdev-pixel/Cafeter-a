@@ -11,3 +11,29 @@ html[data-home-theme='light'] .profile-links { background:#faf8f1; color:#24251f
  body .site-header .header-account .profile-name { display:none; }
  .profile-links { top:auto; bottom:calc(100% + 10px); right:auto; left:0; }
 }
+
+/* Match the theme control while giving the photo its own breathing room. */
+body .header-actions { align-items:center; }
+body .account-profile { flex:none; }
+body .header-actions .account-profile>.header-account {
+ display:flex; align-items:center; justify-content:center; gap:10px;
+ box-sizing:border-box; height:44px; min-height:44px; width:auto;
+ padding:5px 16px 5px 6px; line-height:1; margin:0;
+}
+body .account-profile .header-account .profile-avatar { width:32px; height:32px; }
+body .account-profile .header-account .profile-name {
+ position:static; display:block; width:auto; height:auto; clip-path:none;
+ max-width:150px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+ font-size:13px; line-height:1.3;
+}
+.account-profile[open]>.header-account { box-shadow:0 0 0 2px #8883; }
+.account-profile .profile-links { top:calc(100% + 8px); min-width:200px; z-index:2; }
+.profile-links form { margin:0; }
+.profile-links a,.profile-links button { box-sizing:border-box; border-radius:7px; text-decoration:none; cursor:pointer; }
+.profile-links a:hover,.profile-links button:hover { background:#8882; }
+.profile-links :focus-visible { outline:2px solid currentColor; outline-offset:-2px; }
+@media(max-width:767px) {
+ html[data-home-theme] body .site-header .account-profile>.header-account { width:44px; padding:5px; }
+ body .site-header .account-profile .header-account .profile-name { display:none; }
+ .account-profile .profile-links { top:auto; bottom:calc(100% + 8px); }
+}

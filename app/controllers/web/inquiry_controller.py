@@ -27,18 +27,34 @@ def create():
             quote = MenuService.quote(items)
             if quote['has_errors'] or not quote['lines']:
                 raise ValueError('Revisa los productos del carrito.')
-            snapshot = dict(total=quote['formatted_subtotal'], lines=[dict(name=row['name'], quantity=item['quantity'], options=row['selection_labels'], total=row['formatted_total']) for row, item in zip(quote['lines'], items)])
+            snapshot = dict(total=quote['formatted_subtotal'], subtotal=quote['formatted_subtotal'], lines=[dict(name=row['name'], quantity=item['quantity'], options=row['selection_labels'], unit=row['formatted_unit'], total=row['formatted_total']) for row, item in zip(quote['lines'], items)])
         reference = 'ZD-' + secrets.token_hex(6).upper()
         customer = user.name if user else 'Invitado'
         record = Inquiry(reference=reference, user_id=user.id if user else None, customer=customer, snapshot=snapshot)
         db.session.add(record)
         db.session.commit()
-        identity = f'{customer.split()[0] if customer.split() else "Cliente"} · Cuenta registrada' if user else 'Consulta como invitado'
-        text = [f'Hola ZERO DAY · Consulta {reference}', identity]
-        text += [f"{line['quantity']} × {line['name']} ({', '.join(line['options'])}) — {line['total']}" for line in snapshot['lines']]
+        text = ['☕ *ZERO DAY*', '_El arte de tomarse un momento._', '',
+                f'Hola, soy *{customer}*.' if user else 'Hola, quisiera consultar por un café.',
+                'Mi próxima pausa sería así:', '', '*MI SELECCIÓN*', '']
+        for line in snapshot['lines']:
+            text.append(f"*{line['quantity']:02d} · {line['name']}*")
+            options = ', '.join(line.get('options') or [])
+            if options:
+                text.append(options)
+            if line.get('unit') and line['quantity'] > 1:
+                text.append(f"{line['unit']} por unidad")
+            text += [f"*{line['total']}*", '']
+        text += ['─────────────────', '']
+        if snapshot.get('discount'):
+            text += [f"Subtotal · {snapshot['subtotal']}",
+                     f"Beneficio {snapshot['code']} · −{snapshot['discount']}", '']
+        text += [f"*TOTAL ESTIMADO · {snapshot['total']}*", '',
+                 '─────────────────', '', '*¿Me confirman disponibilidad?*', '',
+                 f'Referencia: {reference}',
+                 'Cliente con cuenta registrada' if user else 'Consulta como invitado']
         if snapshot.get('redemption'):
-            text += [f"Canje: {snapshot['redemption']}", f"Cupón {snapshot['code']} · Descuento: {snapshot['discount']}"]
-        text += [f"Total estimado: {snapshot['total']}", 'Pendiente de confirmar disponibilidad.']
+            text.append(f"Comprobante de canje: {snapshot['redemption']}")
+        text.append('_Esta consulta no confirma un pedido._')
         return jsonify(reference=reference, url='https://wa.me/593988357638?' + urlencode({'text':'\n'.join(text)}))
     except (ValueError, MenuError) as error:
         db.session.rollback()
