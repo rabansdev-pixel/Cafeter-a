@@ -79,7 +79,38 @@ def access():
 
 @require_user()
 def account():
-    return render_template('pages/account_preview.html')
+    import re
+    values = {'name': g.user.name, 'whatsapp': g.user.whatsapp or ''}
+    if request.method == 'POST':
+        if request.form.get('action') == 'skip':
+            g.user.profile_completed = True
+            db.session.commit()
+            return redirect(url_for('main.account_preview'), code=303)
+        values = {'name': request.form.get('name', '').strip(), 'whatsapp': request.form.get('whatsapp', '').strip()}
+        try:
+            name = ' '.join(values['name'].split())
+            if not 1 <= len(name) <= 80 or any(ord(c) < 32 for c in values['name']):
+                raise ValueError('Introduce un nombre de 1 a 80 caracteres.')
+            phone = re.sub(r'[\s()-]', '', values['whatsapp'])
+            if phone:
+                if re.fullmatch(r'09\d{8}', phone):
+                    phone = '+593' + phone[1:]
+                elif re.fullmatch(r'9\d{8}', phone):
+                    phone = '+593' + phone
+                if not re.fullmatch(r'\+[1-9]\d{7,14}', phone):
+                    raise ValueError('Revisa el WhatsApp e incluye el código de país, por ejemplo +593.')
+            g.user.name = name
+            g.user.whatsapp = phone
+            g.user.profile_completed = True
+            audit('user.profile_update', 'user', g.user.id, actor_id=g.user.id)
+            db.session.commit()
+            flash('Tu perfil se guardó.', 'success')
+            return redirect(url_for('main.account_preview'), code=303)
+        except ValueError as error:
+            db.session.rollback()
+            flash(str(error), 'error')
+            return render_template('pages/account_preview.html', values=values), 400
+    return render_template('pages/account_preview.html', values=values)
 
 
 @require_user()

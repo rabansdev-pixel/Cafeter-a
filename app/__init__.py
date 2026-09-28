@@ -55,6 +55,8 @@ def create_app(env_name=None):
     app.register_blueprint(media_bp)
     from app.controllers.web.coupon_controller import coupon_bp
     app.register_blueprint(coupon_bp)
+    from app.controllers.web.inquiry_controller import inquiry_bp
+    app.register_blueprint(inquiry_bp)
     app.register_blueprint(cafe_bp)
     app.register_blueprint(main_bp)
     app.register_blueprint(catalog_bp)

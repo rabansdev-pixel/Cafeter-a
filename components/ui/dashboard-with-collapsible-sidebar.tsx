@@ -65,7 +65,7 @@ export function Sidebar({data}: {data: DashboardData}) {
       <span className="zd-nav-label"><strong>ZERO DAY</strong><small>Administración</small></span>
     </a>
     <nav id="admin-navigation" aria-label="Administración">
-      {[...data.navigation, ...(data.canViewActivity ? [{key:'coupons',label:'Cupones',href:'/admin/cupones'}] : [])].map(item => {
+      {[...data.navigation, {key:'inquiries',label:'Consultas WhatsApp',href:'/admin/consultas'}, ...(data.canViewActivity ? [{key:'coupons',label:'Cupones',href:'/admin/cupones'}] : [])].map(item => {
         const Icon = icons[item.key] || Package;
         return <a key={item.key} href={item.href} aria-label={item.label} title={item.label} aria-current={data.section === item.key ? 'page' : undefined}>
           <Icon size={18} aria-hidden="true"/><span className="zd-nav-label">{item.label}</span>

@@ -4,7 +4,7 @@ import json
 from datetime import datetime, timedelta, timezone
 from hashlib import sha256
 from urllib.error import HTTPError, URLError
-from urllib.parse import urlencode
+from urllib.parse import urlencode, urlsplit
 from urllib.request import Request, urlopen
 import requests
 from cachecontrol import CacheControl
@@ -108,7 +108,7 @@ def identity(token, fresh=True):
     if provider == 'google.com' and (claims.get('email_verified') is not True or record.get('emailVerified') is not True):
         raise FirebaseError('Verifica el correo de tu cuenta de Google.', status=401)
     return dict(uid=uid, email=email, name=str(record.get('displayName') or '').strip()[:120],
-                auth_time=auth_time, expires=int(claims['exp']))
+                photo=str(record.get('photoUrl') or ''), auth_time=auth_time, expires=int(claims['exp']))
 
 
 def account_record(token, uid, auth_time):
@@ -175,6 +175,10 @@ def establish_session(token, legacy_password='', name=''):
     session['user_id'] = user.id
     session['user_version'] = user.session_version
     session['firebase_session_id'] = record.id
+    photo = profile.get('photo', '')
+    host = urlsplit(photo).hostname or ''
+    if len(photo) < 1500 and urlsplit(photo).scheme == 'https' and (host == 'googleusercontent.com' or host.endswith('.googleusercontent.com')):
+        session['profile_photo'] = photo
     session.permanent = True
     return user
 

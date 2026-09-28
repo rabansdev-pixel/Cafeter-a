@@ -20,6 +20,8 @@ class User(db.Model):
     name = db.Column(db.String(120), nullable=False)
     email = db.Column(db.String(254), unique=True, nullable=False)
     password_hash = db.Column(db.String(255), nullable=True)
+    whatsapp = db.Column(db.String(20), nullable=False, default='')
+    profile_completed = db.Column(db.Boolean, nullable=False, default=False)
     firebase_uid = db.Column(db.String(128), unique=True)
     role = db.Column(db.String(20), nullable=False, default='customer')
     active = db.Column(db.Boolean, nullable=False, default=True)
