@@ -37,6 +37,15 @@ def init_auth(app):
             else:
                 session.clear()
 
+    @app.before_request
+    def welcome_profile():
+        user = g.get('user')
+        if (user and not user.profile_completed and request.method == 'GET'
+                and request.endpoint and request.endpoint not in {'main.account_preview', 'static', 'media.product_image'}
+                and not request.path.startswith('/api/')
+                and request.accept_mimetypes.accept_html):
+            return redirect(url_for('main.account_preview'))
+
     @app.context_processor
     def identity_context():
         from app.services.firebase_service import public_config

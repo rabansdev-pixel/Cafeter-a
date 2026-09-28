@@ -38,7 +38,7 @@ export function initNavigation() {
     header.addEventListener('keydown', event => {
         if (event.key === 'Escape') { close(); toggle.focus(); }
         if (event.key === 'Tab' && mobile.matches && header.classList.contains('menu-open')) {
-            const items = [...header.querySelectorAll('a,button')].filter(el => el.getClientRects().length && !el.hidden);
+            const items = [...header.querySelectorAll('a,button,summary')].filter(el => el.getClientRects().length && !el.hidden);
             const first = items[0], last = items[items.length - 1];
             if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
             else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }

@@ -1,0 +1,13 @@
+.account-profile { position:relative; }
+.account-profile summary { list-style:none; cursor:pointer; }
+.account-profile summary::-webkit-details-marker { display:none; }
+body .header-account .profile-avatar { display:grid; position:relative; width:30px; height:30px; flex:none; overflow:hidden; clip-path:none; border-radius:50%; place-items:center; background:#8883; }
+body .header-account .profile-initial { position:static; width:auto; height:auto; clip-path:none; font-size:14px; }
+.profile-avatar img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.profile-links { position:absolute; right:0; top:calc(100% + 10px); width:180px; padding:8px; background:#20231f; color:#f3f0e7; border:1px solid #8885; border-radius:12px; box-shadow:0 8px 25px #0003; }
+html[data-home-theme='light'] .profile-links { background:#faf8f1; color:#24251f; }
+.profile-links a,.profile-links button { display:block; width:100%; padding:12px; min-height:44px; background:transparent; border:0; color:inherit; font:inherit; font-size:14px; text-align:left; }
+@media(max-width:767px) {
+ body .site-header .header-account .profile-name { display:none; }
+ .profile-links { top:auto; bottom:calc(100% + 10px); right:auto; left:0; }
+}

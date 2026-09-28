@@ -10,3 +10,4 @@ from app.models.product_image import ProductImage
 
 from app.models.firebase_session import FirebaseSession
 from app.models.coupon import Coupon, CouponRedemption
+from app.models.inquiry import Inquiry

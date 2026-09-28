@@ -92,12 +92,19 @@
                     {% if item.portion %}<span class="product-portion">{{ item.portion }}</span>{% endif %}
                     <div class="shop-product-bottom">
                         <p class="shop-product-price" id="price-{{ item.slug }}">{{ item.formatted_price or 'Consulta en el café' }}</p>
-                        {% if item.orderable and not item.customizable %}
-                        <button type="button" class="shop-product-action quiet-add" data-quick-add="{{ item.id }}" aria-label="Añadir {{ item.name }}" aria-describedby="price-{{ item.slug }}">Añadir <span aria-hidden="true">+</span></button>
-                        {% else %}
-                        <a class="shop-product-action" href="{{ url_for('cafe.product', slug=item.slug) }}" aria-label="{{ 'Elegir' if item.orderable else 'Ver detalle de' }} {{ item.name }}">{{ 'Elegir' if item.orderable else 'Ver detalle' }} <span aria-hidden="true">↗</span></a>
-                        {% endif %}
+                        {% set standard = namespace(options={}, labels=[], ready=true) %}
+                        {% for group in item.options %}{% if group.required %}
+                        {% set chosen = namespace(choice=none) %}
+                        {% for choice in group.choices %}{% if (choice.available is not defined or choice.available) and (choice.price_delta|default('0')|float == 0) and (choice.default|default(false) or (group.id == 'leche' and choice.id == 'entera')) %}{% set chosen.choice = choice %}{% endif %}{% endfor %}
+                        {% if chosen.choice %}{% set _ = standard.options.update({group.id:chosen.choice.id}) %}{% set standard.labels = standard.labels + [group.label ~ ': ' ~ chosen.choice.label] %}{% else %}{% set standard.ready = false %}{% endif %}
+                        {% endif %}{% endfor %}
+                        {% for group in item.modifiers %}{% if group.required %}{% set standard.ready = false %}{% endif %}{% endfor %}
+                        {% if item.orderable %}
+                        {% if standard.ready %}<button type="button" class="shop-product-action quiet-add" data-quick-add="{{ item.id }}" data-standard-options="{{ standard.options|tojson|forceescape }}" aria-label="Añadir {{ item.name }}" aria-describedby="standard-{{ item.slug }} price-{{ item.slug }}">Añadir +</button>
+                        {% else %}<a class="shop-product-action" data-customize href="{{ url_for('cafe.product', slug=item.slug) }}">Añadir +</a>{% endif %}
+                        {% else %}<a class="shop-product-action" href="{{ url_for('cafe.product', slug=item.slug) }}">Ver detalle ↗</a>{% endif %}
                     </div>
+                    {% if item.orderable %}<div class="shop-personalize"><small id="standard-{{ item.slug }}">{{ standard.labels|join(' · ') if standard.ready else 'Elige tu preparación' }}{% if standard.ready and item.modifiers %} · Sin extras{% endif %}</small>{% if item.customizable %}<a data-customize data-standard-options="{{ standard.options|tojson|forceescape }}" href="{{ url_for('cafe.product', slug=item.slug) }}">Personalizar</a>{% endif %}</div>{% endif %}
                 </div>
             </article>
             {% endfor %}
@@ -114,5 +121,6 @@
 <noscript><p class="no-script-note">Puedes consultar la carta sin JavaScript. Actívalo para guardar tu selección.</p></noscript>
 
 {% endif %}
+<dialog class="shop-customizer" aria-labelledby="shop-customizer-title" data-shop-customizer><button type="button" class="shop-customizer-close" data-customizer-close aria-label="Cerrar personalización">Cerrar ×</button><div data-customizer-content></div></dialog>
 {% endblock %}
-{% block extra_scripts %}<script type="module" src="{{ url_for('static', filename='js/commerce.js') }}"></script><script type="module" src="{{ url_for('static', filename='js/menu_filter.js') }}"></script>{% endblock %}
+{% block extra_scripts %}<script type="module" src="{{ url_for('static', filename='js/commerce.js', v='shop-direct-1') }}"></script><script type="module" src="{{ url_for('static', filename='js/menu_filter.js') }}"></script>{% endblock %}

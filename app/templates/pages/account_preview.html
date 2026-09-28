@@ -1,15 +1,17 @@
 {% extends 'layouts/account.html' %}
 {% block title %}Mi cuenta{% endblock %}
+{% block body_class %}customer-profile-page{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/customer-profile.css', v='1') }}">{% endblock %}
 {% block content %}
 <main class="customer-main" id="account-main" tabindex="-1">
-    <span class="preview-badge">{{ current_user.name }}</span>
-    <h1>Tu espacio en ZERO DAY.</h1><p class="page-lead">Un lugar para volver a tu próxima pausa.</p>
-    <div class="customer-grid">
-        <section class="account-card"><span class="section-label">Mi perfil</span><h2>Todo empieza por conocerte.</h2><p>{{ current_user.name }} · {{ current_user.email }}</p></section>
-        <section class="account-card"><span class="section-label">Tu selección</span><h2>¿Qué te apetece hoy?</h2><p>Puedes seguir explorando la tienda y consultar la selección guardada en este dispositivo.</p><a class="account-button primary" href="{{ url_for('cafe.cart') }}">Ver mi carrito</a></section>
-        <section class="account-card customer-orders"><div><span class="section-label">Pedidos</span><h2>Cada pausa, en su lugar.</h2><p>El historial aparecerá aquí cuando se habiliten los pedidos en línea.</p></div><a class="account-link" href="{{ url_for('cafe.menu') }}">Explorar la tienda ↗</a></section>
-    </div>
-    {% if current_user.role in ['admin', 'staff'] %}<a class="account-link" href="{{ url_for('main.admin_preview') }}">Administrar ZERO DAY ↗</a>{% endif %}
-    <form method="post" action="{{ url_for('main.logout') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="account-button" type="submit">Cerrar sesión</button></form>
+<header class="customer-welcome"><div class="customer-avatar"><span>{{ current_user.name[:1]|upper }}</span>{% if session.get('profile_photo') %}<img data-profile-photo src="{{ session.profile_photo }}" alt="" referrerpolicy="no-referrer">{% endif %}</div><div><p class="section-label">TU ESPACIO EN ZERO DAY</p><h1>{{ '¿Cómo te llamamos?' if not current_user.profile_completed else 'Hola, ' ~ current_user.name.split()[0] ~ '.' }}</h1><p>{{ 'Así te reconoceremos cuando consultes por tu café.' if not current_user.profile_completed else 'Tu próxima pausa empieza aquí.' }}</p></div></header>
+<div class="customer-profile-grid"><section class="customer-profile-card"><h2>Mi perfil</h2><p>Estos datos se usan en ZERO DAY. Tu cuenta de Google no cambia.</p>
+<form method="post"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><label for="preferred-name">¿Cómo prefieres que te llamemos?</label><input id="preferred-name" name="name" autocomplete="given-name" value="{{ values.name }}" maxlength="80" required>
+<label for="profile-email">Correo de tu cuenta</label><input id="profile-email" type="email" value="{{ current_user.email }}" readonly>
+<label for="profile-whatsapp">WhatsApp <span>Opcional</span></label><input id="profile-whatsapp" name="whatsapp" type="tel" autocomplete="tel" value="{{ values.whatsapp }}" placeholder="+593 98 123 4567" maxlength="30" aria-describedby="phone-help"><small id="phone-help">Para contactarte sobre tus consultas. Puedes dejarlo vacío.</small>
+<div class="customer-save"><button class="profile-save" type="submit">{{ 'Guardar y continuar' if not current_user.profile_completed else 'Guardar cambios' }}</button>{% if current_user.profile_completed %}<a href="{{ url_for('main.account_preview') }}">Cancelar</a>{% else %}<button type="submit" name="action" value="skip" formnovalidate class="profile-skip">Ahora no</button>{% endif %}</div></form></section>
+<aside class="customer-shortcuts"><a href="{{ url_for('cafe.cart') }}"><span>Tu selección</span><h2>Mi carrito <span aria-hidden="true">↗</span></h2><p>Retoma lo que te apetece.</p></a><a href="{{ url_for('inquiries.redemptions') }}"><span>Tus beneficios</span><h2>Mis canjes <span aria-hidden="true">↗</span></h2><p>Consulta tus cupones y comprobantes.</p></a></aside></div>
+<footer class="customer-profile-footer">{% if current_user.role in ['admin', 'staff'] %}<a href="{{ url_for('main.admin_preview') }}">Administrar ZERO DAY ↗</a>{% endif %}<form method="post" action="{{ url_for('main.logout') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button type="submit">Cerrar sesión</button></form></footer>
 </main>
 {% endblock %}
+{% block extra_scripts %}<script src="{{ url_for('static', filename='js/profile.js') }}" defer></script>{% endblock %}

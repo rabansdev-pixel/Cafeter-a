@@ -1,0 +1,21 @@
+.shop-personalize { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; padding-top:12px; }
+.shop-personalize small { font-size:12px; color:var(--muted); }
+.shop-personalize a { font-size:13px; text-underline-offset:4px; }
+.shop-customizer { width:min(520px,calc(100% - 32px)); max-height:85dvh; margin:auto; padding:26px; border:1px solid #8884; border-radius:18px; background:#20231f; color:#f3f0e7; overflow:auto; }
+html[data-home-theme='light'] .shop-customizer { background:#faf8f1; color:#24251f; }
+.shop-customizer::backdrop { background:#0008; }
+.shop-customizer h2 { font-size:26px; line-height:1.3; margin:16px 0; }
+.shop-customizer .product-order { display:block; }
+.shop-customizer .product-option-group { border:0; border-top:1px solid #8884; padding:18px 0; margin:0; }
+.shop-customizer .choice-row { display:flex; align-items:center; gap:10px; min-height:44px; font-size:14px; }
+.shop-customizer .choice-price { margin-left:auto; }
+.shop-customizer legend { font-size:16px; }
+.shop-customizer legend span { font-size:12px; opacity:.65; }
+.shop-customizer .product-order-actions { display:flex; flex-wrap:wrap; gap:14px; align-items:end; margin-top:18px; }
+.shop-customizer .quantity-label { display:grid; gap:8px; font-size:13px; }
+.shop-customizer input[type=number] { width:72px; padding:12px; color:inherit; background:transparent; border:1px solid #8886; border-radius:8px; }
+.shop-customizer .editorial-submit { padding:14px 20px; border:1px solid #8884; border-radius:8px; background:#f3f0e7; color:#24251f; cursor:pointer; }
+html[data-home-theme='light'] .shop-customizer .editorial-submit { background:#24251f; color:#faf8f1; }
+.shop-customizer-close { display:block; margin-left:auto; min-height:44px; padding:8px; border:0; color:inherit; background:transparent; cursor:pointer; }
+.shop-customizer-price { font-size:18px; }
+@media(max-width:767px) { .shop-customizer { width:100%; max-width:100%; max-height:90dvh; margin:auto 0 0; border-radius:20px 20px 0 0; padding:22px 20px max(24px,env(safe-area-inset-bottom)); box-sizing:border-box; } }
