@@ -33,11 +33,11 @@
     {% if request.endpoint == 'main.home' %}<link rel="stylesheet" href="{{ url_for('static', filename='css/home-finish.css', v='3') }}">{% endif %}
     {% if request.endpoint in ['main.home', 'cafe.experience'] %}<link rel="stylesheet" href="{{ url_for('static', filename='css/experience.css', v='4') }}">{% endif %}
     {% if request.endpoint == 'cafe.visit' %}<link rel="stylesheet" href="{{ url_for('static', filename='css/visit.css', v='2') }}">{% endif %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/mobile-nav.css', v='minimal-1') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/mobile-nav.css', v='profile-mobile-1') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/cart-refinement.css', v='4') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/coupons.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/shop-customizer.css', v='1') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css', v='2') }}">
 <script src="{{ url_for('static', filename='js/profile.js') }}" defer></script>
 </head>
 <body class="{% block body_class %}{% endblock %}">
@@ -51,7 +51,7 @@
     <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 15.5A9 9 0 0 1 8.5 4 9 9 0 1 0 20 15.5Z"/></svg>
     <span id="home-theme-description" class="theme-tooltip" data-theme-label>Cambiar a tema claro</span>
 </button>
-{% if current_user %}<details class="account-profile"><summary class="header-account" aria-label="Cuenta de {{ current_user.name }}"><span class="profile-avatar"><span class="profile-initial">{{ current_user.name[:1]|upper }}</span>{% if session.get('profile_photo') %}<img src="{{ session.profile_photo }}" alt="" referrerpolicy="no-referrer" data-profile-photo>{% endif %}</span><span class="profile-name">{{ current_user.name.split()[0] if current_user.name.split() else 'Mi cuenta' }}</span></summary><div class="profile-links"><a href="{{ url_for('main.account_preview') }}">Mi cuenta</a><a href="{{ url_for('inquiries.redemptions') }}">Mis canjes</a><form method="post" action="{{ url_for('main.logout') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button>Cerrar sesión</button></form></div></details>{% else %}<a class="header-account" href="{{ url_for('main.account_preview' if current_user else 'main.login') }}" aria-label="{{ 'Mi cuenta' if current_user else 'Iniciar sesión' }}">
+{% if current_user %}<details class="account-profile"><summary class="header-account" aria-label="Cuenta de {{ current_user.name }}"><span class="profile-avatar"><span class="profile-initial">{{ current_user.name[:1]|upper }}</span>{% if session.get('profile_photo') %}<img src="{{ session.profile_photo }}" alt="" referrerpolicy="no-referrer" data-profile-photo>{% endif %}</span><span class="profile-name">{{ current_user.name or 'Mi cuenta' }}</span></summary><div class="profile-links"><a href="{{ url_for('main.account_preview') }}">Mi cuenta</a><a href="{{ url_for('inquiries.redemptions') }}">Mis canjes</a><form method="post" action="{{ url_for('main.logout') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button>Cerrar sesión</button></form></div></details>{% else %}<a class="header-account" href="{{ url_for('main.account_preview' if current_user else 'main.login') }}" aria-label="{{ 'Mi cuenta' if current_user else 'Iniciar sesión' }}">
     <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 21v-2a7 7 0 0 1 14 0v2"/></svg>
     <span>{{ 'Mi cuenta' if current_user else 'Iniciar sesión' }}</span>
 </a>{% endif %}
