@@ -55,7 +55,7 @@ def verify(token):
                 break
         if not referer and clean_hosts:
             first = next(iter(clean_hosts))
-            referer = f'http://{first}/' if first in ('localhost', '127.0.0.1') else f'https://{first}/'
+            referer = f'https://{first}/'
 
     body = json.dumps({'event': {'token': token, 'siteKey': site_key}}).encode()
     url = f'https://recaptchaenterprise.googleapis.com/v1/projects/{project}/assessments?key={api_key}'

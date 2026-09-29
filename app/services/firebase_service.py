@@ -235,11 +235,11 @@ def session_valid(user):
             account = account_record(token, user.firebase_uid, record.authenticated_at.timestamp())
             if account.get('email', '').strip().lower() != user.email:
                 return False
-        except (InvalidToken, ValueError, KeyError, TypeError):
-            return False
         except FirebaseError as error:
             if error.status == 503:
                 raise
+            return False
+        except (InvalidToken, ValueError, KeyError, TypeError):
             return False
         record.checked_at = timestamp
         db.session.commit()
