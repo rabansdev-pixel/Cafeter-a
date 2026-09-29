@@ -55,7 +55,7 @@ endblock %}
                     <div class="password-field">
                         <input name="password" required maxlength="256" id="access-password" type="password"
                             {% if mode == 'register' %}minlength="12" aria-describedby="password-guidance"{% endif %}
-                            autocomplete="{{ 'new-password' if mode == 'register' else 'current-password' }}"
+                            {% if mode == 'register' %}autocomplete="new-password"{% else %}autocomplete="current-password"{% endif %}
                             placeholder="Tu contraseña">
                         <button class="password-toggle" type="button" aria-label="Mostrar contraseña" aria-controls="access-password" aria-pressed="false" hidden>
                             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/><path class="password-eye-slash" d="m3 3 18 18" hidden/></svg>
