@@ -43,7 +43,7 @@ function initVideo(video) {
         update();
     }
     button?.addEventListener('click', () => {
-        if (video.paused) { pausedByUser = false; play(true); }
+        if (video.paused) { pausedByUser = false; void play(true); }
         else { pausedByUser = true; video.pause(); update(); }
     });
     video.addEventListener('playing', update);
@@ -51,7 +51,7 @@ function initVideo(video) {
     video.addEventListener('error', () => { failed = true; video.pause(); video.classList.remove('is-playing'); if (button) button.hidden = true; });
     const configure = () => {
         if (constrained() || document.hidden) { video.pause(); update(); }
-        else play();
+        else void play();
     };
     reduced.addEventListener('change', configure);
     connection?.addEventListener?.('change', configure);
@@ -59,12 +59,12 @@ function initVideo(video) {
     if (window.IntersectionObserver) {
         const observer = new IntersectionObserver(entries => {
             visible = entries[0].isIntersecting;
-            if (visible) play(); else { video.pause(); update(); }
+            if (visible) void play(); else { video.pause(); update(); }
         }, { threshold: .1 });
         observer.observe(video);
         window.addEventListener('pagehide', () => observer.disconnect(), { once: true });
         window.addEventListener('pageshow', event => { if (event.persisted) { destroyed = false; observer.observe(video); configure(); } });
-    } else play();
+    } else void play();
     window.addEventListener('pagehide', () => { destroyed = true; video.pause(); });
     update();
 }

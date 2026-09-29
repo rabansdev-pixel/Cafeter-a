@@ -199,3 +199,17 @@ test('category navigation follows visible sections only', async t => {
     await s.start(); notify(); assert.equal(s.doc.querySelector('[href="#b"]').getAttribute('aria-current'), 'location');
     s.doc.querySelector('#b').hidden = true; notify(); assert.equal(s.doc.querySelector('[href="#a"]').getAttribute('aria-current'), 'location');
 });
+
+test('WhatsApp popup errors show feedback and allow retrying the inquiry', async t => {
+    const s = await setup(t, cart, [line()]);
+    await s.start();
+    t.mock.method(window, 'open', () => { throw new Error('No se pudo abrir la ventana'); });
+    await s.click('[data-cart-whatsapp]');
+    assert.match(s.doc.querySelector('[data-cart-feedback]').textContent, /No se pudo abrir la ventana/);
+    assert.equal(s.calls.filter(call => call.url === '/api/inquiries').length, 0);
+    t.mock.method(window, 'open', () => null);
+    s.api.handle = async () => reply({ url: 'https://wa.me/123', reference: 'TEST' });
+    await s.click('[data-cart-whatsapp]');
+    assert.equal(s.calls.filter(call => call.url === '/api/inquiries').length, 1);
+    assert.equal(s.doc.querySelector('[data-cart-feedback] a').href, 'https://wa.me/123');
+});
