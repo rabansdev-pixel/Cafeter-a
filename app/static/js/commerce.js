@@ -151,10 +151,15 @@ function initCart() {
             const response = await fetch('/api/inquiries', {method:'POST', headers:{'Content-Type':'application/json','X-CSRFToken':document.querySelector('meta[name="csrf-token"]').content}, body:JSON.stringify(redemption ? {redemption} : {items:cartStore.get()})});
             const data = await response.json();
             if (!response.ok) throw new Error(data.message || 'No pudimos guardar la consulta.');
-            if (tab) tab.location.replace(data.url);
+            const destination = new URL(data.url);
+            if (destination.origin !== 'https://wa.me' || destination.username || destination.password || !/^\/[0-9]+$/.test(destination.pathname)) {
+                throw new Error('El enlace de WhatsApp no es válido.');
+            }
+            const safeUrl = 'https://wa.me' + destination.pathname + destination.search;
+            if (tab) tab.location.replace(safeUrl);
             else {
                 const link = el('a', 'cafe-link', 'Abrir WhatsApp · ' + data.reference);
-                link.href = data.url; link.target = '_blank'; link.rel = 'noopener noreferrer';
+                link.href = safeUrl; link.target = '_blank'; link.rel = 'noopener noreferrer';
                 feedback.replaceChildren(link);
             }
         } catch (error) { tab?.close(); feedback.textContent = errorText(error); }

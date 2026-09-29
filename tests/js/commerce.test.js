@@ -213,3 +213,23 @@ test('WhatsApp popup errors show feedback and allow retrying the inquiry', async
     assert.equal(s.calls.filter(call => call.url === '/api/inquiries').length, 1);
     assert.equal(s.doc.querySelector('[data-cart-feedback] a').href, 'https://wa.me/123');
 });
+
+for (const popup of [true, false]) test(`inquiry rejects unsafe redirect URLs (popup=${popup})`, async t => {
+    const s = await setup(t, cart, [line()]);
+    await s.start();
+    let navigations = 0, closed = 0;
+    t.mock.method(window, 'open', () => popup ? { close() { closed++; }, location: { replace() { navigations++; } } } : null);
+    for (const url of ['javascript:alert(1)', 'https://wa.me.evil.example/123', 'https://wa.me@evil.example/123', 'http://wa.me/123', 'https://user:secret@wa.me/123', 'https://wa.me/redirect', '//evil.example/123', 'invalid']) {
+        s.api.handle = async () => reply({ url });
+        await s.click('[data-cart-whatsapp]');
+        assert.equal(navigations, 0);
+        assert.equal(s.doc.querySelector('[data-cart-feedback] a'), null);
+        assert.ok(s.doc.querySelector('[data-cart-feedback]').textContent);
+    }
+    if (popup) assert.equal(closed, 8);
+    let destination;
+    t.mock.method(window, 'open', () => popup ? { location: { replace(url) { destination = url; } } } : null);
+    s.api.handle = async () => reply({ url: 'https://wa.me/593988357638?text=Hola%20caf%C3%A9', reference: 'TEST' });
+    await s.click('[data-cart-whatsapp]');
+    assert.equal(popup ? destination : s.doc.querySelector('[data-cart-feedback] a').href, 'https://wa.me/593988357638?text=Hola%20caf%C3%A9');
+});
