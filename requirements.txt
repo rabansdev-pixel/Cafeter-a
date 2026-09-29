@@ -23,6 +23,6 @@ Flask-Migrate==4.1.0
 
 Pillow==12.3.0
 
-cryptography==49.0.0
+cryptography==50.0.1
 google-auth[requests]==2.58.1
 CacheControl==0.14.4

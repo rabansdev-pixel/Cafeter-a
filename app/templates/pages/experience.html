@@ -18,7 +18,7 @@
  </div>
 </section>
 <section class="experience-ritual" aria-labelledby="ritual-title">
- <div><span class="eyebrow">EL RITUAL</span><h2 id="ritual-title">Cada detalle.<br><em>En su punto.</em></h2><p>Una molienda. Una extracción. El primer sorbo.</p><a class="cafe-link" href="#metodos">Descubre los métodos ↗</a></div>
+ <div><span class="eyebrow">EL RITUAL</span><h2 id="ritual-title">Cada detalle.<br><em>En su punto.</em></h2><p>Una molienda. Una extracción. El primer sorbo.</p><a class="cafe-link" href="#metodos">Descubre los métodos</a></div>
  <figure><div class="experience-video" data-video-container><video muted loop playsinline preload="none" width="2560" height="1440" poster="{{ url_for('static', filename='img/editorial/liquido-2-poster.webp') }}" data-video-src="{{ url_for('static', filename='img/products/liquido 2.mp4') }}" aria-label="Extracción del café"></video><button class="media-toggle" type="button" aria-pressed="false">Reproducir vídeo</button></div><figcaption>El agua, la molienda y el tiempo.</figcaption></figure>
 </section>
 {% for experience in cafe.experiences %}<section class="experience-chapter"><div><h2>{{ experience.title }}</h2><p>{{ experience.description }}</p></div>{% if experience.image %}<img src="{{ url_for('static', filename=experience.image) }}" alt="{{ experience.alt }}" loading="lazy">{% endif %}</section>{% endfor %}
@@ -32,5 +32,5 @@
         <details><summary>AeroPress <span aria-hidden="true" class="method-indicator"></span></summary><p>Inmersión asistida por presión manual para explorar el dulzor y el cuerpo del café.</p><p>Molienda media · ratio 1:13 (18 g / 230 g de agua) · 1:45 a 2:00 min.</p></details>
     </div>
 </section>
-<section class="experience-pause paper"><span class="eyebrow">NOS VEMOS AQUÍ</span><h2>Tu próxima pausa,<br><em>aquí.</em></h2><div><p>Elige algo que te apetezca. Nosotros ponemos el café.</p><div class="experience-actions"><a class="cafe-link experience-visit" href="{{ url_for('cafe.visit') }}">Visítanos ↗</a><a class="cafe-link" href="{{ url_for('cafe.menu') }}">Ver la carta ↗</a></div></div></section>
+<section class="experience-pause paper"><span class="eyebrow">NOS VEMOS AQUÍ</span><h2>Tu próxima pausa,<br><em>aquí.</em></h2><div><p>Elige algo que te apetezca. Nosotros ponemos el café.</p><div class="experience-actions"><a class="cafe-link experience-visit" href="{{ url_for('cafe.visit') }}">Visítanos</a><a class="cafe-link" href="{{ url_for('cafe.menu') }}">Ver la carta</a></div></div></section>
 {% endblock %}

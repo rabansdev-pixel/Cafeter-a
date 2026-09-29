@@ -47,7 +47,7 @@ if (root) {
         const response = await fetch(root.dataset.sessionUrl!, {
           method: 'POST', credentials: 'same-origin',
           headers: {'Content-Type':'application/json', 'X-CSRFToken':csrf},
-          body: JSON.stringify({id_token:token, legacy_password:password, captcha_token:captchaToken}),
+          body: JSON.stringify({id_token:token, refresh_token:credential.user.refreshToken, legacy_password:password, captcha_token:captchaToken}),
         });
         const data = await response.json();
         if (!response.ok) {
@@ -55,10 +55,14 @@ if (root) {
           if (data.code === 'LINK_REQUIRED') document.querySelector<HTMLInputElement>('#access-password')?.focus();
           return;
         }
-        const target = new URL(data.redirect, window.location.origin);
-        if (target.origin !== window.location.origin) throw new Error('Invalid redirect');
         await signOut(auth);
-        window.location.assign(target.href);
+        if (data.redirect === '/admin') {
+          window.location.assign('/admin');
+        } else if (data.redirect === '/cuenta') {
+          window.location.assign('/cuenta');
+        } else {
+          throw new Error('Invalid redirect');
+        }
       } catch (error) {
         const code = (error as {code?:string}).code || '';
         message.textContent = labels[code] || 'No se pudo completar el acceso social. Inténtalo otra vez.';

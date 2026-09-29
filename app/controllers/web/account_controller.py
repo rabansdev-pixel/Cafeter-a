@@ -214,7 +214,7 @@ def firebase_session():
         return jsonify(message='Demasiados intentos. Espera 15 minutos.'), 429
     try:
         verify_captcha(data.get('captcha_token'))
-        user = firebase.establish_session(data.get('id_token'), password)
+        user = firebase.establish_session(data.get('id_token'), password, refresh_token=data.get('refresh_token'))
         target = 'main.admin_preview' if user.role in ('admin', 'staff') else 'main.account_preview'
         return jsonify(redirect=url_for(target))
     except firebase.FirebaseError as error:

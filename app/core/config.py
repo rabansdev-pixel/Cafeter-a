@@ -18,7 +18,7 @@ class BaseConfig:
 
     SESSION_COOKIE_HTTPONLY = True
     SESSION_COOKIE_SAMESITE = "Lax"
-    PERMANENT_SESSION_LIFETIME = timedelta(hours=12)
+    PERMANENT_SESSION_LIFETIME = timedelta(days=7)
     MAX_CONTENT_LENGTH = 9 * 1024 * 1024
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     STATIC_FOLDER = str(BASE_DIR / "app" / "static")

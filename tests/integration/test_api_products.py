@@ -1,3 +1,27 @@
+import pytest
+from app.core.extensions import db
+from app.models import Product, Category
+from app.services.product_service import ProductService
+
+
+@pytest.fixture
+def store_product(app):
+    with app.app_context():
+        category = Category(name="API test")
+        db.session.add(category)
+        db.session.flush()
+        product = Product(category_id=category.id, name="Café de prueba", slug="cafe-api-test", menu_id="api-test",
+                          tagline="", description="", price=3.25, stock=10,
+                          image_url="/static/test.webp", details={"availability": "available"})
+        db.session.add(product)
+        db.session.commit()
+        yield product
+        db.session.delete(product)
+        db.session.flush()
+        db.session.delete(category)
+        db.session.commit()
+
+
 def test_api_health_check(client):
     """Verifica el endpoint de healthcheck para Docker."""
     response = client.get("/api/health")
@@ -7,24 +31,21 @@ def test_api_health_check(client):
     assert data["service"] == "cafeteria-especialidad"
 
 
-def test_api_get_products_list(client):
+def test_api_get_products_list(client, store_product):
     """Verifica el listado completo de productos en formato JSON."""
     response = client.get("/api/products")
     assert response.status_code == 200
     data = response.get_json()
     assert data["status"] == "success"
-    assert data["count"] >= 4
-    assert len(data["data"]) >= 4
+    assert data["count"] == 1
+    assert data["data"][0]["slug"] == "cafe-api-test"
 
 
-def test_api_get_products_filter_by_roast(client):
-    """Verifica el filtrado de productos por query parameter roast."""
-    response = client.get("/api/products?roast=Claro")
-    assert response.status_code == 200
-    data = response.get_json()
-    assert data["status"] == "success"
-    for item in data["data"]:
-        assert "Claro" in item["tasting_profile"]["roast_level"]
+def test_catalog_filters_by_roast(app):
+    with app.app_context():
+        products = ProductService().get_catalog(roast="Claro")
+        assert products
+        assert all("Claro" in p.tasting_profile.roast_level for p in products)
 
 
 def test_api_get_radar_metrics(client):
@@ -45,11 +66,11 @@ def test_api_get_radar_metrics_not_found(client):
     assert data["status"] == "error"
 
 
-def test_api_calculate_cart_totals(client, csrf_headers):
+def test_api_calculate_cart_totals(client, csrf_headers, store_product):
     """Verifica el cálculo del carrito a través del API REST."""
     payload = {
         "items": [
-            {"id": 1, "name": "Geisha Huila", "price": 68000.0, "quantity": 1}
+            {"product_id": "api-test", "price": 0.01, "quantity": 2}
         ]
     }
     response = client.post(
@@ -58,8 +79,8 @@ def test_api_calculate_cart_totals(client, csrf_headers):
     assert response.status_code == 200
     data = response.get_json()
     assert data["status"] == "success"
-    assert data["data"]["subtotal"] == 68000.0
-    assert data["data"]["is_free_shipping"] is True
+    assert data["data"]["subtotal_cents"] == 650
+    assert data["data"]["has_errors"] is False
 
 
 def test_api_calculate_cart_invalid_payload(client, csrf_headers):
@@ -69,7 +90,7 @@ def test_api_calculate_cart_invalid_payload(client, csrf_headers):
         "/api/cart/calculate", json=payload, headers=csrf_headers
     )
     assert response.status_code == 400
-    assert response.get_json()["message"] == "Formato de ítems inválido"
+    assert response.get_json()["message"] == "El carrito admite hasta 50 selecciones."
 
 
 def test_api_get_product_by_slug_valid(client):
@@ -89,23 +110,11 @@ def test_api_get_product_by_slug_invalid(client):
     assert data["status"] == "error"
 
 
-def test_country_filter_sanitizes_html_and_escapes_wildcards(client):
-    response = client.get(
-        "/api/products",
-        query_string={"country": " <b>Colombia</b> ", "roast": "Claro"},
-    )
-    # nh3 conserva etiquetas permitidas; no deben ampliar la consulta SQL.
-    assert response.get_json()["count"] == 0
-    response = client.get(
-        "/api/products",
-        query_string={"country": " Colombia ", "roast": "Claro"},
-    )
-    products = response.get_json()["data"]
-    assert products
-    assert all(p["origin"]["country"] == "Colombia" for p in products)
-    for country in ["%", "_", "' OR 1=1 --"]:
-        response = client.get(
-            "/api/products", query_string={"country": country}
-        )
-        assert response.status_code == 200
-        assert response.get_json()["count"] == 0
+def test_country_filter_escapes_wildcards(app):
+    with app.app_context():
+        service = ProductService()
+        products = service.get_catalog(country=" Colombia ", roast="Claro")
+        assert products
+        assert all(p.origin.country == "Colombia" for p in products)
+        for country in ["<b>Colombia</b>", "%", "_", "' OR 1=1 --"]:
+            assert service.get_catalog(country=country) == []

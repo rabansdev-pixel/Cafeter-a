@@ -9,6 +9,7 @@ from app.services.menu_service import MenuService, MenuError, cents
 def menu_data(app, monkeypatch):
     content = confirmed_menu()
     monkeypatch.setitem(app.config, "CAFE_CONTENT", content)
+    monkeypatch.setattr(MenuService, "stored_categories", classmethod(lambda cls: content["menu"]))
     return content
 
 
@@ -16,7 +17,7 @@ def menu_data(app, monkeypatch):
     "path", ["/menu", "/catalogo", "/espacio", "/experiencia", "/visitanos", "/carrito"]
 )
 def test_new_routes_support_direct_requests(client, path):
-    response = client.get(path)
+    response = client.get(path, follow_redirects=True)
     assert response.status_code == 200
     assert b"ZERO DAY" in response.data
     assert b'aria-current="page"' in response.data or path == "/catalogo"

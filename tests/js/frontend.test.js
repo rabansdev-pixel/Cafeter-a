@@ -227,6 +227,9 @@ test('cart traps keyboard focus, closes with Escape and restores the trigger', a
 test('mobile menu exposes expanded state, closes on Escape and link navigation', async t => {
     const { initNavigation } = await import('../../app/static/js/modules/navigation.js');
     const doc = setup(t, '<header class="site-header"><button class="menu-toggle" aria-expanded="false">Menú</button><a href="/">Inicio</a></header>');
+    const previousMedia = Object.getOwnPropertyDescriptor(globalThis, 'matchMedia');
+    Object.defineProperty(globalThis, 'matchMedia', { configurable: true, value: () => ({ matches: true, addEventListener() {} }) });
+    t.after(() => previousMedia ? Object.defineProperty(globalThis, 'matchMedia', previousMedia) : delete globalThis.matchMedia);
     initNavigation();
     const toggle = doc.querySelector('button');
     toggle.click();
