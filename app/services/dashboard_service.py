@@ -16,9 +16,19 @@ def dashboard_data(section, products):
         dict(label='Clientes registrados' if admin else 'Categorías', value=User.query.filter_by(role='customer', active=True).count() if admin else categories,
              note='Cuentas de clientes activas' if admin else 'Categorías de la carta', icon='users' if admin else 'categories', section='users' if admin else 'categories'),
     ]
-    labels = {'product.create':'Producto creado', 'product.update':'Producto actualizado', 'product.deactivate':'Producto desactivado',
-              'user.register':'Cuenta creada', 'user.firebase_link':'Cuenta vinculada a Firebase', 'user.permissions':'Permisos actualizados', 'menu.seed':'Carta importada',
-              'user.create_admin':'Administrador creado', 'user.password_reset_cli':'Contraseña restablecida', 'product.preserve_image':'Fotografía actualizada'}
+    # Audit event identifiers and display labels, never credential values.
+    labels = dict([
+        ('product.create', 'Producto creado'),
+        ('product.update', 'Producto actualizado'),
+        ('product.deactivate', 'Producto desactivado'),
+        ('user.register', 'Cuenta creada'),
+        ('user.firebase_link', 'Cuenta vinculada a Firebase'),
+        ('user.permissions', 'Permisos actualizados'),
+        ('menu.seed', 'Carta importada'),
+        ('user.create_admin', 'Administrador creado'),
+        ('user.password_reset_cli', 'Contraseña restablecida'),
+        ('product.preserve_image', 'Fotografía actualizada'),
+    ])
     activity = []
     if admin:
         for event in AuditLog.query.order_by(AuditLog.id.desc()).limit(6):

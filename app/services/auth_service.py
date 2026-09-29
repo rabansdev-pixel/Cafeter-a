@@ -2,7 +2,6 @@
 from datetime import timedelta
 from functools import wraps
 from hashlib import sha256
-import re
 from flask import abort, g, has_request_context, jsonify, redirect, request, session, url_for
 from sqlalchemy.dialects.postgresql import insert
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -77,7 +76,10 @@ def identity_fields(data, registration=True):
     email = str(data.get('email', '')).strip().lower()
     password = data.get('password', '')
     name = str(data.get('name', '')).strip()
-    if len(email) > 254 or not re.fullmatch(r'[^\s@]+@[^\s@]+\.[^\s@]+', email):
+    local, separator, domain = email.partition('@')
+    if (len(email) > 254 or not local or not separator or '@' in domain
+            or any(character.isspace() for character in email)
+            or domain.find('.', 1, len(domain) - 1) == -1):
         raise ValueError('Introduce un correo válido.')
     if not isinstance(password, str) or len(password) > 256 or (registration and len(password) < 12):
         raise ValueError('Usa una contraseña de 12 a 256 caracteres.')
