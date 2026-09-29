@@ -12,6 +12,13 @@ export function initHomeAnimations() {
     const story = document.querySelector('.coffee-story');
     const chapters = [...document.querySelectorAll('.story-chapter')];
     const reveals = [...document.querySelectorAll('[data-reveal]')];
+    const revealsByParent = new Map();
+    reveals.forEach(element => {
+        const parent = element.parentElement;
+        if (!parent) return;
+        if (!revealsByParent.has(parent)) revealsByParent.set(parent, []);
+        revealsByParent.get(parent).push(element);
+    });
     let observer;
     let frame = 0;
     let chapterIndex = -1;
@@ -75,15 +82,15 @@ export function initHomeAnimations() {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         // Observe the unclipped parent, not the masked element.
-                        reveals.filter(element => element.parentElement === entry.target)
+                        (revealsByParent.get(entry.target) || [])
                             .forEach(element => element.classList.add('is-revealed'));
                         observer.unobserve(entry.target);
                     }
                 });
             }, { threshold: .12 });
-            reveals.forEach(element => {
-                element.classList.add('reveal-ready');
-                observer.observe(element.parentElement);
+            revealsByParent.forEach((elements, parent) => {
+                elements.forEach(element => element.classList.add('reveal-ready'));
+                observer.observe(parent);
             });
         }
         schedule();
