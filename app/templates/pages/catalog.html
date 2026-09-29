@@ -40,9 +40,9 @@
             %}</div><button class="object-next" type="button" aria-label="Objeto siguiente">→</button>
     </div>
     <p class="exhibition-note">{% if request.endpoint == 'main.home' %}<a
-            href="{{ url_for('catalog.catalog') }}">Explorar la selección ↗</a>{% else %}Una mirada editorial al café y
+            href="{{ url_for('catalog.catalog') }}">Explorar la selección</a>{% else %}Una mirada editorial al café y
         su diseño.{% endif %} <a href="{{ url_for('static', filename='models/credits.html') }}">Conoce a los autores
-            ↗</a></p>
+</a></p>
 </section>
 
 
@@ -52,7 +52,7 @@
         <h2>Todo empieza<br>con <em>un grano.</em></h2>
         <p>La máquina, el filtro y la taza son herramientas. Lo interesante sucede cuando el agua se encuentra con el
             café y aparece una nueva manera de disfrutarlo.</p><a class="cafe-link"
-            href="{{ url_for('cafe.menu') }}">Encuentra tu próxima taza ↗</a>
+            href="{{ url_for('cafe.menu') }}">Encuentra tu próxima taza</a>
     </div>
 </section>
 <section class="cafe-section paper reading-section" id="origen" aria-labelledby="origin-title">
@@ -77,11 +77,11 @@
                 completan la ficha y ayudan a explorar lo que percibimos en la taza.</p>
         </details>
     </div>
-    <a class="cafe-link" href="{{ url_for('cafe.experience', _anchor='metodos') }}">Del origen a la preparación ↗</a>
+    <a class="cafe-link" href="{{ url_for('cafe.experience', _anchor='metodos') }}">Del origen a la preparación</a>
 </section>
 <section class="catalog-closing"><span class="eyebrow">LA FORMA / EL RITUAL</span>
     <h2>Lo cotidiano,<br><em>mirado de cerca.</em></h2>
     <p>La cerámica, el papel, una máquina. Objetos con identidad propia que dan forma a nuestra mirada sobre el café.
-    </p><a class="cafe-link" href="{{ url_for('cafe.experience') }}">Conoce la experiencia ↗</a>
+    </p><a class="cafe-link" href="{{ url_for('cafe.experience') }}">Conoce la experiencia</a>
 </section>
 {% endblock %}

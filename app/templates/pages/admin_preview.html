@@ -6,7 +6,7 @@
 <div class="admin-shell">
     <aside class="admin-sidebar" id="admin-sidebar-root" data-dashboard="{{ dashboard|tojson|forceescape }}"><div class="workspace-name"><span class="workspace-mark">ZD</span><div>ZERO DAY<small>Administración</small></div></div>
         <nav aria-label="Administración">{% for key,label in sections %}{% if current_user.role == 'admin' or key not in ['users','activity'] %}<a href="{{ url_for('main.admin_preview', section=key) }}" {% if section == key %}aria-current="page"{% endif %}>{{ label }}</a>{% endif %}{% endfor %}</nav>
-        <div class="sidebar-note"><p>{{ current_user.name }}</p><a href="{{ url_for('main.account_preview') }}">Mi cuenta ↗</a><form method="post" action="{{ url_for('main.logout') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="account-button" type="submit">Cerrar sesión</button></form></div>
+        <div class="sidebar-note"><p>{{ current_user.name }}</p><a href="{{ url_for('main.account_preview') }}">Mi cuenta</a><form method="post" action="{{ url_for('main.logout') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="account-button" type="submit">Cerrar sesión</button></form></div>
     </aside>
     <main class="admin-main" id="account-main" tabindex="-1">
         <div class="admin-heading"><div><p class="section-label">ZERO DAY / Administración</p><h1>{{ dict(sections)[section] }}</h1></div></div>

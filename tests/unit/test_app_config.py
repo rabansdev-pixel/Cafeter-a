@@ -1,7 +1,6 @@
 import pytest
 
 from app import create_app
-from app.core.config import DevelopmentConfig, ProductionConfig
 from app.core.extensions import db
 from app.models.product import Product
 from app.services.product_service import ProductService
@@ -18,26 +17,27 @@ def test_production_workers_share_configured_secret(monkeypatch):
 
     secret = secrets.token_hex(32)
     monkeypatch.setenv("SECRET_KEY", secret)
-    monkeypatch.setattr(
-        ProductionConfig, "SQLALCHEMY_DATABASE_URI", "sqlite:///:memory:"
-    )
     first = create_app("production")
     second = create_app("production")
     assert first.secret_key == second.secret_key == secret
     assert "csrf" in first.extensions
 
 
-def test_default_factory_seeds_database_once(monkeypatch):
+def test_default_factory_does_not_seed_database(monkeypatch):
+    # Startup must not mutate the real catalog or require a seed on every worker.
     monkeypatch.delenv("APP_ENV", raising=False)
-    monkeypatch.setattr(
-        DevelopmentConfig, "SQLALCHEMY_DATABASE_URI", "sqlite:///:memory:"
-    )
+    calls = []
+    monkeypatch.setattr(ProductService, "seed_initial_data", lambda self: calls.append(True))
     app = create_app()
+    assert not calls
+    assert app.config['ENV'] == 'development'
+
+
+def test_seed_is_idempotent(app):
     with app.app_context():
-        initial = [p.slug for p in Product.query.all()]
-        assert len(initial) == 4
+        initial = [p.slug for p in Product.query.order_by(Product.id).all()]
         ProductService().seed_initial_data()
-        assert [p.slug for p in Product.query.all()] == initial
+        assert [p.slug for p in Product.query.order_by(Product.id).all()] == initial
 
 
 def test_internal_error_rolls_back_and_renders_page(monkeypatch):

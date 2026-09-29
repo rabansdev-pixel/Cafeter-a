@@ -158,15 +158,42 @@ def bind_user(profile, legacy_password='', name=''):
     return user
 
 
-def establish_session(token, legacy_password='', name=''):
+def refresh_credentials(refresh_token, uid):
+    if not isinstance(refresh_token, str) or not 1 <= len(refresh_token) <= 16384:
+        raise FirebaseError('Vuelve a iniciar sesión.', status=401)
+    query = urlencode({'key': current_app.config['FIREBASE_API_KEY']})
+    req = Request(f'https://securetoken.googleapis.com/v1/token?{query}',
+        data=urlencode({'grant_type':'refresh_token', 'refresh_token':refresh_token}).encode(),
+        headers={'Content-Type':'application/x-www-form-urlencoded'})
+    try:
+        with urlopen(req, timeout=12) as response:
+            result = json.load(response)
+    except HTTPError as error:
+        raise FirebaseError('No se pudo renovar la sesión.', status=503 if error.code >= 500 or error.code == 429 else 401) from None
+    except (URLError, TimeoutError, OSError, ValueError):
+        raise FirebaseError('No se pudo conectar con Firebase.', status=503) from None
+    if not isinstance(result, dict):
+        raise FirebaseError('Respuesta de Firebase inválida.', status=503)
+    profile = identity(result.get('id_token'), fresh=False)
+    if profile['uid'] != uid:
+        raise FirebaseError('Sesión inválida.', status=401)
+    return result['id_token'], result.get('refresh_token') or refresh_token, profile
+
+
+def establish_session(token, legacy_password='', name='', refresh_token=None):
     profile = identity(token)
+    if refresh_token:
+        token, refresh_token, refreshed = refresh_credentials(refresh_token, profile['uid'])
+        if refreshed['auth_time'] != profile['auth_time']:
+            raise FirebaseError('Vuelve a iniciar sesión.', status=401)
+        profile = refreshed
     user = bind_user(profile, legacy_password, name)
     timestamp = now()
     expiry = datetime.fromtimestamp(profile['expires'], timezone.utc)
     record = FirebaseSession(user_id=user.id, user_version=user.session_version,
-        encrypted_tokens=_cipher().encrypt(token.encode()).decode(),
+        encrypted_tokens=_cipher().encrypt(json.dumps({'id_token':token, 'refresh_token':refresh_token}).encode()).decode(),
         authenticated_at=datetime.fromtimestamp(profile['auth_time'], timezone.utc),
-        token_expires_at=expiry, expires_at=min(expiry, timestamp + timedelta(hours=1)), checked_at=timestamp)
+        token_expires_at=expiry, expires_at=timestamp + timedelta(days=7) if refresh_token else expiry, checked_at=timestamp)
     db.session.add(record)
     # Remove expired tokens at successful login; don't retain credentials indefinitely.
     db.session.execute(db.delete(FirebaseSession).where(FirebaseSession.expires_at < timestamp))
@@ -191,13 +218,24 @@ def session_valid(user):
     timestamp = now()
     if not record or record.user_id != user.id or record.user_version != user.session_version or record.expires_at <= timestamp:
         return False
-    if record.checked_at < timestamp - timedelta(minutes=5):
+    if record.token_expires_at <= timestamp + timedelta(minutes=1) or record.checked_at < timestamp - timedelta(minutes=5):
         try:
-            token = _cipher().decrypt(record.encrypted_tokens.encode()).decode()
+            record = db.session.execute(db.select(FirebaseSession).where(FirebaseSession.id == session_id).with_for_update().execution_options(populate_existing=True)).scalar_one_or_none()
+            if not record or record.expires_at <= timestamp:
+                return False
+            raw = _cipher().decrypt(record.encrypted_tokens.encode()).decode()
+            tokens = json.loads(raw) if raw.startswith('{') else {'id_token':raw}
+            token = tokens['id_token']
+            if record.token_expires_at <= timestamp + timedelta(minutes=1):
+                token, refresh, profile = refresh_credentials(tokens.get('refresh_token'), user.firebase_uid)
+                if profile['auth_time'] != int(record.authenticated_at.timestamp()):
+                    return False
+                record.encrypted_tokens = _cipher().encrypt(json.dumps({'id_token':token, 'refresh_token':refresh}).encode()).decode()
+                record.token_expires_at = datetime.fromtimestamp(profile['expires'], timezone.utc)
             account = account_record(token, user.firebase_uid, record.authenticated_at.timestamp())
             if account.get('email', '').strip().lower() != user.email:
                 return False
-        except InvalidToken:
+        except (InvalidToken, ValueError, KeyError, TypeError):
             return False
         except FirebaseError as error:
             if error.status == 503:
@@ -233,7 +271,7 @@ def password_login(email, password):
             if signup_error.code == 'EMAIL_EXISTS':
                 raise FirebaseError('Ese correo ya tiene otro acceso en Firebase. Usa tu proveedor y tu contraseña anterior para vincularlo.', 'LINK_REQUIRED', 409) from None
             raise
-    return establish_session(result.get('idToken'), password)
+    return establish_session(result.get('idToken'), password, refresh_token=result.get('refreshToken'))
 
 
 def register(name, email, password):

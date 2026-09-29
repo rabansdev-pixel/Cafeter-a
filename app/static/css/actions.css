@@ -1,0 +1,145 @@
+/* Shared action treatment. Navigation, icon controls and the site footer retain
+   their own sizing and presentation. */
+body {
+    --action-fill: #eeeade;
+    --action-on-fill: #20231f;
+    --action-surface: #292d28;
+    --action-text: #faf8f1;
+    --action-border: #777c70;
+    --action-hover: #373d34;
+}
+html[data-home-theme='light'] body {
+    --action-surface: #eeece4;
+    --action-text: #242820;
+    --action-border: #959b8c;
+    --action-hover: #dfdfd3;
+}
+html:root body[class] :is(.cafe-link, .home-about-link, .home-card-link, .home-menu-button,
+    .visit-button, .editorial-submit, .shop-product-action, .cart-whatsapp,
+    .cart-continue, .cart-edit, .cart-suggestion-choose, .text-control,
+    .account-button, .profile-save, .profile-skip,
+    .cart-coupon button, .cart-coupon a, .cart-suggestion button,
+    .customer-save > a, .customer-profile-footer button, .customer-profile-footer > a) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 48px;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 12px 24px;
+    border: 1px solid var(--action-border);
+    border-radius: 8px;
+    background: var(--action-surface);
+    color: var(--action-text);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+    text-align: center;
+    text-decoration: none;
+    white-space: normal;
+    cursor: pointer;
+    transition: background-color .18s ease, border-color .18s ease;
+}
+html:root body[class] :is(.home-menu-button, .home-tastes .cafe-link,
+    .home-menu-story .home-card-link, .visit-button, .experience-visit,
+    .editorial-submit, .cart-whatsapp, .profile-save, .account-button.primary) {
+    background: var(--action-fill);
+    color: var(--action-on-fill);
+    border-color: var(--action-fill);
+}
+html:root body[class] :is(.home-about-link, .home-card-link) {
+    width: fit-content;
+    justify-self: start;
+}
+@media (hover: hover) {
+    html:root body[class] :is(.cafe-link, .home-about-link, .home-card-link, .home-menu-button,
+        .visit-button, .editorial-submit, .shop-product-action, .cart-whatsapp,
+        .cart-continue, .cart-edit, .cart-suggestion-choose, .text-control,
+        .account-button, .profile-save, .profile-skip, .cart-coupon button,
+        .cart-coupon a, .customer-save > a, .customer-profile-footer button,
+        .customer-profile-footer > a):not(:disabled):hover {
+        background: var(--action-hover);
+        border-color: var(--action-text);
+        color: var(--action-text);
+        text-decoration: none;
+    }
+}
+html:root body[class] :is(a, button):focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+}
+html:root body[class] button:disabled {
+    cursor: not-allowed;
+}
+@media (prefers-reduced-motion: reduce) {
+    html:root body[class] :is(a, button) { transition: none; }
+}
+
+/* Cart controls have their own compact geometry, separate from page CTAs. */
+html:root body.cart-page[class] .quantity-control {
+    display:grid; grid-template-columns:36px 32px 36px;
+    width:106px; min-width:106px; gap:0; padding:0;
+    border:1px solid var(--action-border); border-radius:8px;
+    background:var(--action-surface); overflow:hidden;
+}
+html:root body.cart-page[class] .quantity-control :is(button,input) {
+    width:100%; min-width:0; max-width:none; height:44px; min-height:44px;
+    padding:0; margin:0; border:0; border-radius:0;
+    background:transparent; color:var(--action-text); text-align:center;
+    box-sizing:border-box; line-height:1; font-size:16px;
+}
+html:root body.cart-page[class] .quantity-control button {
+    display:grid; place-items:center; cursor:pointer;
+}
+html:root body.cart-page[class] .quantity-control input { border-inline:1px solid var(--cart-rule); }
+html:root body.cart-page[class] .quantity-control button:not(:disabled):hover { background:var(--action-hover); }
+html:root body.cart-page[class] .quantity-control button:disabled { opacity:.35; cursor:not-allowed; }
+html:root body.cart-page[class] .quantity-control :focus-visible { outline-offset:-3px; }
+html:root body.cart-page[class] .cart-line-actions { gap:8px; }
+html:root body.cart-page[class] .cart-line-actions :is(a,button) {
+    min-height:40px; padding:8px 10px; font-size:12px;
+    background:transparent; border:1px solid var(--cart-rule); border-radius:6px;
+}
+html:root body.cart-page[class] .cart-line-actions svg {
+    width:15px; height:15px; flex:none; fill:none; stroke:currentColor;
+    stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round;
+}
+html:root body.cart-page[class] .cart-coupon { display:flex; flex-direction:column; gap:10px; }
+html:root body.cart-page[class] .cart-coupon :is(input,button,a,p) { margin:0; }
+html:root body.cart-page[class] .cart-coupon button { width:100%; }
+html:root body.cart-page[class] :is([data-coupon-recover],.cart-continue,[data-cart-clear]) {
+    background:transparent; border-color:var(--cart-rule); min-height:44px; padding:10px 14px; font-size:12px;
+}
+html:root body.cart-page[class] .cart-continue { width:100%; margin-top:12px; }
+html:root body.cart-page[class] .cart-coupon button:disabled { opacity:.4; }
+html:root body[class] [data-quick-add] { min-width:100px; }
+html:root body[class] [hidden] { display:none !important; }
+
+html:root body.cart-page[class] .cart-line-actions :is(a,button) {
+    border-color:transparent; padding:6px 8px; background:transparent;
+}
+html:root body.cart-page[class] .cart-line-actions :is(a,button):hover {
+    background:var(--action-hover); border-color:var(--cart-rule);
+}
+html:root body.cart-page[class] .cart-summary .summary-total strong { font-size:28px; }
+html:root body.cart-page[class] .cart-coupon-panel {
+    margin-top:24px; padding-top:16px; border-top:1px solid var(--cart-rule);
+}
+html:root body.cart-page[class] .cart-coupon-panel summary {
+    cursor:pointer; padding:12px 0; font-size:14px; min-height:44px; box-sizing:border-box;
+}
+html:root body.cart-page[class] .cart-coupon {
+    border:0; padding:12px 0 0; margin:0;
+}
+html:root body.cart-page[class] .cart-suggestion-photo { aspect-ratio:2/1; }
+html:root body.cart-page[class] .cart-suggestion-copy > p { display:none; }
+html:root body.cart-page[class] .cart-suggestion-copy { padding:14px; }
+html:root body.cart-page[class] .cart-suggestion-copy :is(button,a.cart-suggestion-choose) {
+    min-height:44px; padding:10px 12px;
+}
+html:root body.cart-page[class] [data-cart-clear] { border-color:transparent; }
+@media(max-width:600px) {
+    html:root body.cart-page[class] .cart-line-actions :is(a,button) { min-height:44px; }
+}
