@@ -58,7 +58,7 @@ export function initProductScene(loadScene = () => import('./product_scene_rende
     }
     const observer = new window.IntersectionObserver(entries => {
         entries.forEach(entry => visible.set(entry.target, entry.isIntersecting ? entry.intersectionRatio : 0));
-        activate();
+        void activate();
     }, { threshold: [0, .1, .3, .6, 1] });
     const intents = hosts.map(host => {
         observer.observe(host);

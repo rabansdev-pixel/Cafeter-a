@@ -144,9 +144,10 @@ function initCart() {
     async function sendInquiry(redemption = null) {
         if (inquiryPending) return;
         inquiryPending = true;
-        const tab = window.open('about:blank', '_blank');
-        if (tab) tab.opener = null;
+        let tab;
         try {
+            tab = window.open('about:blank', '_blank');
+            if (tab) tab.opener = null;
             const response = await fetch('/api/inquiries', {method:'POST', headers:{'Content-Type':'application/json','X-CSRFToken':document.querySelector('meta[name="csrf-token"]').content}, body:JSON.stringify(redemption ? {redemption} : {items:cartStore.get()})});
             const data = await response.json();
             if (!response.ok) throw new Error(data.message || 'No pudimos guardar la consulta.');
@@ -160,8 +161,8 @@ function initCart() {
         finally { inquiryPending = false; }
     }
     whatsapp.addEventListener('click', () => {
-        if (!couponSend.hidden && couponSend.dataset.redemption) sendInquiry(couponSend.dataset.redemption);
-        else if (message && !whatsapp.disabled) sendInquiry();
+        if (!couponSend.hidden && couponSend.dataset.redemption) void sendInquiry(couponSend.dataset.redemption);
+        else if (message && !whatsapp.disabled) void sendInquiry();
     });
     undo.addEventListener('click', () => {
         if (!removed) return;
@@ -173,7 +174,7 @@ function initCart() {
     const couponFeedback = root.querySelector('[data-coupon-feedback]');
     const redeem = root.querySelector('[data-coupon-redeem]');
     const couponSend = root.querySelector('[data-coupon-send]');
-    couponSend.addEventListener('click', event => { event.preventDefault(); if (couponSend.dataset.redemption) sendInquiry(couponSend.dataset.redemption); });
+    couponSend.addEventListener('click', event => { event.preventDefault(); if (couponSend.dataset.redemption) void sendInquiry(couponSend.dataset.redemption); });
     const mobileBar = root.querySelector('[data-mobile-checkout]');
     const mobileButton = root.querySelector('[data-mobile-whatsapp]');
     const mobileTotal = root.querySelector('[data-mobile-total]');
@@ -354,7 +355,7 @@ function initCart() {
     root.querySelector('[data-cart-clear]').addEventListener('click', () => { if (!window.confirm('¿Vaciar todo tu carrito?')) return; removed = null; undo.hidden = true; cartStore.clear(); root.querySelector('[data-cart-empty] a').focus(); });
     retry.addEventListener('click', render);
     cartStore.subscribe(render); window.addEventListener('online', render);
-    render();
+    void render();
 }
 function initCategoryNavigation() {
     const links = [...document.querySelectorAll('.menu-category-nav a[href^="#"]')];
